@@ -1,3 +1,10 @@
+### Project Setup
+- install [uv](https://docs.astral.sh/uv/getting-started/installation)
+- clone this project
+- cd into project root directory
+- create .env file from .template.env, set variables
+- run ```$ PORT=8080 sh scripts/run.sh```
+
 ### Auction Flows
 
 #### Placing a bid
