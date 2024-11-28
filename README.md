@@ -30,7 +30,7 @@ sequenceDiagram
     Auc->>-U: show auction detail page with list of all bidders and auction controls
 ```
 
-- when auction not exists (started) and the user entering details page want to start an auction:
+- when auction not exists (not started yet) and the user entering details page want to start an auction:
 
 ```mermaid
 sequenceDiagram
@@ -53,6 +53,32 @@ sequenceDiagram
     Auc->>+AucDB: start auction, save auction
     Auc->>-U: show auction detail page with list of all bidders and auction controls
     Auc-->U: redirect user back to divar
+```
+
+- when auction exists (started) and the user entering details page is not the seller and wants to place a bid:
+
+```mermaid
+sequenceDiagram
+    actor U as User (Bidder)
+    participant Divar
+    participant WidgetView
+    participant Auc as Auction
+    participant AucDB as AuctionDB
+    U->>+Auc: divar redirects user to Auction /home page
+    Auc->>+AucDB: has the auction started, and who is its seller?
+    AucDB->>-Auc: auction has started and this user is not the seller
+    Auc->>+Divar: verify, read ad
+    Divar->>-Auc: ad is valid
+    Auc->>-U: redirect bidder to divar oauth
+    U->>+Divar: Authorize app with permissions
+    Divar->>-U: redirect bidder to Auction redirect url with code
+    U->>+Auc: i want to see auction details page
+    Auc->>+Divar: verify, read ad
+    Auc->>+Divar: verify, read user using user auth code
+    Auc->>-U: show auction detail page with bids count and option to place new bid
+    U->>+Auc: i want to place a new bid
+    Auc->>AucDB: store new bid on auction
+    Auc->>-U: redirect user back to divar
 ```
 
 #### Placing a bid
