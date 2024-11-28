@@ -30,6 +30,8 @@ sequenceDiagram
     Auc->>-U: show auction detail page with list of all bidders and auction controls
 ```
 
+---
+
 - when auction not exists (not started yet) and the user entering details page want to start an auction:
 
 ```mermaid
@@ -54,6 +56,8 @@ sequenceDiagram
     Auc->>-U: show auction detail page with list of all bidders and auction controls
     Auc-->U: redirect user back to divar
 ```
+
+---
 
 - when auction exists (started) and the user entering details page is not the seller and wants to place a bid:
 
