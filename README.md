@@ -7,6 +7,29 @@
 
 ### Auction Flows
 
+### Auction details page
+when auction exists (started) and the user entering details page is the seller (auction owner):
+
+```mermaid
+sequenceDiagram
+    actor U as User (Seller)
+    participant Divar
+    participant WidgetView
+    participant Auc as Auction
+    participant AucDB as AuctionDB
+    U->>+Auc: divar redirects user to Auction /home page
+    Auc->>+AucDB: has the auction started, and who is its seller?
+    AucDB->>-Auc: auction has started, current user is the auction seller
+    Auc->>-U: redirect seller to divar oauth
+    U->>+Divar: Authorize app with permissions
+    Divar->>-U: redirect user to Auction redirect url with code
+    U->>+Auc: See auction details
+    Auc->>+AucDB: verify, read auction
+    Auc->>+Divar: verify, read ad
+    Auc->>+Divar: verify, read user using user auth code
+    Auc->>-U: show auction detail page with list of all bidders and auction controls
+```
+
 #### Placing a bid
 
 ```mermaid
