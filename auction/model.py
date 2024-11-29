@@ -3,7 +3,7 @@ from typing import cast
 
 from pydantic import BaseModel
 
-from _types import UserID, AuctionID, Rial, AdID
+from _types import UserID, AuctionID, Rial, PostToken
 
 
 class Bid(BaseModel):
@@ -14,7 +14,7 @@ class Bid(BaseModel):
 
 
 class Auction(BaseModel):
-    ad_id: AdID
+    post_token: PostToken
     seller_id: UserID
     starting_price: Rial
     bids: list[Bid]
@@ -26,11 +26,11 @@ class Auction(BaseModel):
 
 
 class AuctionStartInput(BaseModel):
-    ad_id: AdID
+    post_token: PostToken
     starting_price: Rial
 
 
 class PlaceBid(BaseModel):
-    ad_id: AdID
+    post_token: PostToken
     auction_id: AuctionID
     amount: Rial

@@ -4,7 +4,7 @@ from pathlib import Path
 from pydantic import TypeAdapter
 
 from model import Auction, Bid
-from _types import AdID, AuctionID, UserID, Rial
+from _types import PostToken, AuctionID, UserID, Rial
 
 
 class AuctionRepo:
@@ -62,9 +62,10 @@ class AuctionRepo:
         bid.amount = amount
         return bid
 
-    async def read_acution_by_ad_id(self, ad_id: AdID) -> Auction | None:
+    async def read_acution_by_post_token(self, post_token: PostToken) -> Auction | None:
         auction = next(
-            (auction for auction in self.auctions if auction.ad_id == ad_id), None
+            (auction for auction in self.auctions if auction.post_token == post_token),
+            None,
         )
         return auction
 

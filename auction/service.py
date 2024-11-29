@@ -1,6 +1,6 @@
 """Auction services"""
 
-from model import AuctionStartInput, Auction, AdID, Bid, PlaceBid, UserID
+from model import AuctionStartInput, Auction, PostToken, Bid, PlaceBid, UserID
 from repo import AuctionRepo
 from exception import (
     AuctionNotFound,
@@ -8,7 +8,7 @@ from exception import (
     BidFromSellerNotAllowed,
     AdNotFound,
 )
-from divar import PostItemResponse, divar_client
+from divar import PostItemResponse, Client
 
 
 async def auction_info() -> None:
@@ -18,9 +18,9 @@ async def auction_info() -> None:
     return
 
 
-async def read_auction(auction_repo: AuctionRepo, ad_id: AdID) -> Auction:
+async def read_auction(auction_repo: AuctionRepo, post_token: PostToken) -> Auction:
     """view auction detail"""
-    auction = await auction_repo.read_acution_by_ad_id(ad_id=ad_id)
+    auction = await auction_repo.read_acution_by_post_token(post_token=post_token)
     if auction is None:
         raise AuctionNotFound()
     # find, verify ad on Divar
@@ -32,7 +32,9 @@ async def place_bid(
 ) -> Bid:
     """place a bid on an auction"""
     try:
-        auction = await read_auction(auction_repo=auction_repo, ad_id=bid_data.ad_id)
+        auction = await read_auction(
+            auction_repo=auction_repo, post_token=bid_data.post_token
+        )
         # get ad info from divar
     except AuctionNotFound as e:
         raise e
@@ -54,16 +56,19 @@ async def place_bid(
 
 
 async def start_auction(
-    auction_repo: AuctionRepo, seller_id: UserID, auction_data: AuctionStartInput
+    auction_repo: AuctionRepo,
+    divar_client: Client,
+    seller_id: UserID,
+    auction_data: AuctionStartInput,
 ) -> Auction:
     """start a new auction"""
-    auction_is_started = await auction_repo.read_acution_by_ad_id(
-        ad_id=auction_data.ad_id
+    auction_is_started = await auction_repo.read_acution_by_post_token(
+        post_token=auction_data.post_token
     )
     if auction_is_started:
         raise AuctionAlreadyStarted()
 
-    ad = divar_client.finder.get_post(PostItemResponse(token=auction_data.ad_id))
+    ad = divar_client.finder.get_post(PostItemResponse(token=auction_data.post_token))
     if ad is None:
         raise AdNotFound()
     # verify seller id on Divar

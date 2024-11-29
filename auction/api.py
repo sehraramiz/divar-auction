@@ -5,10 +5,11 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
 from model import AuctionStartInput, Auction, PlaceBid, Bid
-from _types import AuctionID, UserID, AdID
+from _types import AuctionID, UserID, PostToken
 from repo import auction_repo
 import service
 import exception
+from divar import divar_client, GetPostRequest
 
 
 auction_router = APIRouter(prefix="/auction")
@@ -21,7 +22,7 @@ async def get_user_id(token: str) -> str:
 
 
 @auction_router.get("/")
-async def auctions(request: Request) -> HTMLResponse:
+async def auctions(request: Request, post_token: PostToken) -> HTMLResponse:
     return templates.TemplateResponse(
         request=request,
         name="auctions.html",
@@ -29,11 +30,11 @@ async def auctions(request: Request) -> HTMLResponse:
     )
 
 
-@auction_router.get("/start/{ad_id}")
-async def new_auction(request: Request, ad_id: AdID, seller_id: UserID) -> HTMLResponse:
-    from divar import divar_client, GetPostRequest
-
-    ad = divar_client.finder.get_post(GetPostRequest(token=ad_id))
+@auction_router.get("/start/{post_token}")
+async def new_auction(
+    request: Request, post_token: PostToken, seller_id: UserID
+) -> HTMLResponse:
+    ad = divar_client.finder.get_post(GetPostRequest(token=post_token))
     if ad is None:
         raise exception.AdNotFound()
     return templates.TemplateResponse(
@@ -46,7 +47,10 @@ async def new_auction(request: Request, ad_id: AdID, seller_id: UserID) -> HTMLR
 @auction_router.post("/start")
 async def start_auction(seller_id: UserID, auction_data: AuctionStartInput) -> Auction:
     result = await service.start_auction(
-        auction_repo=auction_repo, seller_id=seller_id, auction_data=auction_data
+        auction_repo=auction_repo,
+        divar_client=divar_client,
+        seller_id=seller_id,
+        auction_data=auction_data,
     )
     auction_repo._commit()
     return result
@@ -60,9 +64,11 @@ async def read_auction(auction_id: AuctionID) -> Auction:
     return auction
 
 
-@auction_router.get("/info/{ad_id}")
-async def auction_detail(ad_id: AdID) -> Auction:
-    result = await service.read_auction(auction_repo=auction_repo, ad_id=ad_id)
+@auction_router.get("/info/{post_token}")
+async def auction_detail(post_token: PostToken) -> Auction:
+    result = await service.read_auction(
+        auction_repo=auction_repo, post_token=post_token
+    )
     return result
 
 
