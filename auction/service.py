@@ -75,7 +75,7 @@ async def place_bid(
     except AuctionNotFound as e:
         raise e
 
-    if auction.uid == bidder_id:
+    if auction.seller_id == bidder_id:
         raise BidFromSellerNotAllowed()
 
     bid = None
