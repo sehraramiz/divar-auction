@@ -53,7 +53,7 @@ async def auctions(
         return templates.TemplateResponse(
             request=request,
             name="auction_bidder.html",
-            context={"auction": result},
+            context={"auction": result, "user_id": user_ids[0]},
         )
     elif type(result) is AuctionSellerView:
         # TODO: set user session cookie
