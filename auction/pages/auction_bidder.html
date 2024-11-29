@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Place a bid{% endblock %}
+
+{% block body %}
+<h2>Place Your Bid</h2>
+<a target="_blank" href="https://divar.ir/v/{{ auction.post_token }}">Item Details</a>
+<h4>There are {{ auction.bids_count }} bids on this item</h2>
+<form action="/auc/place-bid">
+    <label for="bidamount">Bid Amount:</label><br>
+    <input type="number" id="bidamount" name="bidamount" value=0><br>
+    <input type="submit" value="Bid">
+</form>
+{% endblock %}

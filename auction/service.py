@@ -1,6 +1,15 @@
 """Auction services"""
 
-from model import AuctionStartInput, Auction, PostToken, Bid, PlaceBid, UserID
+from model import (
+    AuctionStartInput,
+    Auction,
+    PostToken,
+    Bid,
+    PlaceBid,
+    UserID,
+    AuctionBidderView,
+    AuctionSellerView,
+)
 from repo import AuctionRepo
 from exception import (
     AuctionNotFound,
@@ -18,12 +27,39 @@ async def auction_info() -> None:
     return
 
 
+async def auction_detail(
+    auction_repo: AuctionRepo,
+    divar_client: DivarClient,
+    user_ids: list[UserID],
+    post_token: PostToken,
+) -> Auction | AuctionBidderView | AuctionSellerView | None:
+    """view auction detail"""
+    auction = await auction_repo.read_acution_by_post_token(post_token=post_token)
+    if auction is None:
+        try:
+            post = validate_post(post_token=post_token)
+            print(post)
+            # show auction create page if post is legit
+            return None
+        except PostNotFound as e:
+            raise AuctionNotFound() from e
+
+    if auction.seller_id in user_ids:
+        return AuctionSellerView.model_validate(auction, from_attributes=True)
+    else:
+        return AuctionBidderView(
+            post_token=post_token,
+            starting_price=auction.starting_price,
+            bids_count=auction.bids_count,
+        )
+    return auction
+
+
 async def read_auction(auction_repo: AuctionRepo, post_token: PostToken) -> Auction:
     """view auction detail"""
     auction = await auction_repo.read_acution_by_post_token(post_token=post_token)
     if auction is None:
         raise AuctionNotFound()
-    # find, verify ad on Divar
     return auction
 
 

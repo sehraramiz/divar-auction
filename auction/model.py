@@ -25,6 +25,15 @@ class Auction(BaseModel):
         return len(self.bids)
 
 
+class AuctionSellerView(Auction): ...
+
+
+class AuctionBidderView(BaseModel):
+    post_token: PostToken
+    starting_price: Rial
+    bids_count: int = 0
+
+
 class AuctionStartInput(BaseModel):
     post_token: PostToken
     starting_price: Rial

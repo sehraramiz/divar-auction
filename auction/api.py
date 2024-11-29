@@ -1,15 +1,23 @@
 """HTTP API for auction app"""
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Depends
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
-from model import AuctionStartInput, Auction, PlaceBid, Bid
+from model import (
+    AuctionStartInput,
+    Auction,
+    PlaceBid,
+    Bid,
+    AuctionSellerView,
+    AuctionBidderView,
+)
 from _types import AuctionID, UserID, PostToken
 from repo import auction_repo
 import service
 import exception
-from divar import divar_client, GetPostRequest
+from divar import divar_client, GetPostRequest, DivarReturnUrl
+from auth import authorize_user
 
 
 auction_router = APIRouter(prefix="/auction")
@@ -22,11 +30,40 @@ async def get_user_id(token: str) -> str:
 
 
 @auction_router.get("/")
-async def auctions(request: Request, post_token: PostToken) -> HTMLResponse:
+async def auctions(
+    request: Request,
+    post_token: PostToken,
+    return_url: DivarReturnUrl,
+    user_ids: list[UserID] = Depends(authorize_user),
+) -> HTMLResponse:
+    result = await service.auction_detail(
+        auction_repo=auction_repo,
+        divar_client=divar_client,
+        user_ids=user_ids,
+        post_token=post_token,
+    )
+    if result is None:
+        # show auction create page
+        pass
+    elif type(result) is AuctionBidderView:
+        # TODO: set user session cookie
+        return templates.TemplateResponse(
+            request=request,
+            name="auction_bidder.html",
+            context={"auction": result},
+        )
+    elif type(result) is AuctionSellerView:
+        # TODO: set user session cookie
+        return templates.TemplateResponse(
+            request=request,
+            name="auction_seller.html",
+            context={"auction": result},
+        )
+
     return templates.TemplateResponse(
         request=request,
         name="auctions.html",
-        context={"auctions": auction_repo.auctions},
+        context={"auctions": []},
     )
 
 

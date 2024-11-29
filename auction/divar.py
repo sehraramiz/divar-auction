@@ -1,4 +1,5 @@
 import logging
+from typing import Annotated
 
 from kenar import (
     GetPostRequest,
@@ -8,6 +9,7 @@ from kenar import (
 )
 from kenar import ClientConfig, Client as DivarClient
 from kenar.app import FinderService, ACCESS_TOKEN_HEADER_NAME
+from pydantic import UrlConstraints, HttpUrl, AfterValidator
 
 from config import divar_config
 from _types import PostToken
@@ -24,6 +26,19 @@ client_conf = ClientConfig(
 )
 
 divar_client = DivarClient(client_conf)
+
+
+def _only_divar_domain(url: HttpUrl) -> HttpUrl:
+    if url.host != "divar.ir":
+        raise ValueError("return url must be from divar.ir domain")
+    return url
+
+
+DivarReturnUrl = Annotated[
+    HttpUrl,
+    UrlConstraints(allowed_schemes=["https"]),
+    AfterValidator(_only_divar_domain),
+]
 
 
 class PostItemResponse(GetPostResponse):
