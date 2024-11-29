@@ -7,8 +7,8 @@ class AuctionNotFound(HTTPException):
         super().__init__(status_code=status.HTTP_404_NOT_FOUND, detail=detail)
 
 
-class AdNotFound(HTTPException):
-    def __init__(self, detail: str = "Ad Not Found"):
+class PostNotFound(HTTPException):
+    def __init__(self, detail: str = "Post Not Found"):
         super().__init__(status_code=status.HTTP_404_NOT_FOUND, detail=detail)
 
 

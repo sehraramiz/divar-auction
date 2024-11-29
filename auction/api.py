@@ -34,9 +34,9 @@ async def auctions(request: Request, post_token: PostToken) -> HTMLResponse:
 async def new_auction(
     request: Request, post_token: PostToken, seller_id: UserID
 ) -> HTMLResponse:
-    ad = divar_client.finder.get_post(GetPostRequest(token=post_token))
-    if ad is None:
-        raise exception.AdNotFound()
+    post = divar_client.finder.get_post(GetPostRequest(token=post_token))
+    if post is None:
+        raise exception.PostNotFound()
     return templates.TemplateResponse(
         request=request,
         name="start_auction.html",

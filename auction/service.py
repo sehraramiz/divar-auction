@@ -6,7 +6,7 @@ from exception import (
     AuctionNotFound,
     AuctionAlreadyStarted,
     BidFromSellerNotAllowed,
-    AdNotFound,
+    PostNotFound,
 )
 from divar import PostItemResponse, Client
 
