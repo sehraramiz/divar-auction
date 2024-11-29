@@ -11,7 +11,7 @@ from kenar import ClientConfig, Client as DivarClient
 from kenar.app import FinderService, ACCESS_TOKEN_HEADER_NAME
 from pydantic import UrlConstraints, HttpUrl, AfterValidator
 
-from config import divar_config
+from config import divar_config, config
 from _types import PostToken
 from exception import PostNotFound
 
@@ -43,6 +43,20 @@ DivarReturnUrl = Annotated[
 
 class PostItemResponse(GetPostResponse):
     first_published_at: str | None = None
+
+    @classmethod
+    def dummy(cls) -> "PostItemResponse":
+        from kenar import PostExtState
+
+        return cls(
+            state=PostExtState.PUBLISHED.value,
+            first_published_at=None,
+            token="",
+            category="",
+            city="",
+            district="",
+            data={},
+        )
 
 
 class AuctionFinderService(FinderService):
@@ -91,6 +105,8 @@ divar_client.finder = auction_finder
 
 
 async def validate_post(post_token: PostToken) -> PostItemResponse:
+    if config.debug:
+        return PostItemResponse.dummy()
     post = divar_client.finder.get_post(GetPostRequest(token=post_token))
     if post is None:
         raise PostNotFound()
