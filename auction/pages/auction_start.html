@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Start New Auction{% endblock %}
+
+{% block body %}
+<h2>Hello {{ user_id }}</h2>
+<h3>Start New Auction</h3>
+<a target="_blank" href="https://divar.ir/v/{{ post_token }}">Item Details</a>
+<hr>
+<form action="{{ url_for('start_auction') }}" method="post">
+    <input type="hidden" name="post_token" value="{{post_token}}">
+    <label for="starting_price">Starting Price:</label><br>
+    <input type="number" id="starting_price" name="starting_price" value=0><br>
+    <input type="submit" value="Start">
+</form>
+{% endblock %}

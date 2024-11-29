@@ -2,8 +2,8 @@
 
 from typing import Annotated
 
-from fastapi import APIRouter, Request, Depends, Form
-from fastapi.responses import HTMLResponse
+from fastapi import APIRouter, Request, Depends, Form, status
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
 from model import (
@@ -18,7 +18,7 @@ from _types import AuctionID, UserID, PostToken
 from repo import auction_repo
 import service
 import exception
-from divar import divar_client, GetPostRequest, DivarReturnUrl
+from divar import divar_client, DivarReturnUrl
 import auth
 
 
@@ -47,7 +47,11 @@ async def auctions(
     request.session["user_id"] = user_ids[0]
     if result is None:
         # show auction create page
-        pass
+        return templates.TemplateResponse(
+            request=request,
+            name="auction_start.html",
+            context={"post_token": post_token},
+        )
     elif type(result) is AuctionBidderView:
         # TODO: set user session cookie
         return templates.TemplateResponse(
@@ -70,22 +74,12 @@ async def auctions(
     )
 
 
-@auction_router.get("/start/{post_token}")
-async def new_auction(
-    request: Request, post_token: PostToken, seller_id: UserID
-) -> HTMLResponse:
-    post = divar_client.finder.get_post(GetPostRequest(token=post_token))
-    if post is None:
-        raise exception.PostNotFound()
-    return templates.TemplateResponse(
-        request=request,
-        name="start_auction.html",
-        context={"seller_id": seller_id},
-    )
-
-
 @auction_router.post("/start")
-async def start_auction(seller_id: UserID, auction_data: AuctionStartInput) -> Auction:
+async def start_auction(
+    request: Request,
+    auction_data: Annotated[AuctionStartInput, Form()],
+    seller_id: UserID = Depends(auth.get_user_id_from_session),
+) -> RedirectResponse:
     result = await service.start_auction(
         auction_repo=auction_repo,
         divar_client=divar_client,
@@ -93,7 +87,12 @@ async def start_auction(seller_id: UserID, auction_data: AuctionStartInput) -> A
         auction_data=auction_data,
     )
     auction_repo._commit()
-    return result
+    redirect_url = str(
+        request.url_for("auctions")
+    ) + "?post_token={}&user_id={}&return_url={}".format(
+        result.post_token, result.seller_id, "https://divar.ir"
+    )
+    return RedirectResponse(url=redirect_url, status_code=status.HTTP_302_FOUND)
 
 
 @auction_router.get("/info/{post_token}")
