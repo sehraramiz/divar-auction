@@ -3,9 +3,11 @@ import logging
 from kenar import (
     GetPostRequest,
     GetPostResponse,
+    GetUserResponse,
+    GetUserRequest,
 )
 from kenar import ClientConfig, Client
-from kenar.app import FinderService
+from kenar.app import FinderService, ACCESS_TOKEN_HEADER_NAME
 
 from config import divar_config
 
@@ -47,6 +49,24 @@ class AuctionFinderService(FinderService):
             return PostItemResponse(**rsp.json())
         return None
 
+    def get_user(
+        self,
+        access_token: str,
+        data: GetUserRequest = None,
+        max_retry: int = 3,
+        retry_delay: int = 1,
+    ) -> GetUserResponse:
+        def send_request():
+            return self._client.post(
+                url="/v1/open-platform/users",
+                content=data.json() if data is not None else "",
+                headers={ACCESS_TOKEN_HEADER_NAME: access_token},
+            )
+
+        rsp = send_request()
+        if rsp.is_success:
+            return GetUserResponse(**rsp.json())
+        return GetUserResponse(phone_numbers=[])
 
 auction_finder = AuctionFinderService(client=divar_client._client)
 divar_client.finder = auction_finder
