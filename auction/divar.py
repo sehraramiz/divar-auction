@@ -6,7 +6,7 @@ from kenar import (
     GetUserResponse,
     GetUserRequest,
 )
-from kenar import ClientConfig, Client
+from kenar import ClientConfig, Client as DivarClient
 from kenar.app import FinderService, ACCESS_TOKEN_HEADER_NAME
 
 from config import divar_config
@@ -21,7 +21,7 @@ client_conf = ClientConfig(
     oauth_redirect_url=divar_config.oauth_redirect_url,
 )
 
-divar_client = Client(client_conf)
+divar_client = DivarClient(client_conf)
 
 
 class PostItemResponse(GetPostResponse):

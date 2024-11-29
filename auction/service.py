@@ -8,7 +8,7 @@ from exception import (
     BidFromSellerNotAllowed,
     PostNotFound,
 )
-from divar import PostItemResponse, Client
+from divar import DivarClient
 
 
 async def auction_info() -> None:
@@ -57,7 +57,7 @@ async def place_bid(
 
 async def start_auction(
     auction_repo: AuctionRepo,
-    divar_client: Client,
+    divar_client: DivarClient,
     seller_id: UserID,
     auction_data: AuctionStartInput,
 ) -> Auction:
