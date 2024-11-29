@@ -1,12 +1,13 @@
 from typing import cast
 from urllib.parse import quote
 
-from fastapi import HTTPException, status
+from fastapi import HTTPException, status, Request
 
 from kenar import GetUserResponse, Scope, OauthResourceType
 from _types import UserID
 from divar import divar_client
 from config import config
+import exception
 
 
 async def authorize_user(
@@ -29,6 +30,13 @@ async def authorize_user(
         )
     user: GetUserResponse = divar_client.finder.get_user(access_token=code)
     return [cast(UserID, phone) for phone in user.phone_numbers]
+
+
+async def get_user_id_from_session(request: Request) -> UserID | None:
+    user_id = request.session.get("user_id")
+    if user_id is None:
+        raise exception.InvalidSession("Invalid Session")
+    return UserID(user_id)
 
 
 if __name__ == "__main__":

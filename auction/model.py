@@ -32,6 +32,7 @@ class AuctionBidderView(BaseModel):
     post_token: PostToken
     starting_price: Rial
     bids_count: int = 0
+    uid: AuctionID
 
 
 class AuctionStartInput(BaseModel):

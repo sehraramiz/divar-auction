@@ -10,6 +10,7 @@ from _types import PostToken, AuctionID, UserID, Rial
 class AuctionRepo:
     auctions: list[Auction]
     bids: list[Bid]
+    sessions: list[str]
 
     def __init__(self) -> None:
         self._load_db_file()

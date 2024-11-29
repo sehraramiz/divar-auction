@@ -6,9 +6,11 @@
 <h2>Place Your Bid</h2>
 <a target="_blank" href="https://divar.ir/v/{{ auction.post_token }}">Item Details</a>
 <h4>There are {{ auction.bids_count }} bids on this item</h2>
-<form action="/auc/place-bid">
+<form action="/auc/place-bid" method="post">
+    <input type="hidden" name="auction_id" value="{{auction.uid}}">
+    <input type="hidden" name="post_token" value="{{auction.post_token}}">
     <label for="bidamount">Bid Amount:</label><br>
-    <input type="number" id="bidamount" name="bidamount" value=0><br>
+    <input type="number" id="amount" name="amount" value=0><br>
     <input type="submit" value="Bid">
 </form>
 {% endblock %}

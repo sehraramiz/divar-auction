@@ -1,6 +1,8 @@
 """HTTP API for auction app"""
 
-from fastapi import APIRouter, Request, Depends
+from typing import Annotated
+
+from fastapi import APIRouter, Request, Depends, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
@@ -17,7 +19,7 @@ from repo import auction_repo
 import service
 import exception
 from divar import divar_client, GetPostRequest, DivarReturnUrl
-from auth import authorize_user
+import auth
 
 
 auction_router = APIRouter(prefix="/auction")
@@ -34,7 +36,7 @@ async def auctions(
     request: Request,
     post_token: PostToken,
     return_url: DivarReturnUrl,
-    user_ids: list[UserID] = Depends(authorize_user),
+    user_ids: list[UserID] = Depends(auth.authorize_user),
 ) -> HTMLResponse:
     result = await service.auction_detail(
         auction_repo=auction_repo,
@@ -42,6 +44,7 @@ async def auctions(
         user_ids=user_ids,
         post_token=post_token,
     )
+    request.session["user_id"] = user_ids[0]
     if result is None:
         # show auction create page
         pass
@@ -93,14 +96,6 @@ async def start_auction(seller_id: UserID, auction_data: AuctionStartInput) -> A
     return result
 
 
-@auction_router.get("/{auction_id}")
-async def read_auction(auction_id: AuctionID) -> Auction:
-    auction = await auction_repo.read_acution_by_id(auction_id=auction_id)
-    if auction is None:
-        raise exception.AuctionNotFound()
-    return auction
-
-
 @auction_router.get("/info/{post_token}")
 async def auction_detail(post_token: PostToken) -> Auction:
     result = await service.read_auction(
@@ -110,9 +105,22 @@ async def auction_detail(post_token: PostToken) -> Auction:
 
 
 @auction_router.post("/place-bid")
-async def place_bid(bidder_id: UserID, bid_data: PlaceBid) -> Bid:
+async def place_bid(
+    request: Request,
+    bid_data: Annotated[PlaceBid, Form()],
+    user_id: UserID = Depends(auth.get_user_id_from_session),
+) -> Bid | None:
+    # TODO: add csrf protection
     result = await service.place_bid(
-        auction_repo=auction_repo, bid_data=bid_data, bidder_id=bidder_id
+        auction_repo=auction_repo, bid_data=bid_data, bidder_id=user_id
     )
     auction_repo._commit()
     return result
+
+
+@auction_router.get("/{auction_id}")
+async def read_auction(auction_id: AuctionID) -> Auction:
+    auction = await auction_repo.read_acution_by_id(auction_id=auction_id)
+    if auction is None:
+        raise exception.AuctionNotFound()
+    return auction

@@ -51,6 +51,7 @@ async def auction_detail(
             post_token=post_token,
             starting_price=auction.starting_price,
             bids_count=auction.bids_count,
+            uid=auction.uid,
         )
     return auction
 
@@ -71,8 +72,8 @@ async def place_bid(
         auction = await read_auction(
             auction_repo=auction_repo, post_token=bid_data.post_token
         )
-        # get ad info from divar
-    except AuctionNotFound as e:
+        await validate_post(post_token=bid_data.post_token)
+    except (AuctionNotFound, PostNotFound) as e:
         raise e
 
     if auction.seller_id == bidder_id:
