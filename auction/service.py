@@ -8,7 +8,7 @@ from exception import (
     BidFromSellerNotAllowed,
     PostNotFound,
 )
-from divar import DivarClient
+from divar import DivarClient, validate_post
 
 
 async def auction_info() -> None:
@@ -68,9 +68,8 @@ async def start_auction(
     if auction_is_started:
         raise AuctionAlreadyStarted()
 
-    ad = divar_client.finder.get_post(PostItemResponse(token=auction_data.post_token))
-    if ad is None:
-        raise AdNotFound()
+    post = await validate_post(post_token=auction_data.post_token)
+    print(post)
     # verify seller id on Divar
 
     auction = Auction(**auction_data.model_dump(), seller_id=seller_id, bids=[])

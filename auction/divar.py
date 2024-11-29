@@ -10,6 +10,8 @@ from kenar import ClientConfig, Client as DivarClient
 from kenar.app import FinderService, ACCESS_TOKEN_HEADER_NAME
 
 from config import divar_config
+from _types import PostToken
+from exception import PostNotFound
 
 
 logging.basicConfig(level=logging.INFO)
@@ -67,6 +69,14 @@ class AuctionFinderService(FinderService):
         if rsp.is_success:
             return GetUserResponse(**rsp.json())
         return GetUserResponse(phone_numbers=[])
+
+
+async def validate_post(post_token: PostToken) -> PostItemResponse:
+    post = divar_client.finder.get_post(PostItemResponse(token=post_token))
+    if post is None:
+        raise PostNotFound()
+    return post
+
 
 auction_finder = AuctionFinderService(client=divar_client._client)
 divar_client.finder = auction_finder
