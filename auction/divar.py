@@ -86,18 +86,23 @@ class AuctionFinderService(FinderService):
         return GetUserResponse(phone_numbers=[])
 
 
+auction_finder = AuctionFinderService(client=divar_client._client)
+divar_client.finder = auction_finder
+
+
 async def validate_post(post_token: PostToken) -> PostItemResponse:
-    post = divar_client.finder.get_post(PostItemResponse(token=post_token))
+    post = divar_client.finder.get_post(GetPostRequest(token=post_token))
     if post is None:
         raise PostNotFound()
     return post
 
 
-auction_finder = AuctionFinderService(client=divar_client._client)
-divar_client.finder = auction_finder
-
-
 if __name__ == "__main__":
-    resp = divar_client.finder.get_post(GetPostRequest(token="wYIw8OJp"))
+    import sys
+
+    post_token = ""
+    if len(sys.argv) > 1:
+        post_token = sys.argv[1]
+    resp = divar_client.finder.get_post(GetPostRequest(token=post_token))
     if resp:
         print(resp.model_dump())
