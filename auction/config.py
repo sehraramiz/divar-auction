@@ -1,3 +1,5 @@
+import secrets
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -14,6 +16,7 @@ class DivarConfig(BaseSettings):
 
 class Config(BaseSettings):
     debug: bool = False
+    secret_key: str = secrets.token_hex(32)
 
     model_config = SettingsConfigDict(env_file=".env", extra="allow")
 
