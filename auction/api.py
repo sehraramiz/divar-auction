@@ -44,23 +44,19 @@ async def auctions(
         user_ids=user_ids,
         post_token=post_token,
     )
-    request.session["user_id"] = user_ids[0]
     if result is None:
-        # show auction create page
         return templates.TemplateResponse(
             request=request,
             name="auction_start.html",
             context={"post_token": post_token},
         )
     elif type(result) is AuctionBidderView:
-        # TODO: set user session cookie
         return templates.TemplateResponse(
             request=request,
             name="auction_bidder.html",
             context={"auction": result, "user_id": user_ids[0]},
         )
     elif type(result) is AuctionSellerView:
-        # TODO: set user session cookie
         return templates.TemplateResponse(
             request=request,
             name="auction_seller.html",

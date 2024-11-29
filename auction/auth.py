@@ -11,11 +11,13 @@ import exception
 
 
 async def authorize_user(
+    request: Request,
     code: str | None = None,
     user_id: UserID | None = None,  # FIXME: delete user_id
 ) -> list[UserID]:
     if config.debug:
         if user_id:
+            request.session["user_id"] = user_id
             return [user_id]
         return [UserID("")]
 
@@ -29,7 +31,9 @@ async def authorize_user(
             status_code=status.HTTP_307_TEMPORARY_REDIRECT, headers=headers
         )
     user: GetUserResponse = divar_client.finder.get_user(access_token=code)
-    return [cast(UserID, phone) for phone in user.phone_numbers]
+    user_ids = [cast(UserID, phone) for phone in user.phone_numbers]
+    request.session["user_id"] = user_ids[0]
+    return user_ids
 
 
 async def get_user_id_from_session(request: Request) -> UserID | None:
