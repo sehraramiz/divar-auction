@@ -10,7 +10,7 @@
 <form action="/auc/place-bid" method="post">
     <input type="hidden" name="auction_id" value="{{auction.uid}}">
     <input type="hidden" name="post_token" value="{{auction.post_token}}">
-    <label for="bidamount">Bid Amount:</label><br>
+    <label for="amount">Bid Amount:</label><br>
     <input type="number" id="amount" name="amount" value=0><br>
     <input type="submit" value="Bid">
 </form>
