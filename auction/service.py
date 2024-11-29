@@ -1,5 +1,7 @@
 """Auction services"""
 
+import logging
+
 from model import (
     AuctionStartInput,
     Auction,
@@ -20,6 +22,9 @@ from exception import (
 from divar import DivarClient, validate_post
 
 
+logger = logging.getLogger(__name__)
+
+
 async def auction_info() -> None:
     # get auction bids
     # select top 3
@@ -34,11 +39,12 @@ async def auction_detail(
     post_token: PostToken,
 ) -> Auction | AuctionBidderView | AuctionSellerView | None:
     """view auction detail"""
+    post = await validate_post(post_token=post_token)
+    logger.info(f"post is valid\n{post}")
+
     auction = await auction_repo.read_acution_by_post_token(post_token=post_token)
     if auction is None:
         try:
-            post = validate_post(post_token=post_token)
-            print(post)
             # show auction create page if post is legit
             return None
         except PostNotFound as e:
