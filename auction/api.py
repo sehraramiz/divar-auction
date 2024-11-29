@@ -114,7 +114,12 @@ async def place_bid(
         auction_repo=auction_repo, bid_data=bid_data, bidder_id=user_id
     )
     auction_repo._commit()
-    return result
+    redirect_url = str(
+        request.url_for("auctions")
+    ) + "?post_token={}&user_id={}&return_url={}".format(
+        bid_data.post_token, result.bidder_id, "https://divar.ir"
+    )
+    return RedirectResponse(url=redirect_url, status_code=status.HTTP_302_FOUND)
 
 
 @auction_router.get("/{auction_id}")
