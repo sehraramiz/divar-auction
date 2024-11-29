@@ -32,8 +32,8 @@ class AuctionFinderService(FinderService):
     def get_post(
         self,
         data: GetPostRequest,
-        max_retry=3,
-        retry_delay=1,
+        max_retry: int = 3,
+        retry_delay: int = 1,
     ) -> GetPostResponse | None:
         def send_request():
             return self._client.request(
