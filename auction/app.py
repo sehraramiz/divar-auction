@@ -17,7 +17,12 @@ if config.debug:
         SessionMiddleware, secret_key=config.secret_key, https_only=False
     )
 
-app = FastAPI(middleware=[session_middleware])
+app = FastAPI(
+    middleware=[session_middleware],
+    openapi_url=config.openapi_url,
+    docs_url=config.docs_url,
+    redoc_url=None,
+)
 app.include_router(auction_router)
 
 app.mount("/static", StaticFiles(directory="auction/static"), name="static")

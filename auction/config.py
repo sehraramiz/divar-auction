@@ -17,6 +17,8 @@ class DivarConfig(BaseSettings):
 class Config(BaseSettings):
     debug: bool = False
     secret_key: str = secrets.token_hex(32)
+    openapi_url: str = "/openapi.json"
+    docs_url: str = "/docs"
 
     model_config = SettingsConfigDict(env_file=".env", extra="allow")
 
