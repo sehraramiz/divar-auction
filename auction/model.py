@@ -19,10 +19,7 @@ class Auction(BaseModel):
     starting_price: Rial
     bids: list[Bid]
     uid: AuctionID = cast(AuctionID, uuid4())
-
-    @property
-    def bids_count(self) -> int:
-        return len(self.bids)
+    bids_count: int = 0
 
 
 class AuctionSellerView(Auction): ...

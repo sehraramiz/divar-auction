@@ -41,6 +41,12 @@ class AuctionRepo:
         self.auctions.append(auction)
         return auction
 
+    async def set_bidders_count(self, auction: Auction) -> Auction:
+        auction.bids_count = sum(
+            [1 for bid in self.bids if bid.auction_id == auction.uid]
+        )
+        return auction
+
     async def add_bid(self, bid: Bid) -> Bid:
         self.bids.append(bid)
         return bid
@@ -67,12 +73,16 @@ class AuctionRepo:
             (auction for auction in self.auctions if auction.post_token == post_token),
             None,
         )
+        if auction:
+            await self.set_bidders_count(auction)
         return auction
 
     async def read_acution_by_id(self, auction_id: AuctionID) -> Auction | None:
         auction = next(
             (auction for auction in self.auctions if auction.uid == auction_id), None
         )
+        if auction:
+            await self.set_bidders_count(auction)
         return auction
 
 
