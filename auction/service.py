@@ -96,7 +96,7 @@ async def place_bid(
         bid = await auction_repo.change_bid_amount(bid=last_bid, amount=bid_data.amount)
     else:
         bid = Bid(bidder_id=bidder_id, auction_id=auction.uid, amount=bid_data.amount)
-        await auction_repo.add_bid_to_auction(bid=bid, auction=auction)
+        await auction_repo.add_bid(bid=bid)
 
     # redirect to Divar
     # send BID_PLACED event (send new bid in chat, etc)

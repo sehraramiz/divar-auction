@@ -41,10 +41,9 @@ class AuctionRepo:
         self.auctions.append(auction)
         return auction
 
-    async def add_bid_to_auction(self, bid: Bid, auction: Auction) -> Auction:
+    async def add_bid(self, bid: Bid) -> Bid:
         self.bids.append(bid)
-        auction.bids.append(bid)
-        return auction
+        return bid
 
     async def find_bid(self, auction_id: AuctionID, bidder_id: UserID) -> Bid | None:
         bid = next(
