@@ -13,12 +13,7 @@ from model import (
     AuctionSellerView,
 )
 from repo import AuctionRepo
-from exception import (
-    AuctionNotFound,
-    AuctionAlreadyStarted,
-    BidFromSellerNotAllowed,
-    PostNotFound,
-)
+import exception
 from divar import DivarClient, validate_post
 
 
@@ -47,8 +42,8 @@ async def auction_detail(
         try:
             # show auction create page if post is legit
             return None
-        except PostNotFound as e:
-            raise AuctionNotFound() from e
+        except exception.PostNotFound as e:
+            raise exception.AuctionNotFound() from e
 
     if auction.seller_id in user_ids:
         return AuctionSellerView.model_validate(auction, from_attributes=True)
@@ -66,7 +61,7 @@ async def read_auction(auction_repo: AuctionRepo, post_token: PostToken) -> Auct
     """view auction detail"""
     auction = await auction_repo.read_acution_by_post_token(post_token=post_token)
     if auction is None:
-        raise AuctionNotFound()
+        raise exception.AuctionNotFound()
     return auction
 
 
@@ -79,11 +74,14 @@ async def place_bid(
             auction_repo=auction_repo, post_token=bid_data.post_token
         )
         await validate_post(post_token=bid_data.post_token)
-    except (AuctionNotFound, PostNotFound) as e:
+    except (exception.AuctionNotFound, exception.PostNotFound) as e:
         raise e
 
     if auction.seller_id == bidder_id:
-        raise BidFromSellerNotAllowed()
+        raise exception.BidFromSellerNotAllowed()
+
+    if bid_data.amount < auction.starting_price:
+        raise exception.BidTooLow()
 
     bid = None
     last_bid = await auction_repo.find_bid(auction_id=auction.uid, bidder_id=bidder_id)
@@ -109,7 +107,7 @@ async def start_auction(
         post_token=auction_data.post_token
     )
     if auction_is_started:
-        raise AuctionAlreadyStarted()
+        raise exception.AuctionAlreadyStarted()
 
     post = await validate_post(post_token=auction_data.post_token)
     print(post)
