@@ -20,6 +20,8 @@ from _types import Rial
 
 logger = logging.getLogger(__name__)
 
+TOP_BIDS_COUNT = 3
+
 
 async def auction_detail(
     auction_repo: AuctionRepo,
@@ -48,6 +50,7 @@ async def auction_detail(
             auction_id=auction.uid, bidder_id=bidder_id
         )
         last_bid_amount = last_bid.amount if last_bid else Rial(0)
+        top_bids = sorted(auction.bids)[::-1][:TOP_BIDS_COUNT]
         return AuctionBidderView(
             post_token=post_token,
             starting_price=auction.starting_price,
@@ -55,6 +58,7 @@ async def auction_detail(
             uid=auction.uid,
             last_bid=last_bid_amount,
             return_url=return_url,
+            top_bids=top_bids,
         )
     return auction
 
