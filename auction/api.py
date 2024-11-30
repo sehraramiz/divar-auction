@@ -25,11 +25,6 @@ auction_router = APIRouter(prefix="/auction")
 templates = Jinja2Templates(directory="auction/pages")
 
 
-async def get_user_id(token: str) -> str:
-    """get user id from Divar using user token"""
-    return ""
-
-
 @auction_router.get("/")
 async def auctions(
     request: Request,
