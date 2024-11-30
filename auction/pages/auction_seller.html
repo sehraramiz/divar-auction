@@ -5,7 +5,7 @@
 {% block body %}
 <h2>Manage Auction</h2>
 <a target="_blank" href="https://divar.ir/v/{{ auction.post_token }}">Item Details</a>
-<h4>There are {{ auction.bids_count }} bids on this item</h2>
+<h4>There are {{ auction.bids_count }} bids on your item</h2>
 <ul>
   {% for bid in auction.bids %}
     <li>{{ bid.amount }}</li>
