@@ -41,14 +41,3 @@ async def get_user_id_from_session(request: Request) -> UserID | None:
     if user_id is None:
         raise exception.InvalidSession("Invalid Session")
     return UserID(user_id)
-
-
-if __name__ == "__main__":
-    import asyncio
-    import sys
-
-    code = ""
-    if len(sys.argv) > 1:
-        code = sys.argv[1]
-    user_ids = asyncio.run(authorize_user(code=code))
-    print(user_ids)
