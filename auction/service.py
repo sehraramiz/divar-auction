@@ -14,7 +14,7 @@ from model import (
 )
 from repo import AuctionRepo
 import exception
-from divar import DivarClient, validate_post
+from divar import DivarClient, validate_post, DivarReturnUrl
 from _types import Rial
 
 
@@ -26,6 +26,7 @@ async def auction_detail(
     divar_client: DivarClient,
     user_ids: list[UserID],
     post_token: PostToken,
+    return_url: DivarReturnUrl,
 ) -> Auction | AuctionBidderView | AuctionSellerView | None:
     """view auction detail"""
     post = await validate_post(post_token=post_token)
@@ -53,6 +54,7 @@ async def auction_detail(
             bids_count=auction.bids_count,
             uid=auction.uid,
             last_bid=last_bid_amount,
+            return_url=return_url,
         )
     return auction
 

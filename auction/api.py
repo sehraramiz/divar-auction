@@ -30,7 +30,7 @@ templates = Jinja2Templates(directory="auction/pages")
 async def auctions(
     request: Request,
     user_ids: Annotated[list[UserID], Depends(auth.authorize_user)],
-    return_url: Annotated[DivarReturnUrl | None, Depends(get_return_url_from_session)],
+    return_url: Annotated[DivarReturnUrl, Depends(get_return_url_from_session)],
     post_token: Annotated[PostToken, Depends(get_post_token_from_session)],
     auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
 ) -> HTMLResponse:
@@ -39,6 +39,7 @@ async def auctions(
         divar_client=divar_client,
         user_ids=user_ids,
         post_token=post_token,
+        return_url=return_url,
     )
     if result is None:
         return templates.TemplateResponse(

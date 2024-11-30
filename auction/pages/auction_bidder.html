@@ -15,4 +15,5 @@
     <input type="number" id="amount" name="amount" value={{ auction.last_bid }}><br>
     <input type="submit" value="Bid">
 </form>
+<button onclick="window.location.href='{{ auction.return_url }}';">Return to Divar</button>
 {% endblock %}

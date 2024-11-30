@@ -4,6 +4,7 @@ from typing import cast
 from pydantic import BaseModel
 
 from _types import UserID, AuctionID, Rial, PostToken
+from divar import DivarReturnUrl
 
 
 class Bid(BaseModel):
@@ -31,6 +32,7 @@ class AuctionBidderView(BaseModel):
     bids_count: int = 0
     uid: AuctionID
     last_bid: Rial = Rial(0)
+    return_url: DivarReturnUrl
 
 
 class AuctionStartInput(BaseModel):

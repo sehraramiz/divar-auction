@@ -30,8 +30,10 @@ async def get_post_token_from_session(
 
 async def get_return_url_from_session(
     session_data: Annotated[dict, Depends(get_session_data)],
-) -> DivarReturnUrl | None:
-    return_url = session_data.get("return_url")
+    return_url: Annotated[DivarReturnUrl | None, Query()] = None,
+    post_token: Annotated[PostToken, Query()] = PostToken(""),
+) -> DivarReturnUrl:
+    return_url = return_url or session_data.get("return_url")
     if return_url:
         return DivarReturnUrl(return_url)
-    return None
+    return DivarReturnUrl(f"https://divar.ir/v/{post_token}")
