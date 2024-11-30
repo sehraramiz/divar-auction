@@ -21,13 +21,6 @@ from _types import Rial
 logger = logging.getLogger(__name__)
 
 
-async def auction_info() -> None:
-    # get auction bids
-    # select top 3
-    # show auction widget intro page on Divar
-    return
-
-
 async def auction_detail(
     auction_repo: AuctionRepo,
     divar_client: DivarClient,
