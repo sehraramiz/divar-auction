@@ -15,6 +15,7 @@ from model import (
 from repo import AuctionRepo
 import exception
 from divar import DivarClient, validate_post
+from _types import Rial
 
 
 logger = logging.getLogger(__name__)
@@ -48,11 +49,17 @@ async def auction_detail(
     if auction.seller_id in user_ids:
         return AuctionSellerView.model_validate(auction, from_attributes=True)
     else:
+        bidder_id = user_ids[0]  # FIXME: which user id to use?
+        last_bid = await auction_repo.find_bid(
+            auction_id=auction.uid, bidder_id=bidder_id
+        )
+        last_bid_amount = last_bid.amount if last_bid else Rial(0)
         return AuctionBidderView(
             post_token=post_token,
             starting_price=auction.starting_price,
             bids_count=auction.bids_count,
             uid=auction.uid,
+            last_bid=last_bid_amount,
         )
     return auction
 

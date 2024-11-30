@@ -33,6 +33,7 @@ class AuctionBidderView(BaseModel):
     starting_price: Rial
     bids_count: int = 0
     uid: AuctionID
+    last_bid: Rial = Rial(0)
 
 
 class AuctionStartInput(BaseModel):
