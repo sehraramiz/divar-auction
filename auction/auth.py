@@ -2,8 +2,8 @@ from typing import cast
 from urllib.parse import quote
 
 from fastapi import HTTPException, status, Request
-
 from kenar import GetUserResponse, Scope, OauthResourceType
+
 from _types import UserID
 from divar import divar_client
 from config import config

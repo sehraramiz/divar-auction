@@ -10,7 +10,6 @@ from model import (
     AuctionStartInput,
     Auction,
     PlaceBid,
-    Bid,
     AuctionSellerView,
     AuctionBidderView,
 )
@@ -36,7 +35,7 @@ async def auctions(
     request: Request,
     post_token: PostToken,
     return_url: DivarReturnUrl,
-    user_ids: list[UserID] = Depends(auth.authorize_user),
+    user_ids: Annotated[list[UserID], Depends(auth.authorize_user)],
 ) -> HTMLResponse:
     result = await service.auction_detail(
         auction_repo=auction_repo,
@@ -104,7 +103,7 @@ async def place_bid(
     request: Request,
     bid_data: Annotated[PlaceBid, Form()],
     user_id: UserID = Depends(auth.get_user_id_from_session),
-) -> Bid | None:
+) -> RedirectResponse:
     # TODO: add csrf protection
     result = await service.place_bid(
         auction_repo=auction_repo, bid_data=bid_data, bidder_id=user_id
