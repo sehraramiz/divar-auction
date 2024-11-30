@@ -14,11 +14,12 @@ from model import (
     AuctionBidderView,
 )
 from _types import AuctionID, UserID, PostToken
-from repo import auction_repo
+from repo import auction_repo, AuctionRepo
 import service
 import exception
 from divar import divar_client, DivarReturnUrl
 import auth
+from api_deps import get_post_token_from_session, get_return_url_from_session, get_repo
 
 
 auction_router = APIRouter(prefix="/auction")
@@ -28,9 +29,10 @@ templates = Jinja2Templates(directory="auction/pages")
 @auction_router.get("/")
 async def auctions(
     request: Request,
-    post_token: PostToken,
-    return_url: DivarReturnUrl,
     user_ids: Annotated[list[UserID], Depends(auth.authorize_user)],
+    return_url: Annotated[DivarReturnUrl | None, Depends(get_return_url_from_session)],
+    post_token: Annotated[PostToken, Depends(get_post_token_from_session)],
+    auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
 ) -> HTMLResponse:
     result = await service.auction_detail(
         auction_repo=auction_repo,

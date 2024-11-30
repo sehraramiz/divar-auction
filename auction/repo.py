@@ -10,7 +10,7 @@ from _types import PostToken, AuctionID, UserID, Rial
 class AuctionRepo:
     auctions: list[Auction]
     bids: list[Bid]
-    sessions: list[str]
+    sessions: dict[str, dict]  # TODO: create schema with predefined data types
 
     def __init__(self) -> None:
         self._load_db_file()
@@ -24,6 +24,7 @@ class AuctionRepo:
                 self.auctions = auctions_adapter.validate_python(db["auctions"])
                 bids_adapter = TypeAdapter(list[Bid])
                 self.bids = bids_adapter.validate_python(db["bids"])
+                self.sessions = db["sessions"]
         else:
             self.auctions = []
 
@@ -34,7 +35,7 @@ class AuctionRepo:
             auctions = auctions_adapter.dump_python(self.auctions, mode="json")
             bids_adapter = TypeAdapter(list[Bid])
             bids = bids_adapter.dump_python(self.bids, mode="json")
-            db_data = {"auctions": auctions, "bids": bids}
+            db_data = {"auctions": auctions, "bids": bids, "sessions": self.sessions}
             db_file.write(json.dumps(db_data))
 
     async def add_auction(self, auction: Auction) -> Auction:
@@ -90,6 +91,13 @@ class AuctionRepo:
             await self.set_bidders_count(auction)
             await self.set_bids_on_auction(auction)
         return auction
+
+    async def save_session_data(self, state: str, data: dict) -> None:
+        self.sessions[state] = data
+        self._commit()
+
+    async def get_session_data(self, state: str) -> dict:
+        return self.sessions.get(state, {})
 
 
 auction_repo = AuctionRepo()
