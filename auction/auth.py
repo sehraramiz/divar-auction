@@ -1,13 +1,15 @@
-from typing import cast
+from typing import cast, Annotated
 from urllib.parse import quote, urlencode
 
-from fastapi import HTTPException, status, Request
+from fastapi import HTTPException, status, Request, Depends
 from kenar import Scope, OauthResourceType
 
 from _types import UserID
 from divar import divar_client
 import exception
 from security import encrypt_data, decrypt_data
+from api_deps import get_repo
+from repo import AuctionRepo
 
 
 async def get_user_id_from_session(request: Request) -> UserID:
@@ -19,6 +21,7 @@ async def get_user_id_from_session(request: Request) -> UserID:
 
 async def authorize_user_and_set_session(
     request: Request,
+    auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
     code: str | None = None,
     state: str | None = None,
     user_id: UserID | None = None,
@@ -48,6 +51,11 @@ async def authorize_user_and_set_session(
         user_ids = [cast(UserID, phone) for phone in user_data.phone_numbers]
         # TODO: set exp time on session
         request.session["user_id"] = user_ids[0]
+
+        await auction_repo.add_user_access_token(
+            UserID(user_ids[0]),
+            access_token_data=access_token_data.model_dump(mode="json"),
+        )
 
         redirect_url = str(request.url_for(context)) + "?" + urlencode(query_params)
         # FIXME: return proper response isntead of raising exeption?
