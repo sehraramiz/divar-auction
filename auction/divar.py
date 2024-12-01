@@ -105,7 +105,6 @@ divar_client.finder = auction_finder
 
 
 async def validate_post(post_token: PostToken) -> PostItemResponse:
-    return PostItemResponse.dummy(post_token=post_token)
     if not post_token:
         raise PostNotFound()
     if config.debug:
