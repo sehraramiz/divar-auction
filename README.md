@@ -44,6 +44,8 @@ sequenceDiagram
     U->>+Auc: divar redirects user to Auction /home page
     Auc->>+AucDB: has the auction started, and who is its seller?
     AucDB->>-Auc: there is no auction with this ad
+    Auc->>+U: no auction available, want to start a new auction?
+    U->>+Auc: Yes.
     Auc->>+Divar: verify, read ad
     Divar->>-Auc: ad is valid
     Auc->>-U: redirect seller to divar oauth
@@ -52,6 +54,8 @@ sequenceDiagram
     U->>+Auc: See auction details page
     Auc->>+Divar: verify, read ad
     Auc->>+Divar: verify, read user using user auth code
+    Auc->>+Divar: read user's post
+    Auc->>+Auc: check post token is in user's posts
     Auc->>+AucDB: start auction, save auction
     Auc->>-U: show auction detail page with list of all bidders and auction controls
     Auc-->U: redirect user back to divar
