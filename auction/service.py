@@ -26,7 +26,7 @@ TOP_BIDS_COUNT = 3
 async def auction_detail(
     auction_repo: AuctionRepo,
     divar_client: DivarClient,
-    user_ids: list[UserID],
+    user_id: UserID,
     post_token: PostToken,
     return_url: DivarReturnUrl,
 ) -> Auction | AuctionBidderView | AuctionSellerView | None:
@@ -42,12 +42,11 @@ async def auction_detail(
         except exception.PostNotFound as e:
             raise exception.AuctionNotFound() from e
 
-    if auction.seller_id in user_ids:
+    if auction.seller_id == user_id:
         return AuctionSellerView.model_validate(auction, from_attributes=True)
     else:
-        bidder_id = user_ids[0]  # FIXME: which user id to use?
         last_bid = await auction_repo.find_bid(
-            auction_id=auction.uid, bidder_id=bidder_id
+            auction_id=auction.uid, bidder_id=user_id
         )
         last_bid_amount = last_bid.amount if last_bid else Rial(0)
         top_bids = sorted(auction.bids)[::-1][:TOP_BIDS_COUNT]

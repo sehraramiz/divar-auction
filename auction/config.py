@@ -16,7 +16,7 @@ class DivarConfig(BaseSettings):
 
 class Config(BaseSettings):
     debug: bool = False
-    secret_key: str = secrets.token_hex(32)
+    secret_key: str = secrets.token_urlsafe(32)
     openapi_url: str = "/openapi.json"
     docs_url: str = "/docs"
 

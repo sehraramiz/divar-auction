@@ -1,16 +1,13 @@
-from typing import cast, Annotated
-from urllib.parse import quote
-import secrets
+from typing import cast
+from urllib.parse import quote, urlencode
 
-from fastapi import HTTPException, status, Request, Depends
+from fastapi import HTTPException, status, Request
 from kenar import Scope, OauthResourceType
 
 from _types import UserID
 from divar import divar_client
-from config import config
 import exception
-from api_deps import get_repo
-from repo import AuctionRepo
+from security import encrypt_data, decrypt_data
 
 
 async def get_user_id_from_session(request: Request) -> UserID:
@@ -20,55 +17,56 @@ async def get_user_id_from_session(request: Request) -> UserID:
     return UserID(user_id)
 
 
-async def get_user_id_from_session_no_error(
-    request: Request, user_id: UserID | None = None
-) -> UserID:
-    if config.debug:
-        return user_id or UserID("")
-    user_id = request.session.get("user_id")
-    if user_id is None:
-        return UserID("")
-    return UserID(user_id)
-
-
-async def authorize_user(
+async def authorize_user_and_set_session(
     request: Request,
-    auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
-    user_id: Annotated[UserID, Depends(get_user_id_from_session_no_error)],
     code: str | None = None,
     state: str | None = None,
-) -> list[UserID]:
-    if config.debug:
-        if user_id:
-            request.session["user_id"] = user_id
-            return [user_id]
-        return [UserID("")]
+    user_id: UserID | None = None,
+) -> UserID:
+    from config import config
 
+    if config.debug and user_id is not None:
+        request.session["user_id"] = user_id
+        return user_id
+
+    user_id = request.session.get("user_id")
     if user_id:
-        return [user_id]
+        return UserID(user_id)
 
-    if code is None:
-        scope = Scope(resource_type=OauthResourceType.USER_PHONE.name)
-        state = secrets.token_urlsafe(16)
-
-        # TODO: only save predefined expected data from a schema
-        await auction_repo.save_session_data(
-            state=state, data=dict(request.query_params)
+    if code and state:
+        state_data = decrypt_data(state)
+        query_params = state_data.get("query_params", {})
+        context = state_data.get("context", "home")
+        access_token_data = divar_client.oauth.get_access_token(
+            authorization_token=code
         )
+        user_data = divar_client.finder.get_user(access_token_data.access_token)
 
-        redirect_url = divar_client.oauth.get_oauth_redirect(
-            scopes=[scope], state=state
-        )
-        headers = {"location": quote(str(redirect_url), safe=":/%#?=@[]!$&'()*+,;")}
+        if not user_data.phone_numbers:
+            raise exception.InvalidSession()
+
+        user_ids = [cast(UserID, phone) for phone in user_data.phone_numbers]
+        # TODO: set exp time on session
+        request.session["user_id"] = user_ids[0]
+
+        redirect_url = str(request.url_for(context)) + "?" + urlencode(query_params)
         # FIXME: return proper response isntead of raising exeption?
+        headers = {"location": quote(str(redirect_url), safe=":/%#?=@[]!$&'()*+,;")}
         raise HTTPException(
             status_code=status.HTTP_307_TEMPORARY_REDIRECT, headers=headers
         )
 
-    access_token_data = divar_client.oauth.get_access_token(authorization_token=code)
-    user_data = divar_client.finder.get_user(access_token_data.access_token)
-    user_ids = [cast(UserID, phone) for phone in user_data.phone_numbers]
-    if user_ids:
-        # TODO: set exp time on session
-        request.session["user_id"] = user_ids[0]
-    return user_ids
+    scope = Scope(resource_type=OauthResourceType.USER_PHONE.name)
+
+    # TODO: encrypt data into state
+    context = "home"
+    route = request.scope["endpoint"]
+    if route:
+        context = route.__name__
+    data = {"context": context, "query_params": dict(request.query_params)}
+    state = encrypt_data(data)
+
+    redirect_url = divar_client.oauth.get_oauth_redirect(scopes=[scope], state=state)
+    headers = {"location": quote(str(redirect_url), safe=":/%#?=@[]!$&'()*+,;")}
+    # FIXME: return proper response isntead of raising exeption?
+    raise HTTPException(status_code=status.HTTP_307_TEMPORARY_REDIRECT, headers=headers)

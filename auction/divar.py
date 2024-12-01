@@ -45,13 +45,13 @@ class PostItemResponse(GetPostResponse):
     first_published_at: str | None = None
 
     @classmethod
-    def dummy(cls) -> "PostItemResponse":
+    def dummy(cls, post_token: str) -> "PostItemResponse":
         from kenar import PostExtState
 
         return cls(
             state=PostExtState.PUBLISHED.value,
             first_published_at=None,
-            token="",
+            token=post_token,
             category="",
             city="",
             district="",
@@ -105,10 +105,11 @@ divar_client.finder = auction_finder
 
 
 async def validate_post(post_token: PostToken) -> PostItemResponse:
+    return PostItemResponse.dummy(post_token=post_token)
     if not post_token:
         raise PostNotFound()
     if config.debug:
-        return PostItemResponse.dummy()
+        return PostItemResponse.dummy(post_token=post_token)
     post = divar_client.finder.get_post(GetPostRequest(token=post_token))
     if post is None:
         raise PostNotFound()

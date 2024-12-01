@@ -19,25 +19,33 @@ import service
 import exception
 from divar import divar_client, DivarReturnUrl
 import auth
-from api_deps import get_post_token_from_session, get_return_url_from_session, get_repo
+from api_deps import get_repo
 
 
-auction_router = APIRouter(prefix="/auction")
+auction_router = APIRouter(prefix="/auc")
 templates = Jinja2Templates(directory="auction/pages")
+
+
+@auction_router.get("home")
+def home(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+    )
 
 
 @auction_router.get("/")
 async def auctions(
     request: Request,
-    user_ids: Annotated[list[UserID], Depends(auth.authorize_user)],
-    return_url: Annotated[DivarReturnUrl, Depends(get_return_url_from_session)],
-    post_token: Annotated[PostToken, Depends(get_post_token_from_session)],
+    return_url: DivarReturnUrl,
+    post_token: PostToken,
+    user_id: Annotated[UserID, Depends(auth.authorize_user_and_set_session)],
     auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
 ) -> HTMLResponse:
     result = await service.auction_detail(
         auction_repo=auction_repo,
         divar_client=divar_client,
-        user_ids=user_ids,
+        user_id=user_id,
         post_token=post_token,
         return_url=return_url,
     )
@@ -51,7 +59,7 @@ async def auctions(
         return templates.TemplateResponse(
             request=request,
             name="auction_bidder.html",
-            context={"auction": result, "user_id": user_ids[0]},
+            context={"auction": result, "user_id": user_id},
         )
     elif type(result) is AuctionSellerView:
         return templates.TemplateResponse(
