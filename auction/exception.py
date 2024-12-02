@@ -1,5 +1,7 @@
+from urllib.parse import quote
+
 from fastapi import Request, status, HTTPException
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, Response
 from fastapi.exceptions import ResponseValidationError, RequestValidationError
 from fastapi.templating import Jinja2Templates
 
@@ -43,6 +45,16 @@ class Forbidden(HTTPException):
         super().__init__(status_code=status.HTTP_403_FORBIDDEN, detail=detail)
 
 
+class OAuthRedirect(HTTPException):
+    """This class is used to redirect user in a dependency function"""
+
+    def __init__(self, redirect_url: str):
+        headers = {"location": quote(str(redirect_url), safe=":/%#?=@[]!$&'()*+,;")}
+        super().__init__(
+            status_code=status.HTTP_307_TEMPORARY_REDIRECT, headers=headers
+        )
+
+
 async def handle_404(request: Request, exc: HTTPException) -> HTMLResponse:
     return templates.TemplateResponse(request=request, name="404.html")
 
@@ -69,7 +81,12 @@ async def handle_error(request: Request, exc: HTTPException) -> HTMLResponse:
     )
 
 
+async def ignore_oauth_redirect(request: Request, exc: OAuthRedirect) -> Response:
+    return Response(headers=exc.headers, status_code=exc.status_code)
+
+
 exception_handlers = {
+    OAuthRedirect: ignore_oauth_redirect,
     status.HTTP_404_NOT_FOUND: handle_404,
     RequestValidationError: handle_validation_error,
     ResponseValidationError: handle_validation_error,
