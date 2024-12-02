@@ -14,7 +14,7 @@ from model import (
 )
 from repo import AuctionRepo
 import exception
-from divar import DivarClient, validate_post, DivarReturnUrl
+import divar
 from _types import Rial
 
 
@@ -25,13 +25,13 @@ TOP_BIDS_COUNT = 3
 
 async def auction_detail(
     auction_repo: AuctionRepo,
-    divar_client: DivarClient,
+    divar_client: divar.DivarClient,
     user_id: UserID,
     post_token: PostToken,
-    return_url: DivarReturnUrl,
+    return_url: divar.DivarReturnUrl,
 ) -> Auction | AuctionBidderView | AuctionSellerView | None:
     """view auction detail"""
-    post = await validate_post(post_token=post_token)
+    post = await divar.validate_post(post_token=post_token)
     logger.info(f"post is valid\n{post}")
 
     auction = await auction_repo.read_acution_by_post_token(post_token=post_token)
@@ -78,7 +78,7 @@ async def place_bid(
         auction = await read_auction(
             auction_repo=auction_repo, post_token=bid_data.post_token
         )
-        await validate_post(post_token=bid_data.post_token)
+        await divar.validate_post(post_token=bid_data.post_token)
     except (exception.AuctionNotFound, exception.PostNotFound) as e:
         raise e
 
@@ -103,7 +103,7 @@ async def place_bid(
 
 async def start_auction(
     auction_repo: AuctionRepo,
-    divar_client: DivarClient,
+    divar_client: divar.DivarClient,
     seller_id: UserID,
     auction_data: AuctionStartInput,
 ) -> Auction:
@@ -114,7 +114,7 @@ async def start_auction(
     if auction_is_started:
         raise exception.AuctionAlreadyStarted()
 
-    post = await validate_post(post_token=auction_data.post_token)
+    post = await divar.validate_post(post_token=auction_data.post_token)
     print(post)
     # verify seller id on Divar
 

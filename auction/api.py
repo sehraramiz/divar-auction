@@ -90,7 +90,6 @@ async def start_auction_view(
     user_access_token: Annotated[UserID, Depends(auth.user_get_posts_permission)],
     post_token: PostToken,
 ) -> HTMLResponse:
-    # TODO: move this to service
     is_post_owner = await divar.is_post_owner(
         post_token=post_token, user_access_token=user_access_token
     )

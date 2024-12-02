@@ -63,7 +63,6 @@ async def authorize_user_and_set_session(
             raise exception.InvalidSession()
 
         user_ids = [cast(UserID, phone) for phone in user_data.phone_numbers]
-        # TODO: set exp time on session
         request.session["user_id"] = user_ids[0]
 
         await auction_repo.add_user_access_token(
@@ -74,7 +73,6 @@ async def authorize_user_and_set_session(
 
     scope = Scope(resource_type=OauthResourceType.USER_PHONE.name)
 
-    # TODO: encrypt data into state
     context = "home"
     route = request.scope["endpoint"]
     if route:
