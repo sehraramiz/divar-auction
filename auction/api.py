@@ -27,7 +27,7 @@ auction_router = APIRouter(prefix="/auc")
 templates = Jinja2Templates(directory="auction/pages")
 
 
-@auction_router.get("home")
+@auction_router.get("/home")
 def home(request: Request) -> HTMLResponse:
     return templates.TemplateResponse(
         request=request,
