@@ -95,6 +95,9 @@ async def user_get_posts_permission(
     code: str | None = None,
     state: str | None = None,
 ) -> str:
+    if config.debug:
+        return ""
+
     access_token = await auction_repo.get_user_access_token_by_scope(
         user_id=user_id, scope=OauthResourceType.USER_POSTS_GET.value
     )
