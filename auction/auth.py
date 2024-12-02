@@ -10,6 +10,7 @@ import exception
 from security import encrypt_data, decrypt_data
 from api_deps import get_repo
 from repo import AuctionRepo
+from config import config
 
 
 async def get_user_id_from_session(request: Request) -> UserID:
@@ -19,6 +20,23 @@ async def get_user_id_from_session(request: Request) -> UserID:
     return UserID(user_id)
 
 
+async def redirect_oauth(
+    request: Request,
+    code: str,
+    state: str,
+) -> None:
+    state_data = decrypt_data(state)
+    query_params = state_data.get("query_params", {})
+    query_params["state"] = state
+    query_params["code"] = code
+    context = state_data.get("context", "home")
+
+    redirect_url = str(request.url_for(context)) + "?" + urlencode(query_params)
+    # FIXME: return proper response isntead of raising exeption?
+    headers = {"location": quote(str(redirect_url), safe=":/%#?=@[]!$&'()*+,;")}
+    raise HTTPException(status_code=status.HTTP_307_TEMPORARY_REDIRECT, headers=headers)
+
+
 async def authorize_user_and_set_session(
     request: Request,
     auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
@@ -26,8 +44,6 @@ async def authorize_user_and_set_session(
     state: str | None = None,
     user_id: UserID | None = None,
 ) -> UserID:
-    from config import config
-
     if config.debug and user_id is not None:
         request.session["user_id"] = user_id
         return user_id
@@ -38,7 +54,6 @@ async def authorize_user_and_set_session(
 
     if code and state:
         state_data = decrypt_data(state)
-        query_params = state_data.get("query_params", {})
         context = state_data.get("context", "home")
         access_token_data = divar_client.oauth.get_access_token(
             authorization_token=code
@@ -56,13 +71,7 @@ async def authorize_user_and_set_session(
             UserID(user_ids[0]),
             access_token_data=access_token_data.model_dump(mode="json"),
         )
-
-        redirect_url = str(request.url_for(context)) + "?" + urlencode(query_params)
-        # FIXME: return proper response isntead of raising exeption?
-        headers = {"location": quote(str(redirect_url), safe=":/%#?=@[]!$&'()*+,;")}
-        raise HTTPException(
-            status_code=status.HTTP_307_TEMPORARY_REDIRECT, headers=headers
-        )
+        return user_ids[0]
 
     scope = Scope(resource_type=OauthResourceType.USER_PHONE.name)
 

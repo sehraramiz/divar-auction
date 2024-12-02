@@ -2,7 +2,7 @@ import hashlib
 import base64
 import json
 
-from cryptography.fernet import Fernet
+from cryptography.fernet import Fernet, InvalidToken
 
 from config import config
 
@@ -22,5 +22,8 @@ def encrypt_data(data: dict) -> str:
 
 def decrypt_data(encrypted_data: str) -> dict:
     fernet = get_fernet_obj()
-    data_str = fernet.decrypt(encrypted_data).decode("utf-8")
-    return json.loads(data_str)
+    try:
+        data_str = fernet.decrypt(encrypted_data).decode("utf-8")
+        return json.loads(data_str)
+    except InvalidToken:
+        return {}

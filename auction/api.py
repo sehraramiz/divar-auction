@@ -17,7 +17,7 @@ from _types import AuctionID, UserID, PostToken
 from repo import auction_repo, AuctionRepo
 import service
 import exception
-from divar import divar_client, DivarReturnUrl
+import divar
 import auth
 from api_deps import get_repo
 
@@ -34,17 +34,23 @@ def home(request: Request) -> HTMLResponse:
     )
 
 
+@auction_router.get("/auth")
+async def auth_management(
+    user_id: Annotated[UserID, Depends(auth.redirect_oauth)],
+) -> None: ...
+
+
 @auction_router.get("/")
 async def auctions(
     request: Request,
-    return_url: DivarReturnUrl,
+    return_url: divar.DivarReturnUrl,
     post_token: PostToken,
     user_id: Annotated[UserID, Depends(auth.authorize_user_and_set_session)],
     auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
 ) -> HTMLResponse:
     result = await service.auction_detail(
         auction_repo=auction_repo,
-        divar_client=divar_client,
+        divar_client=divar.divar_client,
         user_id=user_id,
         post_token=post_token,
         return_url=return_url,
