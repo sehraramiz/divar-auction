@@ -21,10 +21,11 @@ import exception
 import divar
 import auth
 from api_deps import get_repo
+from config import config
 
 
 auction_router = APIRouter(prefix="/auc")
-templates = Jinja2Templates(directory="auction/pages")
+templates = Jinja2Templates(directory=config.templates_dir_path)
 
 
 @auction_router.get("/home")

@@ -19,6 +19,7 @@ class Config(BaseSettings):
     secret_key: str = secrets.token_urlsafe(32)
     openapi_url: str = "/openapi.json"
     docs_url: str = "/docs"
+    templates_dir_path: str = "auction/pages"
 
     model_config = SettingsConfigDict(env_file=".env", extra="allow")
 
