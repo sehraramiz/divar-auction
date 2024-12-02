@@ -5,6 +5,7 @@ from typing import Annotated
 from fastapi import APIRouter, Request, Depends, Form, status
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
+from pydantic.networks import AnyHttpUrl
 
 from model import (
     AuctionStartInput,
@@ -36,8 +37,9 @@ def home(request: Request) -> HTMLResponse:
 
 @auction_router.get("/auth")
 async def auth_management(
-    user_id: Annotated[UserID, Depends(auth.redirect_oauth)],
-) -> None: ...
+    redirect_url: Annotated[AnyHttpUrl, Depends(auth.redirect_oauth)],
+) -> RedirectResponse:
+    return RedirectResponse(str(redirect_url), status_code=status.HTTP_302_FOUND)
 
 
 @auction_router.get("/")

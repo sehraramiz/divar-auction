@@ -3,6 +3,7 @@ from urllib.parse import quote, urlencode
 
 from fastapi import HTTPException, status, Request, Depends
 from kenar import Scope, OauthResourceType
+from pydantic.networks import AnyHttpUrl
 
 from _types import UserID
 from divar import divar_client
@@ -24,7 +25,7 @@ async def redirect_oauth(
     request: Request,
     code: str,
     state: str,
-) -> None:
+) -> AnyHttpUrl:
     state_data = decrypt_data(state)
     query_params = state_data.get("query_params", {})
     query_params["state"] = state
@@ -32,9 +33,7 @@ async def redirect_oauth(
     context = state_data.get("context", "home")
 
     redirect_url = str(request.url_for(context)) + "?" + urlencode(query_params)
-    # FIXME: return proper response isntead of raising exeption?
-    headers = {"location": quote(str(redirect_url), safe=":/%#?=@[]!$&'()*+,;")}
-    raise HTTPException(status_code=status.HTTP_307_TEMPORARY_REDIRECT, headers=headers)
+    return AnyHttpUrl(redirect_url)
 
 
 async def authorize_user_and_set_session(
