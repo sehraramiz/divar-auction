@@ -7,6 +7,7 @@ from starlette.middleware.sessions import SessionMiddleware
 
 from api import auction_router
 from config import config
+import exception
 
 
 session_middleware = Middleware(
@@ -22,6 +23,7 @@ app = FastAPI(
     openapi_url=config.openapi_url,
     docs_url=config.docs_url,
     redoc_url=None,
+    exception_handlers=exception.exception_handlers,  # type: ignore
 )
 app.include_router(auction_router)
 
