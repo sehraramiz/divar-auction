@@ -107,7 +107,7 @@ class AuctionRepo:
     async def get_user_access_token_by_scope(
         self, user_id: UserID, scope: OauthResourceType
     ) -> dict | None:
-        user_access_tokens = self.access_tokens[user_id]
+        user_access_tokens = self.access_tokens.get(user_id)
         if user_access_tokens is None:
             return None
         return next(
