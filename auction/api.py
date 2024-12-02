@@ -58,8 +58,8 @@ async def auctions(
     if result is None:
         return templates.TemplateResponse(
             request=request,
-            name="auction_start.html",
-            context={"post_token": post_token},
+            name="auction_intro.html",
+            context={"post_token": post_token, "return_url": return_url},
         )
     elif type(result) is AuctionBidderView:
         return templates.TemplateResponse(
@@ -81,15 +81,36 @@ async def auctions(
     )
 
 
+@auction_router.get("/start")
+async def start_auction_view(
+    request: Request,
+    user_id: Annotated[UserID, Depends(auth.authorize_user_and_set_session)],
+    user_access_token: Annotated[UserID, Depends(auth.user_get_posts_permission)],
+    post_token: PostToken,
+) -> HTMLResponse:
+    is_post_owner = await divar.is_post_owner(
+        post_token=post_token, user_access_token=user_access_token
+    )
+    if not is_post_owner:
+        # FIXME: show proper auction start not allowed error page
+        raise exception.Forbidden()
+    return templates.TemplateResponse(
+        request=request,
+        name="auction_start.html",
+        context={"post_token": post_token},
+    )
+
+
 @auction_router.post("/start")
 async def start_auction(
     request: Request,
     auction_data: Annotated[AuctionStartInput, Form()],
-    seller_id: UserID = Depends(auth.get_user_id_from_session),
+    seller_id: Annotated[UserID, Depends(auth.get_user_id_from_session)],
+    user_access_token: Annotated[UserID, Depends(auth.user_get_posts_permission)],
 ) -> RedirectResponse:
     result = await service.start_auction(
         auction_repo=auction_repo,
-        divar_client=divar_client,
+        divar_client=divar.divar_client,
         seller_id=seller_id,
         auction_data=auction_data,
     )

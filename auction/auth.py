@@ -87,3 +87,44 @@ async def authorize_user_and_set_session(
     headers = {"location": quote(str(redirect_url), safe=":/%#?=@[]!$&'()*+,;")}
     # FIXME: return proper response isntead of raising exeption?
     raise HTTPException(status_code=status.HTTP_307_TEMPORARY_REDIRECT, headers=headers)
+
+
+async def user_get_posts_permission(
+    request: Request,
+    auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
+    user_id: Annotated[UserID, Depends(authorize_user_and_set_session)],
+    code: str | None = None,
+    state: str | None = None,
+) -> str:
+    access_token = await auction_repo.get_user_access_token_by_scope(
+        user_id=user_id, scope=OauthResourceType.USER_POSTS_GET.value
+    )
+    if access_token:
+        return access_token["access_token"]
+
+    if code and state:
+        state_data = decrypt_data(state)
+        context = state_data.get("context", "home")
+        access_token_data = divar_client.oauth.get_access_token(
+            authorization_token=code
+        )
+        await auction_repo.add_user_access_token(
+            UserID(user_id),
+            access_token_data=access_token_data.model_dump(mode="json"),
+        )
+        return access_token_data.access_token
+
+    scope = Scope(resource_type=OauthResourceType.USER_POSTS_GET.name)
+
+    # TODO: encrypt data into state
+    context = "home"
+    route = request.scope["endpoint"]
+    if route:
+        context = route.__name__
+    data = {"context": context, "query_params": dict(request.query_params)}
+    state = encrypt_data(data)
+
+    redirect_url = divar_client.oauth.get_oauth_redirect(scopes=[scope], state=state)
+    headers = {"location": quote(str(redirect_url), safe=":/%#?=@[]!$&'()*+,;")}
+    # FIXME: return proper response isntead of raising exeption?
+    raise HTTPException(status_code=status.HTTP_307_TEMPORARY_REDIRECT, headers=headers)

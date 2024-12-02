@@ -6,6 +6,8 @@ from kenar import (
     GetPostResponse,
     GetUserResponse,
     GetUserRequest,
+    GetUserPostsRequest,
+    GetUserPostsResponse,
 )
 from kenar import ClientConfig, Client as DivarClient
 from kenar.app import FinderService, ACCESS_TOKEN_HEADER_NAME
@@ -99,6 +101,24 @@ class AuctionFinderService(FinderService):
             return GetUserResponse(**rsp.json())
         return GetUserResponse(phone_numbers=[])
 
+    def get_user_posts(
+        self,
+        access_token: str,
+        data: GetUserPostsRequest | None = None,
+    ):
+        def send_request():
+            return self._client.get(
+                url="/v1/open-platform/finder/user-posts",
+                params=data.json() if data is not None else "",
+                headers={ACCESS_TOKEN_HEADER_NAME: access_token},
+            )
+
+        rsp = send_request()
+        if rsp.is_success:
+            return GetUserPostsResponse(**rsp.json())
+        # TODO: log response error
+        return GetUserPostsResponse(posts=[])
+
 
 auction_finder = AuctionFinderService(client=divar_client._client)
 divar_client.finder = auction_finder
@@ -113,6 +133,19 @@ async def validate_post(post_token: PostToken) -> PostItemResponse:
     if post is None:
         raise PostNotFound()
     return post
+
+
+async def is_post_owner(post_token: PostToken, user_access_token: str) -> bool:
+    """access_token must have GET_USER_POSTS scope access"""
+
+    if not post_token:
+        return False
+    if config.debug:
+        return True
+    result = divar_client.finder.get_user_posts(access_token=user_access_token)
+    if not result.posts:
+        return False
+    return any([post.token == post_token for post in result.posts])
 
 
 if __name__ == "__main__":
