@@ -1,7 +1,8 @@
 from typing import cast, Annotated
-from urllib.parse import quote, urlencode
+from urllib.parse import urlencode
 
-from fastapi import HTTPException, status, Request, Depends
+from fastapi.responses import RedirectResponse
+from fastapi import status, Request, Depends
 from kenar import Scope, OauthResourceType
 from pydantic.networks import AnyHttpUrl
 
@@ -81,9 +82,8 @@ async def authorize_user_and_set_session(
     state = encrypt_data(data)
 
     redirect_url = divar_client.oauth.get_oauth_redirect(scopes=[scope], state=state)
-    headers = {"location": quote(str(redirect_url), safe=":/%#?=@[]!$&'()*+,;")}
-    # FIXME: return proper response isntead of raising exeption?
-    raise HTTPException(status_code=status.HTTP_307_TEMPORARY_REDIRECT, headers=headers)
+    RedirectResponse(url=redirect_url, status_code=status.HTTP_307_TEMPORARY_REDIRECT)
+    return UserID("")
 
 
 async def user_get_posts_permission(
@@ -116,7 +116,6 @@ async def user_get_posts_permission(
 
     scope = Scope(resource_type=OauthResourceType.USER_POSTS_GET.name)
 
-    # TODO: encrypt data into state
     context = "home"
     route = request.scope["endpoint"]
     if route:
@@ -125,6 +124,5 @@ async def user_get_posts_permission(
     state = encrypt_data(data)
 
     redirect_url = divar_client.oauth.get_oauth_redirect(scopes=[scope], state=state)
-    headers = {"location": quote(str(redirect_url), safe=":/%#?=@[]!$&'()*+,;")}
-    # FIXME: return proper response isntead of raising exeption?
-    raise HTTPException(status_code=status.HTTP_307_TEMPORARY_REDIRECT, headers=headers)
+    RedirectResponse(url=redirect_url, status_code=status.HTTP_307_TEMPORARY_REDIRECT)
+    return ""
