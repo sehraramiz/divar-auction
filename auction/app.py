@@ -5,9 +5,9 @@ from fastapi.staticfiles import StaticFiles
 from starlette.middleware import Middleware
 from starlette.middleware.sessions import SessionMiddleware
 
-from api import auction_router
-from config import config
-import exception
+from auction import exception
+from auction.api import auction_router
+from auction.config import config
 
 
 session_middleware = Middleware(

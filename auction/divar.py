@@ -1,21 +1,23 @@
 import logging
+
 from typing import Annotated
 
+from kenar import Client as DivarClient
 from kenar import (
+    ClientConfig,
     GetPostRequest,
     GetPostResponse,
-    GetUserResponse,
-    GetUserRequest,
     GetUserPostsRequest,
     GetUserPostsResponse,
+    GetUserRequest,
+    GetUserResponse,
 )
-from kenar import ClientConfig, Client as DivarClient
-from kenar.app import FinderService, ACCESS_TOKEN_HEADER_NAME
-from pydantic import UrlConstraints, HttpUrl, AfterValidator
+from kenar.app import ACCESS_TOKEN_HEADER_NAME, FinderService
+from pydantic import AfterValidator, HttpUrl, UrlConstraints
 
-from config import divar_config, config
-from _types import PostToken
-from exception import PostNotFound
+from auction._types import PostToken
+from auction.config import config, divar_config
+from auction.exception import PostNotFound
 
 
 logging.basicConfig(level=logging.INFO)
@@ -145,7 +147,7 @@ async def is_post_owner(post_token: PostToken, user_access_token: str) -> bool:
     result = divar_client.finder.get_user_posts(access_token=user_access_token)
     if not result.posts:
         return False
-    return any([post.token == post_token for post in result.posts])
+    return any(post.token == post_token for post in result.posts)
 
 
 if __name__ == "__main__":

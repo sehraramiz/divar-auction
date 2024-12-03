@@ -1,10 +1,10 @@
-from uuid import uuid4, UUID
 from typing import cast
+from uuid import UUID, uuid4
 
 from pydantic import BaseModel, Field
 
-from _types import UserID, AuctionID, Rial, PostToken
-from divar import DivarReturnUrl
+from auction._types import AuctionID, PostToken, Rial, UserID
+from auction.divar import DivarReturnUrl
 
 
 class Bid(BaseModel):

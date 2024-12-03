@@ -1,4 +1,4 @@
-from repo import AuctionRepo, auction_repo
+from auction.repo import AuctionRepo, auction_repo
 
 
 async def get_repo() -> AuctionRepo:

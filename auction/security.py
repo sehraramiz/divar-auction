@@ -1,10 +1,10 @@
-import hashlib
 import base64
+import hashlib
 import json
 
 from cryptography.fernet import Fernet, InvalidToken
 
-from config import config
+from auction.config import config
 
 
 def get_fernet_obj():

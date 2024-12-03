@@ -1,11 +1,12 @@
 from urllib.parse import quote
 
-from fastapi import Request, status, HTTPException
+from fastapi import HTTPException, Request, status
+from fastapi.exceptions import RequestValidationError, ResponseValidationError
 from fastapi.responses import HTMLResponse, Response
-from fastapi.exceptions import ResponseValidationError, RequestValidationError
 from fastapi.templating import Jinja2Templates
 
-from config import config
+from auction.config import config
+
 
 templates = Jinja2Templates(directory=config.templates_dir_path)
 

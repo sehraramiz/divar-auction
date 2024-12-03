@@ -2,26 +2,23 @@
 
 from typing import Annotated
 
-from fastapi import APIRouter, Request, Depends, Form, status
+from fastapi import APIRouter, Depends, Form, Request, status
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from pydantic.networks import AnyHttpUrl
 
-from model import (
-    AuctionStartInput,
+from auction import auth, divar, exception, service
+from auction._types import AuctionID, PostToken, UserID
+from auction.api_deps import get_repo
+from auction.config import config
+from auction.model import (
     Auction,
-    PlaceBid,
-    AuctionSellerView,
     AuctionBidderView,
+    AuctionSellerView,
+    AuctionStartInput,
+    PlaceBid,
 )
-from _types import AuctionID, UserID, PostToken
-from repo import auction_repo, AuctionRepo
-import service
-import exception
-import divar
-import auth
-from api_deps import get_repo
-from config import config
+from auction.repo import AuctionRepo, auction_repo
 
 
 auction_router = APIRouter(prefix="/auc")
@@ -138,7 +135,7 @@ async def auction_detail(post_token: PostToken) -> Auction:
 async def place_bid(
     request: Request,
     bid_data: Annotated[PlaceBid, Form()],
-    user_id: UserID = Depends(auth.get_user_id_from_session),
+    user_id: Annotated[UserID, Depends(auth.get_user_id_from_session)],
 ) -> RedirectResponse:
     # TODO: add csrf protection
     result = await service.place_bid(

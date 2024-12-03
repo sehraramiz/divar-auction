@@ -15,6 +15,7 @@ dependencies = [
 
 [tool.uv]
 dev-dependencies = [
+    "isort>=5.13.2",
     "mypy>=1.13.0",
     "pytest-asyncio>=0.24.0",
     "ruff>=0.8.0",
@@ -24,3 +25,19 @@ dev-dependencies = [
 module = ["kenar", "kenar.app"]
 ignore_errors = true
 ignore_missing_imports = true
+
+[tool.ruff.lint.isort]
+force-wrap-aliases = true
+lines-after-imports = 2
+lines-between-types = 1
+split-on-trailing-comma = false
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "W",
+    "F",
+    "I",
+    "C",
+    "B",
+]

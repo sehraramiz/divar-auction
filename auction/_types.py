@@ -1,5 +1,5 @@
-from uuid import UUID
 from typing import NewType
+from uuid import UUID
 
 from pydantic import NonNegativeInt
 

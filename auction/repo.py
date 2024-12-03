@@ -1,11 +1,12 @@
 import json
+
 from pathlib import Path
 
-from pydantic import TypeAdapter
 from kenar import OauthResourceType
+from pydantic import TypeAdapter
 
-from model import Auction, Bid
-from _types import PostToken, AuctionID, UserID, Rial
+from auction._types import AuctionID, PostToken, Rial, UserID
+from auction.model import Auction, Bid
 
 
 class AuctionRepo:
