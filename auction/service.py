@@ -1,9 +1,8 @@
 """Auction services"""
 
-import logging
-
 from auction import divar, exception
 from auction._types import BidID, Rial
+from auction.log import logger
 from auction.model import (
     Auction,
     AuctionBidderView,
@@ -17,8 +16,6 @@ from auction.model import (
 from auction.repo import AuctionRepo
 
 
-logger = logging.getLogger(__name__)
-
 TOP_BIDS_COUNT = 3
 
 
@@ -31,7 +28,7 @@ async def auction_detail(
 ) -> Auction | AuctionBidderView | AuctionSellerView | None:
     """view auction detail"""
     post = await divar.validate_post(post_token=post_token)
-    logger.info(f"post is valid\n{post}")
+    logger.info(f"post is valid: {post}")
 
     auction = await auction_repo.read_acution_by_post_token(post_token=post_token)
     if auction is None:

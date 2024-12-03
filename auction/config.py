@@ -1,10 +1,6 @@
-import logging
 import secrets
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
-
-logging.basicConfig(level=logging.INFO)
 
 
 class DivarConfig(BaseSettings):

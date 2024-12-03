@@ -1,5 +1,3 @@
-import logging
-
 from typing import Annotated
 
 from kenar import Client as DivarClient
@@ -18,9 +16,8 @@ from pydantic import AfterValidator, HttpUrl, UrlConstraints
 from auction._types import PostToken
 from auction.config import config, divar_config
 from auction.exception import PostNotFound
+from auction.log import logger
 
-
-logger = logging.getLogger(__name__)
 
 client_conf = ClientConfig(
     app_slug=divar_config.app_slug,

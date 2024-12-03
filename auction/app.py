@@ -1,5 +1,7 @@
 """HTTP API for auction app"""
 
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware import Middleware
@@ -8,6 +10,13 @@ from starlette.middleware.sessions import SessionMiddleware
 from auction import exception
 from auction.api import auction_router
 from auction.config import config
+from auction.log import setup_logging
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    setup_logging()
+    yield
 
 
 session_middleware = Middleware(
@@ -19,6 +28,7 @@ if config.debug:
     )
 
 app = FastAPI(
+    lifespan=lifespan,
     middleware=[session_middleware],
     openapi_url=config.openapi_url,
     docs_url=config.docs_url,
