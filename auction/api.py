@@ -113,6 +113,7 @@ async def start_auction(
         divar_client=divar.divar_client,
         seller_id=seller_id,
         auction_data=auction_data,
+        user_access_token=user_access_token,
     )
     auction_repo._commit()
     redirect_url = str(

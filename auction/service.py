@@ -100,11 +100,22 @@ async def place_bid(
     return bid
 
 
+async def select_bid(auction_repo: AuctionRepo, seller_id: UserID, bid_id: BidID) -> None:
+    # check bid exists
+    bid = await auction_repo.read_bid_by_id(bid_id=bid_id)
+    if bid is None:
+        raise exception.BidNotFound()
+    # check sellr is auction owner
+    # select bid
+    return None
+
+
 async def start_auction(
     auction_repo: AuctionRepo,
     divar_client: divar.DivarClient,
     seller_id: UserID,
     auction_data: AuctionStartInput,
+    user_access_token: str,
 ) -> Auction:
     """start a new auction"""
     auction_is_started = await auction_repo.read_acution_by_post_token(
@@ -114,8 +125,12 @@ async def start_auction(
         raise exception.AuctionAlreadyStarted()
 
     post = await divar.validate_post(post_token=auction_data.post_token)
-    print(post)
     # verify seller id on Divar
+    is_post_owner = await divar.is_post_owner(
+        post_token=post.post_token, user_access_token=user_access_token
+    )
+    if not is_post_owner:
+        raise exception.Forbidden()
 
     auction = Auction(**auction_data.model_dump(), seller_id=seller_id, bids=[])
     await auction_repo.add_auction(auction=auction)
