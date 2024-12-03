@@ -17,6 +17,7 @@ from auction.model import (
     AuctionSellerView,
     AuctionStartInput,
     PlaceBid,
+    SelectBid,
 )
 from auction.repo import AuctionRepo, auction_repo
 
@@ -139,15 +140,33 @@ async def place_bid(
     user_id: Annotated[UserID, Depends(auth.get_user_id_from_session)],
 ) -> RedirectResponse:
     # TODO: add csrf protection
-    result = await service.place_bid(
+    await service.place_bid(
         auction_repo=auction_repo, bid_data=bid_data, bidder_id=user_id
     )
     auction_repo._commit()
     redirect_url = str(
         request.url_for("auctions")
-    ) + "?post_token={}&user_id={}&return_url={}".format(
-        bid_data.post_token, result.bidder_id, "https://divar.ir"
+    ) + "?post_token={}&return_url={}".format(bid_data.post_token, "https://divar.ir")
+    return RedirectResponse(url=redirect_url, status_code=status.HTTP_302_FOUND)
+
+
+@auction_router.post("/select-bid")
+async def select_bid(
+    request: Request,
+    select_bid_data: Annotated[SelectBid, Form()],
+    seller_id: Annotated[UserID, Depends(auth.get_user_id_from_session)],
+    user_access_token: Annotated[UserID, Depends(auth.user_get_posts_permission)],
+) -> RedirectResponse:
+    # TODO: add csrf protection
+    auction = await service.select_bid(
+        auction_repo=auction_repo,
+        seller_id=seller_id,
+        bid_id=select_bid_data.bid_id,
+        user_access_token=user_access_token,
     )
+    redirect_url = str(
+        request.url_for("auctions")
+    ) + "?post_token={}&return_url={}".format(auction.post_token, "https://divar.ir")
     return RedirectResponse(url=redirect_url, status_code=status.HTTP_302_FOUND)
 
 

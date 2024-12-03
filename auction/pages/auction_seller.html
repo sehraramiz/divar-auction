@@ -7,8 +7,20 @@
 <a target="_blank" href="https://divar.ir/v/{{ auction.post_token }}">Item Details</a>
 <h4>There are {{ auction.bids_count }} bids on your item</h2>
 <ul>
-  {% for bid in auction.bids %}
-    <li>{{ bid.amount }}</li>
-  {% endfor %}
+  <form action="/auc/select-bid" method="post">
+    {% for bid in auction.bids %}
+        <label>
+            <input
+                type="radio"
+                name="bid_id"
+                value="{{ bid.uid }}"
+                {% if bid.uid == auction.selected_bid %}checked{% endif %}
+                required>
+            {{ bid.amount }} from {{bid.bidder_id}}
+        </label>
+        <br>
+    {% endfor %}
+    <button type="submit">Select Bid</button>
+  </form>
 </ul>
 {% endblock %}

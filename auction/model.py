@@ -1,9 +1,8 @@
-from typing import cast
-from uuid import UUID, uuid4
+from uuid import uuid4
 
 from pydantic import BaseModel, Field
 
-from auction._types import AuctionID, PostToken, Rial, UserID
+from auction._types import AuctionID, BidID, PostToken, Rial, UserID
 from auction.divar import DivarReturnUrl
 
 
@@ -11,7 +10,7 @@ class Bid(BaseModel):
     bidder_id: UserID
     auction_id: AuctionID
     amount: Rial
-    uid: UUID = uuid4()
+    uid: BidID = Field(default_factory=uuid4)  # type: ignore
 
     def __lt__(self, other):
         if not isinstance(other, Bid):
@@ -24,8 +23,9 @@ class Auction(BaseModel):
     seller_id: UserID
     starting_price: Rial
     bids: list[Bid]
-    uid: AuctionID = cast(AuctionID, uuid4())
+    uid: AuctionID = Field(default_factory=uuid4)  # type: ignore
     bids_count: int = 0
+    selected_bid: BidID | None = None
 
 
 class AuctionSellerView(Auction): ...
@@ -50,3 +50,7 @@ class PlaceBid(BaseModel):
     post_token: PostToken
     auction_id: AuctionID
     amount: Rial
+
+
+class SelectBid(BaseModel):
+    bid_id: BidID

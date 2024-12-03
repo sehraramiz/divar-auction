@@ -3,7 +3,7 @@
 import logging
 
 from auction import divar, exception
-from auction._types import Rial
+from auction._types import BidID, Rial
 from auction.model import (
     Auction,
     AuctionBidderView,
@@ -100,14 +100,26 @@ async def place_bid(
     return bid
 
 
-async def select_bid(auction_repo: AuctionRepo, seller_id: UserID, bid_id: BidID) -> None:
-    # check bid exists
+async def select_bid(
+    auction_repo: AuctionRepo, seller_id: UserID, bid_id: BidID, user_access_token: str
+) -> Auction:
     bid = await auction_repo.read_bid_by_id(bid_id=bid_id)
     if bid is None:
         raise exception.BidNotFound()
-    # check sellr is auction owner
-    # select bid
-    return None
+
+    auction = await auction_repo.read_acution_by_id(auction_id=bid.auction_id)
+    if auction is None:
+        raise exception.AuctionNotFound()
+
+    is_post_owner = await divar.is_post_owner(
+        post_token=auction.post_token, user_access_token=user_access_token
+    )
+    if not is_post_owner:
+        raise exception.Forbidden()
+
+    await auction_repo.select_bid(auction, bid_id=bid_id)
+    # send BID_SELECTED event (send msg to selected bidde in chat)
+    return auction
 
 
 async def start_auction(

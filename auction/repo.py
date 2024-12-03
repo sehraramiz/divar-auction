@@ -5,7 +5,7 @@ from pathlib import Path
 from kenar import OauthResourceType
 from pydantic import TypeAdapter
 
-from auction._types import AuctionID, PostToken, Rial, UserID
+from auction._types import AuctionID, BidID, PostToken, Rial, UserID
 from auction.model import Auction, Bid
 
 
@@ -77,6 +77,11 @@ class AuctionRepo:
         bid.amount = amount
         return bid
 
+    async def select_bid(self, auction: Auction, bid_id: BidID) -> Auction:
+        auction.selected_bid = bid_id
+        self._commit()
+        return auction
+
     async def read_acution_by_post_token(self, post_token: PostToken) -> Auction | None:
         auction = next(
             (auction for auction in self.auctions if auction.post_token == post_token),
@@ -95,6 +100,10 @@ class AuctionRepo:
             await self.set_bidders_count(auction)
             await self.set_bids_on_auction(auction)
         return auction
+
+    async def read_bid_by_id(self, bid_id: BidID) -> Bid | None:
+        bid = next((bid for bid in self.bids if bid.uid == bid_id), None)
+        return bid
 
     async def add_user_access_token(
         self, user_id: UserID, access_token_data: dict
