@@ -119,8 +119,8 @@ async def start_auction(
     auction_repo._commit()
     redirect_url = str(
         request.url_for("auctions")
-    ) + "?post_token={}&user_id={}&return_url={}".format(
-        result.post_token, result.seller_id, "https://divar.ir"
+    ) + "?post_token={}&return_url={}".format(
+        result.post_token, "https://divar.ir"
     )
     return RedirectResponse(url=redirect_url, status_code=status.HTTP_302_FOUND)
 
