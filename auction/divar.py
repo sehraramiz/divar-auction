@@ -20,7 +20,7 @@ from auction.config import config, divar_config
 from auction.exception import PostNotFound
 
 
-logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 client_conf = ClientConfig(
     app_slug=divar_config.app_slug,
@@ -82,6 +82,7 @@ class AuctionFinderService(FinderService):
         rsp = send_request()
         if rsp.is_success:
             return PostItemResponse(**rsp.json())
+        logger.error(f"get_post error: {rsp.status_code} {rsp.text}")
         return None
 
     def get_user(
@@ -101,6 +102,7 @@ class AuctionFinderService(FinderService):
         rsp = send_request()
         if rsp.is_success:
             return GetUserResponse(**rsp.json())
+        logger.error(f"get_user error: {rsp.status_code} {rsp.text}")
         return GetUserResponse(phone_numbers=[])
 
     def get_user_posts(
@@ -119,6 +121,7 @@ class AuctionFinderService(FinderService):
         if rsp.is_success:
             return GetUserPostsResponse(**rsp.json())
         # TODO: log response error
+        logger.error(f"get_user_posts error: {rsp.status_code} {rsp.text}")
         return GetUserPostsResponse(posts=[])
 
 
