@@ -127,7 +127,7 @@ async def start_auction(
     post = await divar.validate_post(post_token=auction_data.post_token)
     # verify seller id on Divar
     is_post_owner = await divar.is_post_owner(
-        post_token=post.post_token, user_access_token=user_access_token
+        post_token=post.token, user_access_token=user_access_token
     )
     if not is_post_owner:
         raise exception.Forbidden()
