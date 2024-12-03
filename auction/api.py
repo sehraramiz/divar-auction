@@ -108,7 +108,7 @@ async def start_auction(
     auction_data: Annotated[AuctionStartInput, Form()],
     seller_id: Annotated[UserID, Depends(auth.get_user_id_from_session)],
     user_access_token: Annotated[UserID, Depends(auth.user_get_posts_permission)],
-) -> RedirectResponse:
+) -> HTMLResponse:
     result = await service.start_auction(
         auction_repo=auction_repo,
         divar_client=divar.divar_client,
@@ -117,12 +117,15 @@ async def start_auction(
         user_access_token=user_access_token,
     )
     auction_repo._commit()
-    redirect_url = str(
-        request.url_for("auctions")
-    ) + "?post_token={}&return_url={}".format(
-        result.post_token, "https://divar.ir"
+    redirect_url = f"https://divar.ir/v/{result.post_token}"
+    return templates.TemplateResponse(
+        request=request,
+        name="redirect_with_message.html",
+        context={
+            "message": "Auction started successfully!",
+            "redirect_url": redirect_url,
+        },
     )
-    return RedirectResponse(url=redirect_url, status_code=status.HTTP_302_FOUND)
 
 
 @auction_router.get("/info/{post_token}")
@@ -138,16 +141,21 @@ async def place_bid(
     request: Request,
     bid_data: Annotated[PlaceBid, Form()],
     user_id: Annotated[UserID, Depends(auth.get_user_id_from_session)],
-) -> RedirectResponse:
+) -> HTMLResponse:
     # TODO: add csrf protection
     await service.place_bid(
         auction_repo=auction_repo, bid_data=bid_data, bidder_id=user_id
     )
     auction_repo._commit()
-    redirect_url = str(
-        request.url_for("auctions")
-    ) + "?post_token={}&return_url={}".format(bid_data.post_token, "https://divar.ir")
-    return RedirectResponse(url=redirect_url, status_code=status.HTTP_302_FOUND)
+    redirect_url = f"https://divar.ir/v/{bid_data.post_token}"
+    return templates.TemplateResponse(
+        request=request,
+        name="redirect_with_message.html",
+        context={
+            "message": "Bid placed successfully!",
+            "redirect_url": redirect_url,
+        },
+    )
 
 
 @auction_router.post("/select-bid")

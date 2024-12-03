@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Redirecting{% endblock %}
+
+{% block head %}
+    <script>
+        setTimeout(() => {
+            window.location.href = "{{ redirect_url }}";
+        }, 4000);
+    </script>
+{% endblock %}
+
+{% block body %}
+    <h1>{{ message }}</h1>
+    <p>You will be redirected shortly...</p>
+{% endblock %}
