@@ -24,7 +24,7 @@
     <input type="hidden" name="post_token" value="{{auction.post_token}}">
     <label for="amount">Bid Amount:</label><br>
     <input type="number" id="amount" name="amount" value={{ auction.last_bid }}><br>
-    <input type="submit" value="Bid">
+    <input type="submit" value="Bid" class="btn-primary">
 </form>
-<button onclick="window.location.href='{{ auction.return_url }}';">Return to Divar</button>
+<button class="btn-secondary" onclick="window.location.href='{{ auction.return_url }}';">Return to Divar</button>
 {% endblock %}
