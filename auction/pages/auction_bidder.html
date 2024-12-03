@@ -3,10 +3,8 @@
 {% block title %}Place a bid{% endblock %}
 
 {% block body %}
-<h2>Hello {{ user_id }}</h2>
-<h3>Place Your Bid</h3>
-<a target="_blank" href="https://divar.ir/v/{{ auction.post_token }}">Item Details</a>
-<p>This auction's starting price is <b>{{ auction.starting_price }}</b></p>
+<p style="font-size: larger"><b>Title:</b> {{ auction.post_title }}</p></p></br>
+<p>This auction's starting price is <b>{{ auction.starting_price }}</b></p></br>
 {% if auction.bids_count %}
     <p>Top bids on this item:</p>
     <ul>

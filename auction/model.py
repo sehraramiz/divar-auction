@@ -26,6 +26,7 @@ class Auction(BaseModel):
     uid: AuctionID = Field(default_factory=uuid4)  # type: ignore
     bids_count: int = 0
     selected_bid: BidID | None = None
+    title: str | None = None
 
 
 class AuctionSellerView(Auction): ...
@@ -33,6 +34,7 @@ class AuctionSellerView(Auction): ...
 
 class AuctionBidderView(BaseModel):
     post_token: PostToken
+    post_title: str | None = None
     starting_price: Rial
     bids_count: int = 0
     uid: AuctionID

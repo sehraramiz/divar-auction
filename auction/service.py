@@ -48,6 +48,7 @@ async def auction_detail(
         top_bids = sorted(auction.bids)[::-1][:TOP_BIDS_COUNT]
         return AuctionBidderView(
             post_token=post_token,
+            post_title=auction.title,
             starting_price=auction.starting_price,
             bids_count=auction.bids_count,
             uid=auction.uid,
@@ -108,7 +109,7 @@ async def select_bid(
     if auction is None:
         raise exception.AuctionNotFound()
 
-    is_post_owner = await divar.is_post_owner(
+    is_post_owner = await divar.find_post_from_user_posts(
         post_token=auction.post_token, user_access_token=user_access_token
     )
     if not is_post_owner:
@@ -133,15 +134,19 @@ async def start_auction(
     if auction_is_started:
         raise exception.AuctionAlreadyStarted()
 
-    post = await divar.validate_post(post_token=auction_data.post_token)
-    # verify seller id on Divar
-    is_post_owner = await divar.is_post_owner(
-        post_token=post.token, user_access_token=user_access_token
+    await divar.validate_post(post_token=auction_data.post_token)
+    post = await divar.find_post_from_user_posts(
+        post_token=auction_data.post_token, user_access_token=user_access_token
     )
-    if not is_post_owner:
+    if post is None:
         raise exception.Forbidden()
 
-    auction = Auction(**auction_data.model_dump(), seller_id=seller_id, bids=[])
+    auction = Auction(
+        **auction_data.model_dump(),
+        seller_id=seller_id,
+        bids=[],
+        title=post.title,
+    )
     await auction_repo.add_auction(auction=auction)
     # redirect to Divar
     return auction

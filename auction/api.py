@@ -89,16 +89,16 @@ async def start_auction_view(
     user_access_token: Annotated[UserID, Depends(auth.user_get_posts_permission)],
     post_token: PostToken,
 ) -> HTMLResponse:
-    is_post_owner = await divar.is_post_owner(
+    post = await divar.find_post_from_user_posts(
         post_token=post_token, user_access_token=user_access_token
     )
-    if not is_post_owner:
+    if post is None:
         # FIXME: show proper auction start not allowed error page
         raise exception.Forbidden()
     return templates.TemplateResponse(
         request=request,
         name="auction_start.html",
-        context={"post_token": post_token},
+        context={"post": post},
     )
 
 

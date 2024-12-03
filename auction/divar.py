@@ -11,7 +11,7 @@ from kenar import (
     GetUserResponse,
 )
 from kenar.app import ACCESS_TOKEN_HEADER_NAME, FinderService
-from pydantic import AfterValidator, HttpUrl, UrlConstraints
+from pydantic import AfterValidator, BaseModel, HttpUrl, UrlConstraints
 
 from auction._types import PostToken
 from auction.config import config, divar_config
@@ -58,6 +58,11 @@ class PostItemResponse(GetPostResponse):
             district="",
             data={},
         )
+
+
+class Post(BaseModel):
+    token: str
+    title: str
 
 
 class AuctionFinderService(FinderService):
@@ -137,17 +142,19 @@ async def validate_post(post_token: PostToken) -> PostItemResponse:
     return post
 
 
-async def is_post_owner(post_token: PostToken, user_access_token: str) -> bool:
+async def find_post_from_user_posts(
+    post_token: PostToken, user_access_token: str
+) -> Post | None:
     """access_token must have GET_USER_POSTS scope access"""
 
     if not post_token:
-        return False
+        return None
     if config.debug:
-        return True
+        return Post(token=post_token, title="Dummy Post")
     result = divar_client.finder.get_user_posts(access_token=user_access_token)
     if not result.posts:
-        return False
-    return any(post.token == post_token for post in result.posts)
+        return None
+    return next((post for post in result.posts if post.token == post_token), None)
 
 
 if __name__ == "__main__":
