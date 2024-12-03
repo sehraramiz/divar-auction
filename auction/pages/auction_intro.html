@@ -8,7 +8,7 @@
 <hr>
 <form action="{{ url_for('start_auction_view') }}" method="get">
     <input type="hidden" name="post_token" value="{{post_token}}">
-    <input type="submit" value="Start a new Auction">
+    <input class="btn-primary" type="submit" value="Start a new Auction">
 </form>
-<button onclick="window.location.href='{{ return_url }}';">Return to Divar</button>
+<button class="btn-secondary" onclick="window.location.href='{{ return_url }}';">Return to Divar</button>
 {% endblock %}
