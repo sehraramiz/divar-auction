@@ -21,7 +21,9 @@
         </label>
         <br>
     {% endfor %}
-    <input type="submit" class="btn-primary" value="Select Bid"/>
+    {% if auction.bids %}
+        <input type="submit" class="btn-primary" value="Select Bid"/>
+    {% endif %}
   </form>
 </ul>
 {% endblock %}
