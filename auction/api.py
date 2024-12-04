@@ -8,11 +8,10 @@ from fastapi.templating import Jinja2Templates
 from pydantic.networks import AnyHttpUrl
 
 from auction import auth, divar, exception, service
-from auction._types import AuctionID, PostToken, UserID
+from auction._types import PostToken, UserID
 from auction.api_deps import get_repo
 from auction.config import config
 from auction.model import (
-    Auction,
     AuctionBidderView,
     AuctionSellerView,
     AuctionStartInput,
@@ -132,17 +131,6 @@ async def start_auction(
     )
 
 
-@auction_router.get("/info/{post_token}")
-async def auction_detail(
-    post_token: PostToken,
-    auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
-) -> Auction:
-    result = await service.read_auction(
-        auction_repo=auction_repo, post_token=post_token
-    )
-    return result
-
-
 @auction_router.post("/place-bid")
 async def place_bid(
     request: Request,
@@ -191,14 +179,3 @@ async def select_bid(
         request.url_for("auctions")
     ) + "?post_token={}&return_url={}".format(auction.post_token, "https://divar.ir")
     return RedirectResponse(url=redirect_url, status_code=status.HTTP_302_FOUND)
-
-
-@auction_router.get("/{auction_id}")
-async def read_auction(
-    auction_id: AuctionID,
-    auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
-) -> Auction:
-    auction = await auction_repo.read_auction_by_id(auction_id=auction_id)
-    if auction is None:
-        raise exception.AuctionNotFound()
-    return auction

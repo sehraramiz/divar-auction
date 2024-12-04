@@ -157,13 +157,3 @@ async def start_auction(
     await auction_repo.add_auction(auction=auction)
     # redirect to Divar
     return auction
-
-
-async def edit_auction() -> None: ...
-
-
-async def remove_auction() -> None: ...
-
-
-if __name__ == "__main__":
-    pass
