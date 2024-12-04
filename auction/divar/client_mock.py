@@ -56,7 +56,10 @@ class AuctionFinderServiceMock(AuctionFinderService):
         access_token: str,
         data: GetUserPostsRequest | None = None,
     ):
-        return GetUserPostsResponse()
+        post = GetUserPostsResponse.Post(
+            token="token", title="Mock Post", images=[], category=""
+        )
+        return GetUserPostsResponse(posts=[post])
 
     async def validate_post(self, post_token: PostToken) -> PostItemResponse:
         return PostItemResponse.dummy(post_token=post_token)
@@ -64,8 +67,8 @@ class AuctionFinderServiceMock(AuctionFinderService):
     async def find_post_from_user_posts(
         self, post_token: PostToken, user_access_token: str
     ) -> Post | None:
-        result = self.finder.get_user_posts(access_token=user_access_token)
-        return next((post for post in result.posts if post.token == post_token), None)
+        result = self.get_user_posts(access_token=user_access_token)
+        return next((post for post in result.posts), None)
 
 
 auction_finder = AuctionFinderServiceMock(client=divar_client_mock._client)

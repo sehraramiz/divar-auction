@@ -6,7 +6,7 @@ from fastapi.testclient import TestClient
 
 from auction._types import AuctionID, PostToken, Rial, UserID
 from auction.divar import mock_data as divar_mock_data
-from auction.model import Auction, Bid, PlaceBid
+from auction.model import Auction, AuctionStartInput, Bid, PlaceBid
 from auction.repo import AuctionRepo
 
 
@@ -39,8 +39,20 @@ async def start_auction_with_bids(auc_repo: AuctionRepo) -> None:
 
 
 @pytest.mark.asyncio
-async def test_seller_start_auction() -> None:
-    assert True
+async def test_seller_start_auction(
+    seller_client: TestClient, auc_repo: AuctionRepo
+) -> None:
+    post_token = PostToken("A")
+    auction_start_input = AuctionStartInput(
+        post_token=post_token, starting_price=Rial(1000)
+    )
+    response = seller_client.post(
+        "/auc/start",
+        data=auction_start_input.model_dump(mode="json"),
+    )
+    assert response.status_code == 200
+    auction = await auc_repo.read_auction_by_post_token(post_token=post_token)
+    assert auction is not None
 
 
 @pytest.mark.asyncio
