@@ -62,28 +62,31 @@ class OAuthRedirect(HTTPException):
 
 
 async def handle_404(request: Request, exc: HTTPException) -> HTMLResponse:
-    return templates.TemplateResponse(request=request, name="404.html")
+    return templates.TemplateResponse(
+        request=request, name="404.html", status_code=exc.status_code
+    )
 
 
 async def handle_validation_error(
     request: Request, exc: RequestValidationError | ResponseValidationError
 ) -> HTMLResponse:
+    status_code = status.HTTP_400_BAD_REQUEST
+    if type(exc) is ResponseValidationError:
+        status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
     return templates.TemplateResponse(
-        request=request, name="error.html", context={"errors": exc.errors()}
-    )
-
-
-async def handle_response_validation_error(
-    request: Request, exc: ResponseValidationError
-) -> HTMLResponse:
-    return templates.TemplateResponse(
-        request=request, name="error.html", context={"errors": exc.errors()}
+        request=request,
+        name="error.html",
+        context={"errors": exc.errors()},
+        status_code=status_code,
     )
 
 
 async def handle_error(request: Request, exc: HTTPException) -> HTMLResponse:
     return templates.TemplateResponse(
-        request=request, name="error.html", context={"error_details": exc.detail}
+        request=request,
+        name="error.html",
+        context={"error_details": exc.detail},
+        status_code=exc.status_code,
     )
 
 
