@@ -30,7 +30,7 @@ async def auction_detail(
     post = await divar_client.finder.validate_post(post_token=post_token)
     logger.info(f"post is valid: {post}")
 
-    auction = await auction_repo.read_acution_by_post_token(post_token=post_token)
+    auction = await auction_repo.read_auction_by_post_token(post_token=post_token)
     if auction is None:
         try:
             # show auction create page if post is legit
@@ -61,7 +61,7 @@ async def auction_detail(
 
 async def read_auction(auction_repo: AuctionRepo, post_token: PostToken) -> Auction:
     """view auction detail"""
-    auction = await auction_repo.read_acution_by_post_token(post_token=post_token)
+    auction = await auction_repo.read_auction_by_post_token(post_token=post_token)
     if auction is None:
         raise exception.AuctionNotFound()
     return auction
@@ -112,7 +112,7 @@ async def select_bid(
     if bid is None:
         raise exception.BidNotFound()
 
-    auction = await auction_repo.read_acution_by_id(auction_id=bid.auction_id)
+    auction = await auction_repo.read_auction_by_id(auction_id=bid.auction_id)
     if auction is None:
         raise exception.AuctionNotFound()
 
@@ -135,7 +135,7 @@ async def start_auction(
     user_access_token: str,
 ) -> Auction:
     """start a new auction"""
-    auction_is_started = await auction_repo.read_acution_by_post_token(
+    auction_is_started = await auction_repo.read_auction_by_post_token(
         post_token=auction_data.post_token
     )
     if auction_is_started:

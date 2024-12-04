@@ -49,7 +49,7 @@ async def test_bidder_place_bid(
 ) -> None:
     await start_auction(auc_repo)
     post_token = PostToken("A")
-    auction = await auc_repo.read_acution_by_post_token(post_token=post_token)
+    auction = await auc_repo.read_auction_by_post_token(post_token=post_token)
     assert auction is not None
 
     bid_data = PlaceBid(

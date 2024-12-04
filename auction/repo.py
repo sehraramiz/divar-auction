@@ -86,7 +86,7 @@ class AuctionRepo:
         self._commit()
         return auction
 
-    async def read_acution_by_post_token(self, post_token: PostToken) -> Auction | None:
+    async def read_auction_by_post_token(self, post_token: PostToken) -> Auction | None:
         auction = next(
             (auction for auction in self.auctions if auction.post_token == post_token),
             None,
@@ -96,7 +96,7 @@ class AuctionRepo:
             await self.set_bids_on_auction(auction)
         return auction
 
-    async def read_acution_by_id(self, auction_id: AuctionID) -> Auction | None:
+    async def read_auction_by_id(self, auction_id: AuctionID) -> Auction | None:
         auction = next(
             (auction for auction in self.auctions if auction.uid == auction_id), None
         )

@@ -198,7 +198,7 @@ async def read_auction(
     auction_id: AuctionID,
     auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
 ) -> Auction:
-    auction = await auction_repo.read_acution_by_id(auction_id=auction_id)
+    auction = await auction_repo.read_auction_by_id(auction_id=auction_id)
     if auction is None:
         raise exception.AuctionNotFound()
     return auction
