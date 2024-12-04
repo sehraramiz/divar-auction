@@ -6,7 +6,7 @@ from fastapi.testclient import TestClient
 
 from auction._types import AuctionID, PostToken, Rial, UserID
 from auction.divar import mock_data as divar_mock_data
-from auction.model import Auction, AuctionStartInput, Bid, PlaceBid
+from auction.model import Auction, AuctionStartInput, Bid, PlaceBid, SelectBid
 from auction.repo import AuctionRepo
 
 
@@ -91,5 +91,22 @@ async def test_bidder_sees_top_bids(
 
 
 @pytest.mark.asyncio
-async def test_seller_select_bid() -> None:
-    assert True
+async def test_seller_select_bid(
+    seller_client: TestClient, auc_repo: AuctionRepo
+) -> None:
+    auction = await start_auction(auc_repo)
+    bidder_id = UserID(divar_mock_data.BIDDER_PHONE_NUMBER)
+    bid = Bid(bidder_id=bidder_id, auction_id=auction.uid, amount=Rial(1000000))
+    await auc_repo.add_bid(bid)
+
+    select_bid = SelectBid(bid_id=bid.uid)
+    response = seller_client.post(
+        "/auc/select-bid",
+        data=select_bid.model_dump(mode="json"),
+        follow_redirects=True,
+    )
+
+    assert response.status_code == 200
+    auction_updated = await auc_repo.read_auction_by_id(auction_id=auction.uid)
+    assert auction_updated is not None
+    assert auction_updated.selected_bid == bid.uid
