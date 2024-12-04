@@ -132,7 +132,7 @@ class AuctionFinderService(FinderService):
             raise PostNotFound()
         if config.debug:
             return PostItemResponse.dummy(post_token=post_token)
-        post = self.finder.get_post(GetPostRequest(token=post_token))
+        post = self.get_post(GetPostRequest(token=post_token))
         if post is None:
             raise PostNotFound()
         return post
@@ -146,7 +146,7 @@ class AuctionFinderService(FinderService):
             return None
         if config.debug:
             return Post(token=post_token, title="Dummy Post")
-        result = self.finder.get_user_posts(access_token=user_access_token)
+        result = self.get_user_posts(access_token=user_access_token)
         if not result.posts:
             return None
         return next((post for post in result.posts if post.token == post_token), None)
