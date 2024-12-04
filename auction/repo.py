@@ -13,12 +13,14 @@ class AuctionRepo:
     auctions: list[Auction]
     bids: list[Bid]
     access_tokens: dict[UserID, list[dict]]
+    db_file_name: str = "db.json"
 
-    def __init__(self) -> None:
+    def __init__(self, db_file_name: str = "db.json") -> None:
+        self.db_file_name = db_file_name
         self._load_db_file()
 
     def _load_db_file(self) -> None:
-        db_path = Path("./db.json")
+        db_path = Path(self.db_file_name)
         if db_path.exists():
             with open(db_path, "r") as db_file:
                 db = json.load(db_file)
@@ -33,7 +35,7 @@ class AuctionRepo:
             self.access_tokens = {}
 
     def _commit(self) -> None:
-        db_path = Path("./db.json")
+        db_path = Path(self.db_file_name)
         with open(db_path, "w") as db_file:
             auctions_adapter = TypeAdapter(list[Auction])
             auctions = auctions_adapter.dump_python(self.auctions, mode="json")
