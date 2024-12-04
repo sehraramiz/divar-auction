@@ -27,7 +27,7 @@ async def auction_detail(
     return_url: divar.DivarReturnUrl,
 ) -> Auction | AuctionBidderView | AuctionSellerView | None:
     """view auction detail"""
-    post = await divar.validate_post(post_token=post_token)
+    post = await divar_client.finder.validate_post(post_token=post_token)
     logger.info(f"post is valid: {post}")
 
     auction = await auction_repo.read_acution_by_post_token(post_token=post_token)
@@ -68,14 +68,17 @@ async def read_auction(auction_repo: AuctionRepo, post_token: PostToken) -> Auct
 
 
 async def place_bid(
-    auction_repo: AuctionRepo, bid_data: PlaceBid, bidder_id: UserID
+    auction_repo: AuctionRepo,
+    divar_client: divar.DivarClient,
+    bid_data: PlaceBid,
+    bidder_id: UserID,
 ) -> Bid:
     """place a bid on an auction"""
     try:
         auction = await read_auction(
             auction_repo=auction_repo, post_token=bid_data.post_token
         )
-        await divar.validate_post(post_token=bid_data.post_token)
+        await divar_client.finder.validate_post(post_token=bid_data.post_token)
     except (exception.AuctionNotFound, exception.PostNotFound) as e:
         raise e
 
@@ -99,7 +102,11 @@ async def place_bid(
 
 
 async def select_bid(
-    auction_repo: AuctionRepo, seller_id: UserID, bid_id: BidID, user_access_token: str
+    auction_repo: AuctionRepo,
+    divar_client: divar.DivarClient,
+    seller_id: UserID,
+    bid_id: BidID,
+    user_access_token: str,
 ) -> Auction:
     bid = await auction_repo.read_bid_by_id(bid_id=bid_id)
     if bid is None:
@@ -109,7 +116,7 @@ async def select_bid(
     if auction is None:
         raise exception.AuctionNotFound()
 
-    is_post_owner = await divar.find_post_from_user_posts(
+    is_post_owner = await divar_client.finder.find_post_from_user_posts(
         post_token=auction.post_token, user_access_token=user_access_token
     )
     if not is_post_owner:
@@ -134,8 +141,8 @@ async def start_auction(
     if auction_is_started:
         raise exception.AuctionAlreadyStarted()
 
-    await divar.validate_post(post_token=auction_data.post_token)
-    post = await divar.find_post_from_user_posts(
+    await divar_client.finder.validate_post(post_token=auction_data.post_token)
+    post = await divar_client.finder.find_post_from_user_posts(
         post_token=auction_data.post_token, user_access_token=user_access_token
     )
     if post is None:

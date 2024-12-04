@@ -19,7 +19,7 @@ from auction.model import (
     PlaceBid,
     SelectBid,
 )
-from auction.repo import AuctionRepo, auction_repo
+from auction.repo import AuctionRepo
 
 
 auction_router = APIRouter(prefix="/auc")
@@ -48,10 +48,11 @@ async def auctions(
     post_token: PostToken,
     user_id: Annotated[UserID, Depends(auth.authorize_user_and_set_session)],
     auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
+    divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
 ) -> HTMLResponse:
     result = await service.auction_detail(
         auction_repo=auction_repo,
-        divar_client=divar.divar_client,
+        divar_client=divar_client,
         user_id=user_id,
         post_token=post_token,
         return_url=return_url,
@@ -85,11 +86,12 @@ async def auctions(
 @auction_router.get("/start")
 async def start_auction_view(
     request: Request,
+    post_token: PostToken,
     user_id: Annotated[UserID, Depends(auth.authorize_user_and_set_session)],
     user_access_token: Annotated[UserID, Depends(auth.user_get_posts_permission)],
-    post_token: PostToken,
+    divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
 ) -> HTMLResponse:
-    post = await divar.find_post_from_user_posts(
+    post = await divar_client.finder.find_post_from_user_posts(
         post_token=post_token, user_access_token=user_access_token
     )
     if post is None:
@@ -108,10 +110,12 @@ async def start_auction(
     auction_data: Annotated[AuctionStartInput, Form()],
     seller_id: Annotated[UserID, Depends(auth.get_user_id_from_session)],
     user_access_token: Annotated[UserID, Depends(auth.user_get_posts_permission)],
+    auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
+    divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
 ) -> HTMLResponse:
     result = await service.start_auction(
         auction_repo=auction_repo,
-        divar_client=divar.divar_client,
+        divar_client=divar_client,
         seller_id=seller_id,
         auction_data=auction_data,
         user_access_token=user_access_token,
@@ -129,7 +133,10 @@ async def start_auction(
 
 
 @auction_router.get("/info/{post_token}")
-async def auction_detail(post_token: PostToken) -> Auction:
+async def auction_detail(
+    post_token: PostToken,
+    auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
+) -> Auction:
     result = await service.read_auction(
         auction_repo=auction_repo, post_token=post_token
     )
@@ -141,10 +148,15 @@ async def place_bid(
     request: Request,
     bid_data: Annotated[PlaceBid, Form()],
     user_id: Annotated[UserID, Depends(auth.get_user_id_from_session)],
+    auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
+    divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
 ) -> HTMLResponse:
     # TODO: add csrf protection
     await service.place_bid(
-        auction_repo=auction_repo, bid_data=bid_data, bidder_id=user_id
+        auction_repo=auction_repo,
+        divar_client=divar_client,
+        bid_data=bid_data,
+        bidder_id=user_id,
     )
     auction_repo._commit()
     redirect_url = f"https://divar.ir/v/{bid_data.post_token}"
@@ -164,10 +176,13 @@ async def select_bid(
     select_bid_data: Annotated[SelectBid, Form()],
     seller_id: Annotated[UserID, Depends(auth.get_user_id_from_session)],
     user_access_token: Annotated[UserID, Depends(auth.user_get_posts_permission)],
+    auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
+    divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
 ) -> RedirectResponse:
     # TODO: add csrf protection
     auction = await service.select_bid(
         auction_repo=auction_repo,
+        divar_client=divar_client,
         seller_id=seller_id,
         bid_id=select_bid_data.bid_id,
         user_access_token=user_access_token,
@@ -179,7 +194,10 @@ async def select_bid(
 
 
 @auction_router.get("/{auction_id}")
-async def read_auction(auction_id: AuctionID) -> Auction:
+async def read_auction(
+    auction_id: AuctionID,
+    auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
+) -> Auction:
     auction = await auction_repo.read_acution_by_id(auction_id=auction_id)
     if auction is None:
         raise exception.AuctionNotFound()

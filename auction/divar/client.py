@@ -126,35 +126,38 @@ class AuctionFinderService(FinderService):
         logger.error(f"get_user_posts error: {rsp.status_code} {rsp.text}")
         return GetUserPostsResponse(posts=[])
 
+    async def validate_post(self, post_token: PostToken) -> PostItemResponse:
+        return PostItemResponse.dummy(post_token=post_token)
+        if not post_token:
+            raise PostNotFound()
+        if config.debug:
+            return PostItemResponse.dummy(post_token=post_token)
+        post = self.finder.get_post(GetPostRequest(token=post_token))
+        if post is None:
+            raise PostNotFound()
+        return post
+
+    async def find_post_from_user_posts(
+        self, post_token: PostToken, user_access_token: str
+    ) -> Post | None:
+        """access_token must have GET_USER_POSTS scope access"""
+
+        if not post_token:
+            return None
+        if config.debug:
+            return Post(token=post_token, title="Dummy Post")
+        result = self.finder.get_user_posts(access_token=user_access_token)
+        if not result.posts:
+            return None
+        return next((post for post in result.posts if post.token == post_token), None)
+
 
 auction_finder = AuctionFinderService(client=divar_client._client)
 divar_client.finder = auction_finder
 
 
-async def validate_post(post_token: PostToken) -> PostItemResponse:
-    if not post_token:
-        raise PostNotFound()
-    if config.debug:
-        return PostItemResponse.dummy(post_token=post_token)
-    post = divar_client.finder.get_post(GetPostRequest(token=post_token))
-    if post is None:
-        raise PostNotFound()
-    return post
-
-
-async def find_post_from_user_posts(
-    post_token: PostToken, user_access_token: str
-) -> Post | None:
-    """access_token must have GET_USER_POSTS scope access"""
-
-    if not post_token:
-        return None
-    if config.debug:
-        return Post(token=post_token, title="Dummy Post")
-    result = divar_client.finder.get_user_posts(access_token=user_access_token)
-    if not result.posts:
-        return None
-    return next((post for post in result.posts if post.token == post_token), None)
+async def get_divar_client() -> DivarClient:
+    return divar_client
 
 
 if __name__ == "__main__":
