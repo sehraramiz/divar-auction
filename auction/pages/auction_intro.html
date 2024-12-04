@@ -4,8 +4,7 @@
 
 {% block body %}
 <h3>Start New Auction</h3>
-<p>There is no in progress auction for this post.</br> do you want to start an Auction?</p>
-<hr>
+<p>There is no in progress auction for this post.</br> do you want to start an Auction?</p></br>
 <form action="{{ url_for('start_auction_view') }}" method="get">
     <input type="hidden" name="post_token" value="{{post_token}}">
     <input class="btn-primary" type="submit" value="Start a new Auction">

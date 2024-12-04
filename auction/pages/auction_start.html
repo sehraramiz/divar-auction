@@ -6,7 +6,6 @@
 <h3>Start New Auction</h3>
 <p style="font-size: larger"><b>Title:</b> {{ post.title }}</p></p></br>
 <a target="_blank" href="https://divar.ir/v/{{ post.token }}">Item Details</a>
-<hr>
 <form action="{{ url_for('start_auction') }}" method="post">
     <input type="hidden" name="post_token" value="{{post.token}}">
     <label for="starting_price">Starting Price:</label><br>
