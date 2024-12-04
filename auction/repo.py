@@ -46,6 +46,7 @@ class AuctionRepo:
 
     async def add_auction(self, auction: Auction) -> Auction:
         self.auctions.append(auction)
+        self._commit()
         return auction
 
     async def set_bidders_count(self, auction: Auction) -> Auction:
@@ -60,6 +61,7 @@ class AuctionRepo:
 
     async def add_bid(self, bid: Bid) -> Bid:
         self.bids.append(bid)
+        self._commit()
         return bid
 
     async def find_bid(self, auction_id: AuctionID, bidder_id: UserID) -> Bid | None:
