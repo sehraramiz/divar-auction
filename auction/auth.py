@@ -10,6 +10,7 @@ from auction._types import UserID
 from auction.api_deps import get_repo
 from auction.config import config
 from auction.divar import divar_client
+from auction.i18n import gettext as _
 from auction.repo import AuctionRepo
 from auction.security import decrypt_data, encrypt_data
 
@@ -17,7 +18,7 @@ from auction.security import decrypt_data, encrypt_data
 async def get_user_id_from_session(request: Request) -> UserID:
     user_id = request.session.get("user_id")
     if user_id is None:
-        raise exception.InvalidSession("Invalid Session")
+        raise exception.InvalidSession(_("Invalid Session"))
     return UserID(user_id)
 
 

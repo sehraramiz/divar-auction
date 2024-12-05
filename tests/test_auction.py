@@ -6,6 +6,7 @@ from fastapi.testclient import TestClient
 
 from auction._types import AuctionID, PostToken, Rial, UserID
 from auction.divar import mock_data as divar_mock_data
+from auction.i18n import gettext as _
 from auction.model import Auction, AuctionStartInput, Bid, PlaceBid, SelectBid
 from auction.repo import AuctionRepo
 
@@ -19,7 +20,7 @@ async def start_auction(auc_repo: AuctionRepo) -> Auction:
         seller_id=user_id,
         starting_price=Rial(1000),
         bids=[],
-        title="Test Post",
+        title=_("Test Post"),
     )
     await auc_repo.add_auction(auction)
     return auction

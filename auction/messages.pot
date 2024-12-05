@@ -1,0 +1,178 @@
+# Translations template for PROJECT.
+# Copyright (C) 2024 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-12-05 22:36+0330\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: auction/api.py:127
+msgid "Auction started successfully!"
+msgstr ""
+
+#: auction/api.py:154
+msgid "Bid placed successfully!"
+msgstr ""
+
+#: auction/auth.py:21 auction/exception.py:42
+msgid "Invalid Session"
+msgstr ""
+
+#: auction/exception.py:12
+msgid "Auction Not Found"
+msgstr ""
+
+#: auction/exception.py:17
+msgid "Bid Not Found"
+msgstr ""
+
+#: auction/exception.py:22
+msgid "Post Not Found"
+msgstr ""
+
+#: auction/exception.py:27
+msgid "Auction Already Started"
+msgstr ""
+
+#: auction/exception.py:32
+msgid "Seller Can't Bid"
+msgstr ""
+
+#: auction/exception.py:37
+msgid "Bid can't be lower than the starting price"
+msgstr ""
+
+#: auction/exception.py:47
+msgid "Forbidden"
+msgstr ""
+
+#: auction/divar/client.py:35
+msgid "return url must be from divar.ir domain"
+msgstr ""
+
+#: auction/pages/404.html:3 auction/pages/404.html:6
+msgid "Page Not Found"
+msgstr ""
+
+#: auction/pages/auction_bidder.html:3
+msgid "Place a bid"
+msgstr ""
+
+#: auction/pages/auction_bidder.html:8
+msgid "Top bids on this item:"
+msgstr ""
+
+#: auction/pages/auction_bidder.html:14
+msgid "Total bids:"
+msgstr ""
+
+#: auction/pages/auction_bidder.html:16
+msgid "You are the first bidder!"
+msgstr ""
+
+#: auction/pages/auction_bidder.html:22
+msgid "Bid Amount:"
+msgstr ""
+
+#: auction/pages/auction_bidder.html:24
+msgid "Bid"
+msgstr ""
+
+#: auction/pages/auction_bidder.html:26 auction/pages/auction_intro.html:13
+msgid "Return to Divar"
+msgstr ""
+
+#: auction/pages/auction_intro.html:3
+msgid "Auction"
+msgstr ""
+
+#: auction/pages/auction_intro.html:7 auction/pages/auction_start.html:3
+#: auction/pages/auction_start.html:7
+msgid "Start New Auction"
+msgstr ""
+
+#: auction/pages/auction_intro.html:8
+msgid ""
+"There is no in progress auction for this post. do you want to start an "
+"Auction?"
+msgstr ""
+
+#: auction/pages/auction_intro.html:11
+msgid "Start a new Auction"
+msgstr ""
+
+#: auction/pages/auction_seller.html:3
+msgid "Auction Management"
+msgstr ""
+
+#: auction/pages/auction_seller.html:7
+msgid "Manage Auction"
+msgstr ""
+
+#: auction/pages/auction_seller.html:8 auction/pages/auction_start.html:8
+msgid "Title:"
+msgstr ""
+
+#: auction/pages/auction_seller.html:9 auction/pages/auction_start.html:9
+msgid "Item Details"
+msgstr ""
+
+#: auction/pages/auction_seller.html:10
+msgid "There are {bids_count} bids on your item"
+msgstr ""
+
+#: auction/pages/auction_seller.html:21
+msgid "{bid_amount} from {bidder_id}"
+msgstr ""
+
+#: auction/pages/auction_seller.html:26
+msgid "Select Bid"
+msgstr ""
+
+#: auction/pages/auction_start.html:12
+msgid "Starting Price"
+msgstr ""
+
+#: auction/pages/auction_start.html:14
+msgid "Start"
+msgstr ""
+
+#: auction/pages/auctions.html:7
+msgid "Auctions"
+msgstr ""
+
+#: auction/pages/error.html:3
+msgid "App Error"
+msgstr ""
+
+#: auction/pages/error.html:7
+msgid "Oops!"
+msgstr ""
+
+#: auction/pages/error.html:8
+msgid "Something went wrong, and we couldn’t complete your request."
+msgstr ""
+
+#: auction/pages/index.html:3
+msgid "Auction Home"
+msgstr ""
+
+#: auction/pages/index.html:6
+msgid "Welcome to Auction Center"
+msgstr ""
+
+#: auction/pages/redirect_with_message.html:16
+msgid "You will be redirected shortly..."
+msgstr ""
+

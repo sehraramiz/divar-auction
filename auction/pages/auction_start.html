@@ -1,15 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %}Start New Auction{% endblock %}
+{% block title %}{{ _("Start New Auction") }}{% endblock %}
 
 {% block body %}
-<h3>Start New Auction</h3>
-<p style="font-size: larger"><b>Title:</b> {{ post.title }}</p></p></br>
-<a target="_blank" href="https://divar.ir/v/{{ post.token }}">Item Details</a>
-<form action="{{ url_for('start_auction') }}" method="post">
-    <input type="hidden" name="post_token" value="{{post.token}}">
-    <label for="starting_price">Starting Price:</label><br>
-    <input type="number" id="starting_price" name="starting_price" value=0><br>
-    <input class="btn-primary" type="submit" value="Start">
-</form>
+<div dir="{{ _dir() }}">
+    <h3>{{ _("Start New Auction") }}</h3>
+    <p style="font-size: larger"><b>{{ _("Title:") }}</b> {{ post.title }}</p></p></br>
+    <a target="_blank" href="https://divar.ir/v/{{ post.token }}">{{ _("Item Details") }}</a>
+    <form action="{{ url_for('start_auction') }}" method="post">
+        <input type="hidden" name="post_token" value="{{post.token}}">
+        <label for="starting_price">{{ _("Starting Price") }}:</label><br>
+        <input type="number" id="starting_price" name="starting_price" value=0><br>
+        <input class="btn-primary" type="submit" value="{{ _('Start') }}">
+    </form>
+</div>
 {% endblock %}

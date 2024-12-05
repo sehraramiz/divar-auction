@@ -3,51 +3,48 @@ from urllib.parse import quote
 from fastapi import HTTPException, Request, status
 from fastapi.exceptions import RequestValidationError, ResponseValidationError
 from fastapi.responses import HTMLResponse, Response
-from fastapi.templating import Jinja2Templates
 
-from auction.config import config
-
-
-templates = Jinja2Templates(directory=config.templates_dir_path)
+from auction.i18n import gettext as _
+from auction.pages.template import templates
 
 
 class AuctionNotFound(HTTPException):
-    def __init__(self, detail: str = "Auction Not Found"):
+    def __init__(self, detail: str = _("Auction Not Found")):
         super().__init__(status_code=status.HTTP_404_NOT_FOUND, detail=detail)
 
 
 class BidNotFound(HTTPException):
-    def __init__(self, detail: str = "Bid Not Found"):
+    def __init__(self, detail: str = _("Bid Not Found")):
         super().__init__(status_code=status.HTTP_404_NOT_FOUND, detail=detail)
 
 
 class PostNotFound(HTTPException):
-    def __init__(self, detail: str = "Post Not Found"):
+    def __init__(self, detail: str = _("Post Not Found")):
         super().__init__(status_code=status.HTTP_404_NOT_FOUND, detail=detail)
 
 
 class AuctionAlreadyStarted(HTTPException):
-    def __init__(self, detail: str = "Auction Already Started"):
+    def __init__(self, detail: str = _("Auction Already Started")):
         super().__init__(status_code=status.HTTP_400_BAD_REQUEST, detail=detail)
 
 
 class BidFromSellerNotAllowed(HTTPException):
-    def __init__(self, detail: str = "Seller Can't Bid"):
+    def __init__(self, detail: str = _("Seller Can't Bid")):
         super().__init__(status_code=status.HTTP_400_BAD_REQUEST, detail=detail)
 
 
 class BidTooLow(HTTPException):
-    def __init__(self, detail: str = "Bid can't be lower than the starting price"):
+    def __init__(self, detail: str = _("Bid can't be lower than the starting price")):
         super().__init__(status_code=status.HTTP_400_BAD_REQUEST, detail=detail)
 
 
 class InvalidSession(HTTPException):
-    def __init__(self, detail: str = "Invalid Session"):
+    def __init__(self, detail: str = _("Invalid Session")):
         super().__init__(status_code=status.HTTP_401_UNAUTHORIZED, detail=detail)
 
 
 class Forbidden(HTTPException):
-    def __init__(self, detail: str = "Forbidden"):
+    def __init__(self, detail: str = _("Forbidden")):
         super().__init__(status_code=status.HTTP_403_FORBIDDEN, detail=detail)
 
 

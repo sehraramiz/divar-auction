@@ -1,16 +1,18 @@
 {% extends "base.html" %}
 
-{% block title %}App Error{% endblock %}
+{% block title %}{{ _("App Error") }}{% endblock %}
 
 {% block body %}
-<h3>Oops!</h3>
-<p>Something went wrong, and we couldn’t complete your request.</p>
-<p>{{ error_details }}</p>
-{% if errors %}
-    <ul>
-      {% for error in errors %}
-        <li>{{ error.get('msg') }}</li>
-      {% endfor %}
-    </ul>
-{% endif %}
+<div dir="{{ _dir() }}">
+    <h3>{{ _("Oops!") }}</h3>
+    <p>{{ _("Something went wrong, and we couldn’t complete your request.") }}</p>
+    <p>{{ error_details }}</p>
+    {% if errors %}
+        <ul>
+          {% for error in errors %}
+            <li>{{ error.get('msg') }}</li>
+          {% endfor %}
+        </ul>
+    {% endif %}
+</div>
 {% endblock %}

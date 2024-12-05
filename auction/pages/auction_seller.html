@@ -1,29 +1,31 @@
 {% extends "base.html" %}
 
-{% block title %}Auction Management{% endblock %}
+{% block title %}{{ _("Auction Management") }}{% endblock %}
 
 {% block body %}
-<h2>Manage Auction</h2>
-<p style="font-size: larger"><b>Title:</b> {{ auction.title }}</p></p></br>
-<a target="_blank" href="https://divar.ir/v/{{ auction.post_token }}">Item Details</a>
-<h4>There are {{ auction.bids_count }} bids on your item</h2>
-<ul>
-  <form action="/auc/select-bid" method="post">
-    {% for bid in auction.bids %}
-        <label>
-            <input
-                type="radio"
-                name="bid_id"
-                value="{{ bid.uid }}"
-                {% if bid.uid == auction.selected_bid %}checked{% endif %}
-                required>
-            {{ bid.amount }} from {{bid.bidder_id}}
-        </label>
-        <br>
-    {% endfor %}
-    {% if auction.bids %}
-        </br><input type="submit" class="btn-primary" value="Select Bid"/>
-    {% endif %}
-  </form>
-</ul>
+<div dir="{{ _dir() }}">
+    <h2>{{ _("Manage Auction") }}</h2>
+    <p style="font-size: larger"><b>{{ _("Title:") }}</b> {{ auction.title }}</p></p></br>
+    <a target="_blank" href="https://divar.ir/v/{{ auction.post_token }}">{{ _("Item Details") }}</a>
+    <h4>{{ _("There are {bids_count} bids on your item").format(bids_count=auction.bids_count) }}</h4>
+    <ul>
+      <form action="/auc/select-bid" method="post">
+        {% for bid in auction.bids %}
+            <label>
+                <input
+                    type="radio"
+                    name="bid_id"
+                    value="{{ bid.uid }}"
+                    {% if bid.uid == auction.selected_bid %}checked{% endif %}
+                    required>
+                {{ _("{bid_amount} from {bidder_id}").format(bid_amount=bid.amount, bidder_id=bid.bidder_id) }}
+            </label>
+            <br>
+        {% endfor %}
+        {% if auction.bids %}
+            </br><input type="submit" class="btn-primary" value='{{ _("Select Bid") }}'/>
+        {% endif %}
+      </form>
+    </ul>
+</div>
 {% endblock %}

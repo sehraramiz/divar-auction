@@ -1,28 +1,28 @@
 {% extends "base.html" %}
 
-{% block title %}Place a bid{% endblock %}
+{% block title %}{{ _("Place a bid") }}{% endblock %}
 
 {% block body %}
-<p style="font-size: larger"><b>Title:</b> {{ auction.post_title }}</p></p></br>
-<p>This auction's starting price is <b>{{ auction.starting_price }}</b></p></br>
-{% if auction.bids_count %}
-    <p>Top bids on this item:</p>
-    <ul>
-      {% for bid in auction.top_bids %}
-        <li>{{ bid.amount }}</li>
-      {% endfor %}
-    </ul>
-    <p>Total bids: {{ auction.bids_count }}</p>
-{% else %}
-    <h4>You are the first bidder!</h4>
-{% endif %}
+<div dir="{{ _dir() }}">
+    {% if auction.bids_count %}
+    <p>{{ _("Top bids on this item:") }}</p>
+        <ul>
+          {% for bid in auction.top_bids %}
+            <li>{{ bid.amount }}</li>
+          {% endfor %}
+        </ul>
+        <p>{{ _("Total bids:") }} {{ auction.bids_count }}</p>
+    {% else %}
+    <h4>{{ _("You are the first bidder!") }}</h4>
+    {% endif %}
 
-<form action="/auc/place-bid" method="post">
-    <input type="hidden" name="auction_id" value="{{auction.uid}}">
-    <input type="hidden" name="post_token" value="{{auction.post_token}}">
-    <label for="amount">Bid Amount:</label><br>
-    <input type="number" id="amount" name="amount" value={{ auction.last_bid }} min={{ auction.starting_price }}><br>
-    <input type="submit" value="Bid" class="btn-primary">
-</form>
-<button class="btn-secondary" onclick="window.location.href='{{ auction.return_url }}';">Return to Divar</button>
+    <form action="/auc/place-bid" method="post">
+        <input type="hidden" name="auction_id" value="{{auction.uid}}">
+        <input type="hidden" name="post_token" value="{{auction.post_token}}">
+        <label for="amount">{{ _("Bid Amount:") }}</label><br>
+        <input type="number" id="amount" name="amount" value={{ auction.last_bid }} min={{ auction.starting_price }}><br>
+        <input type="submit" value='{{ _("Bid") }}' class="btn-primary">
+    </form>
+    <button class="btn-secondary" onclick="window.location.href='{{ auction.return_url }}';">{{ _("Return to Divar") }}</button>
+</div>
 {% endblock %}

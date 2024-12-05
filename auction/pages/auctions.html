@@ -3,10 +3,12 @@
 {% block title %}Auctions{% endblock %}
 
 {% block body %}
-<h2>Auctions</h2>
-<ul>
-  {% for auction in auctions %}
-    <li>{{ auction.uid }}</li>
-  {% endfor %}
-</ul>
+<div dir="{{ _dir() }}">
+    <h2>{{ _("Auctions") }}</h2>
+    <ul>
+      {% for auction in auctions %}
+        <li>{{ auction.uid }}</li>
+      {% endfor %}
+    </ul>
+</div>
 {% endblock %}

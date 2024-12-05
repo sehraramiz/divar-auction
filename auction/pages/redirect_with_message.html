@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Redirecting{% endblock %}
+{% block title %}{[ _("Redirecting") }}{% endblock %}
 
 {% block head %}
     <script>
@@ -11,6 +11,8 @@
 {% endblock %}
 
 {% block body %}
+<div dir="{{ _dir() }}">
     <h1>{{ message }}</h1></br>
-    <p>You will be redirected shortly...</p>
+    <p>{{ _("You will be redirected shortly...") }}</p>
+</div>
 {% endblock %}

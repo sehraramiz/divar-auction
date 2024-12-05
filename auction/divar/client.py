@@ -16,6 +16,7 @@ from pydantic import AfterValidator, BaseModel, HttpUrl, UrlConstraints
 from auction._types import PostToken
 from auction.config import config, divar_config
 from auction.exception import PostNotFound
+from auction.i18n import gettext as _
 from auction.log import logger
 
 
@@ -31,7 +32,7 @@ divar_client = DivarClient(client_conf)
 
 def _only_divar_domain(url: HttpUrl) -> HttpUrl:
     if url.host != "divar.ir":
-        raise ValueError("return url must be from divar.ir domain")
+        raise ValueError(_("return url must be from divar.ir domain"))
     return url
 
 

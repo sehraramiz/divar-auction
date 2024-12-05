@@ -4,13 +4,12 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, Form, Request, status
 from fastapi.responses import HTMLResponse, RedirectResponse
-from fastapi.templating import Jinja2Templates
 from pydantic.networks import AnyHttpUrl
 
 from auction import auth, divar, exception, service
 from auction._types import PostToken, UserID
 from auction.api_deps import get_repo
-from auction.config import config
+from auction.i18n import gettext as _
 from auction.model import (
     AuctionBidderView,
     AuctionSellerView,
@@ -18,11 +17,11 @@ from auction.model import (
     PlaceBid,
     SelectBid,
 )
+from auction.pages.template import templates
 from auction.repo import AuctionRepo
 
 
 auction_router = APIRouter(prefix="/auc")
-templates = Jinja2Templates(directory=config.templates_dir_path)
 
 
 @auction_router.get("/home")
@@ -125,7 +124,7 @@ async def start_auction(
         request=request,
         name="redirect_with_message.html",
         context={
-            "message": "Auction started successfully!",
+            "message": _("Auction started successfully!"),
             "redirect_url": redirect_url,
         },
     )
@@ -152,7 +151,7 @@ async def place_bid(
         request=request,
         name="redirect_with_message.html",
         context={
-            "message": "Bid placed successfully!",
+            "message": _("Bid placed successfully!"),
             "redirect_url": redirect_url,
         },
     )

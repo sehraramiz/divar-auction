@@ -2,12 +2,12 @@
 
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware import Middleware
 from starlette.middleware.sessions import SessionMiddleware
 
-from auction import exception
+from auction import exception, i18n
 from auction.api import auction_router
 from auction.config import config
 from auction.log import setup_logging
@@ -38,3 +38,14 @@ app = FastAPI(
 app.include_router(auction_router)
 
 app.mount("/static", StaticFiles(directory="auction/static"), name="static")
+
+
+@app.middleware("http")
+async def set_locale(request: Request, call_next):
+    accept_language = request.headers.get("accept-language", "en")
+    lang_code_header = accept_language.split(",")[0].split(";")[0]
+    lang_code = request.query_params.get("hl", lang_code_header)
+    i18n.set_lang_code(lang_code)
+    response = await call_next(request)
+    response.headers["Content-Language"] = lang_code
+    return response
