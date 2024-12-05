@@ -3,7 +3,13 @@
 - clone this project
 - cd into project root directory
 - create .env file from .template.env, set variables
+- run ```make LANG=fa compilemessages``` to build translations
 - run ```$ PORT=8080 sh scripts/run.sh```
+
+### Translations
+1 - create translation message file in a language by runnings ```make LANG=fa makemessages```
+2 - translate text in auction/locale/fa/LC_MESSAGES/messages.po
+3 - run ```make LANG=fa compilemessages```
 
 ### Auction Flows
 
