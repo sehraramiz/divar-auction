@@ -7,9 +7,11 @@
 - run ```$ PORT=8080 sh scripts/run.sh```
 
 ### Translations
-1 - create translation message file in a language by runnings ```make LANG=fa makemessages```
-2 - translate text in auction/locale/fa/LC_MESSAGES/messages.po
-3 - run ```make LANG=fa compilemessages```
+1. create translation message file in a language by runnings ```make LANG=fa makemessages```
+
+2. translate text in auction/locale/fa/LC_MESSAGES/messages.po
+
+3. run ```make LANG=fa compilemessages```
 
 ### Auction Flows
 
