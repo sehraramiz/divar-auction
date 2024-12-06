@@ -52,11 +52,14 @@ async def auction_intro(
         divar_client=divar_client,
         post_token=post_token,
     )
-
     return templates.TemplateResponse(
         request=request,
         name="auction_intro.html",
-        context={"auction": auction, "return_url": return_url},
+        context={
+            "auction": auction,
+            "post_token": post_token,
+            "return_url": return_url,
+        },
     )
 
 

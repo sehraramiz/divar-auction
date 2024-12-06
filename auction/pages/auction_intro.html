@@ -26,7 +26,8 @@
         <h3>{{ _("Start New Auction") }}</h3>
         <p>{{ _("There is no in progress auction for this post. do you want to start an Auction?") }}</p></br>
         <form action="{{ url_for('start_auction_view') }}" method="get">
-            <input type="hidden" name="post_token" value="{{post_token}}">
+            <input type="hidden" name="post_token" value="{{ post_token }}">
+            <input type="hidden" name="return_url" value="{{ return_url }}">
             <input class="btn-primary" type="submit" value='{{ _("Start a new Auction") }}'>
         </form>
         <button class="btn-secondary" onclick="window.location.href='{{ return_url }}';">{{ _("Return to Divar") }}</button>
