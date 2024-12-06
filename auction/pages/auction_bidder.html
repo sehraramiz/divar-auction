@@ -17,8 +17,8 @@
     {% endif %}
 
     <form action="/auc/place-bid" method="post">
-        <input type="hidden" name="auction_id" value="{{auction.uid}}">
-        <input type="hidden" name="post_token" value="{{auction.post_token}}">
+        <input type="hidden" name="auction_id" value="{{ auction.uid }}">
+        <input type="hidden" name="post_token" value="{{ auction.post_token }}">
         <label for="amount">{{ _("Bid Amount:") }}</label><br>
         <input type="number" id="amount" name="amount" value={{ auction.last_bid }} min={{ auction.starting_price }}><br>
         <input type="submit" value='{{ _("Bid") }}' class="btn-primary">

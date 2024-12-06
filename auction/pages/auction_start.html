@@ -8,7 +8,7 @@
     <p style="font-size: larger"><b>{{ _("Title:") }}</b> {{ post.title }}</p></p></br>
     <a target="_blank" href="https://divar.ir/v/{{ post.token }}">{{ _("Item Details") }}</a>
     <form action="{{ url_for('start_auction') }}" method="post">
-        <input type="hidden" name="post_token" value="{{post.token}}">
+        <input type="hidden" name="post_token" value="{{ post.token }}">
         <label for="starting_price">{{ _("Starting Price") }}:</label><br>
         <input type="number" id="starting_price" name="starting_price" value=0><br>
         <input class="btn-primary" type="submit" value="{{ _('Start') }}">
