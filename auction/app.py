@@ -42,9 +42,7 @@ app.mount("/static", StaticFiles(directory="auction/static"), name="static")
 
 @app.middleware("http")
 async def set_locale(request: Request, call_next):
-    accept_language = request.headers.get("accept-language", "en")
-    lang_code_header = accept_language.split(",")[0].split(";")[0][:2]
-    lang_code = request.query_params.get("hl", lang_code_header)
+    lang_code = request.query_params.get("hl", "fa")
     i18n.set_lang_code(lang_code)
     response = await call_next(request)
     response.headers["Content-Language"] = lang_code
