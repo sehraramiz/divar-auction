@@ -19,20 +19,32 @@ from auction.repo import AuctionRepo
 TOP_BIDS_COUNT = 3
 
 
+async def auction_intro(
+    auction_repo: AuctionRepo,
+    divar_client: divar.DivarClient,
+    post_token: PostToken,
+) -> Auction | None:
+    try:
+        await divar_client.finder.validate_post(post_token=post_token)
+    except exception.PostNotFound as e:
+        raise exception.AuctionNotFound() from e
+    return await auction_repo.read_auction_by_post_token(post_token=post_token)
+
+
 async def auction_detail(
     auction_repo: AuctionRepo,
     divar_client: divar.DivarClient,
     user_id: UserID,
     post_token: PostToken,
     return_url: divar.DivarReturnUrl,
-) -> Auction | AuctionBidderView | AuctionSellerView | None:
+) -> Auction | AuctionBidderView | AuctionSellerView:
     """view auction detail"""
     post = await divar_client.finder.validate_post(post_token=post_token)
     logger.info(f"post is valid: {post}")
 
     auction = await auction_repo.read_auction_by_post_token(post_token=post_token)
     if auction is None:
-        return None
+        raise exception.AuctionNotFound()
 
     if auction.seller_id == user_id:
         return AuctionSellerView.model_validate(auction, from_attributes=True)

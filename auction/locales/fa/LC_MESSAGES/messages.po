@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-05 22:36+0330\n"
+"POT-Creation-Date: 2024-12-06 11:26+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: auction/api.py:127
+#: auction/api.py:149
 msgid "Auction started successfully!"
 msgstr "مزایده با موفقیت آغاز شد!"
 
-#: auction/api.py:154
+#: auction/api.py:176
 msgid "Bid placed successfully!"
 msgstr "پیشنهاد با موفقیت ثبت شد!"
 
@@ -69,15 +69,15 @@ msgstr "صفحه مورد نظر پیدا نشد."
 msgid "Place a bid"
 msgstr "پیشنهادی بگذارید"
 
-#: auction/pages/auction_bidder.html:8
+#: auction/pages/auction_bidder.html:8 auction/pages/auction_intro.html:10
 msgid "Top bids on this item:"
 msgstr "بالاترین پیشنهاد‌های روی این آگهی"
 
-#: auction/pages/auction_bidder.html:14
+#: auction/pages/auction_bidder.html:14 auction/pages/auction_intro.html:16
 msgid "Total bids:"
 msgstr "تعداد کل پیشنهاد‌ها:"
 
-#: auction/pages/auction_bidder.html:16
+#: auction/pages/auction_bidder.html:16 auction/pages/auction_intro.html:18
 msgid "You are the first bidder!"
 msgstr "شما اولین پیشنهاددهنده هستید."
 
@@ -89,7 +89,7 @@ msgstr "مبلغ پیشنهادی."
 msgid "Bid"
 msgstr "ثبت پیشنهاد"
 
-#: auction/pages/auction_bidder.html:26 auction/pages/auction_intro.html:13
+#: auction/pages/auction_bidder.html:26 auction/pages/auction_intro.html:32
 msgid "Return to Divar"
 msgstr "بازگشت به دیوار"
 
@@ -97,18 +97,27 @@ msgstr "بازگشت به دیوار"
 msgid "Auction"
 msgstr "مزایده"
 
-#: auction/pages/auction_intro.html:7 auction/pages/auction_start.html:3
+#: auction/pages/auction_intro.html:8 auction/pages/auction_seller.html:8
+#: auction/pages/auction_start.html:8
+msgid "Title:"
+msgstr "تیتر:"
+
+#: auction/pages/auction_intro.html:23
+msgid "Enter Auction"
+msgstr "ورود به مزایده"
+
+#: auction/pages/auction_intro.html:26 auction/pages/auction_start.html:3
 #: auction/pages/auction_start.html:7
 msgid "Start New Auction"
 msgstr "آغاز مزایده جدید"
 
-#: auction/pages/auction_intro.html:8
+#: auction/pages/auction_intro.html:27
 msgid ""
 "There is no in progress auction for this post. do you want to start an "
 "Auction?"
 msgstr "برای این آگهی مزایده‌ای وجود ندارد. آیا می‌خواهید مزایده برگزار کنید؟"
 
-#: auction/pages/auction_intro.html:11
+#: auction/pages/auction_intro.html:30
 msgid "Start a new Auction"
 msgstr "آغاز مزایده جدید"
 
@@ -119,10 +128,6 @@ msgstr "مدیریت مزایده"
 #: auction/pages/auction_seller.html:7
 msgid "Manage Auction"
 msgstr "مدیریت مزایده"
-
-#: auction/pages/auction_seller.html:8 auction/pages/auction_start.html:8
-msgid "Title:"
-msgstr "تیتر:"
 
 #: auction/pages/auction_seller.html:9 auction/pages/auction_start.html:9
 msgid "Item Details"

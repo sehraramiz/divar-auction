@@ -28,6 +28,10 @@ class Auction(BaseModel):
     selected_bid: BidID | None = None
     title: str | None = None
 
+    @property
+    def top_bids(self) -> list[Bid]:
+        return sorted(self.bids)[::-1][:3]
+
 
 class AuctionSellerView(Auction): ...
 

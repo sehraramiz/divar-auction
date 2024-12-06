@@ -4,12 +4,32 @@
 
 {% block body %}
 <div dir="{{ _dir() }}">
-    <h3>{{ _("Start New Auction") }}</h3>
-    <p>{{ _("There is no in progress auction for this post. do you want to start an Auction?") }}</p></br>
-    <form action="{{ url_for('start_auction_view') }}" method="get">
-        <input type="hidden" name="post_token" value="{{post_token}}">
-        <input class="btn-primary" type="submit" value='{{ _("Start a new Auction") }}'>
-    </form>
-    <button class="btn-secondary" onclick="window.location.href='{{ return_url }}';">{{ _("Return to Divar") }}</button>
+    {% if auction %}
+        <p style="font-size: larger"><b>{{ _("Title:") }}</b> {{ auction.title }}</p></p></br>
+        {% if auction.bids_count %}
+        <p>{{ _("Top bids on this item:") }}</p>
+            <ul>
+              {% for bid in auction.top_bids %}
+                <li>{{ bid.amount }}</li>
+              {% endfor %}
+            </ul>
+            <p>{{ _("Total bids:") }} {{ auction.bids_count }}</p>
+        {% else %}
+        <h4>{{ _("You are the first bidder!") }}</h4>
+        {% endif %}
+        <form action="{{ url_for('auctions') }}" method="get">
+            <input type="hidden" name="post_token" value="{{ auction.post_token }}">
+            <input type="hidden" name="return_url" value="{{ return_url }}">
+            <input class="btn-primary" type="submit" value='{{ _("Enter Auction") }}'>
+        </form>
+    {% else %}
+        <h3>{{ _("Start New Auction") }}</h3>
+        <p>{{ _("There is no in progress auction for this post. do you want to start an Auction?") }}</p></br>
+        <form action="{{ url_for('start_auction_view') }}" method="get">
+            <input type="hidden" name="post_token" value="{{post_token}}">
+            <input class="btn-primary" type="submit" value='{{ _("Start a new Auction") }}'>
+        </form>
+        <button class="btn-secondary" onclick="window.location.href='{{ return_url }}';">{{ _("Return to Divar") }}</button>
+    {% endif %}
 </div>
 {% endblock %}

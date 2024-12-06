@@ -39,6 +39,27 @@ async def auth_management(
     return RedirectResponse(str(redirect_url), status_code=status.HTTP_302_FOUND)
 
 
+@auction_router.get("/intro")
+async def auction_intro(
+    request: Request,
+    return_url: divar.DivarReturnUrl,
+    post_token: PostToken,
+    auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
+    divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
+) -> HTMLResponse:
+    auction = await service.auction_intro(
+        auction_repo=auction_repo,
+        divar_client=divar_client,
+        post_token=post_token,
+    )
+
+    return templates.TemplateResponse(
+        request=request,
+        name="auction_intro.html",
+        context={"auction": auction, "return_url": return_url},
+    )
+
+
 @auction_router.get("/")
 async def auctions(
     request: Request,
@@ -55,13 +76,7 @@ async def auctions(
         post_token=post_token,
         return_url=return_url,
     )
-    if result is None:
-        return templates.TemplateResponse(
-            request=request,
-            name="auction_intro.html",
-            context={"post_token": post_token, "return_url": return_url},
-        )
-    elif type(result) is AuctionBidderView:
+    if type(result) is AuctionBidderView:
         return templates.TemplateResponse(
             request=request,
             name="auction_bidder.html",

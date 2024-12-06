@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-05 22:36+0330\n"
+"POT-Creation-Date: 2024-12-06 11:26+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.16.0\n"
 
-#: auction/api.py:127
+#: auction/api.py:149
 msgid "Auction started successfully!"
 msgstr ""
 
-#: auction/api.py:154
+#: auction/api.py:176
 msgid "Bid placed successfully!"
 msgstr ""
 
@@ -69,15 +69,15 @@ msgstr ""
 msgid "Place a bid"
 msgstr ""
 
-#: auction/pages/auction_bidder.html:8
+#: auction/pages/auction_bidder.html:8 auction/pages/auction_intro.html:10
 msgid "Top bids on this item:"
 msgstr ""
 
-#: auction/pages/auction_bidder.html:14
+#: auction/pages/auction_bidder.html:14 auction/pages/auction_intro.html:16
 msgid "Total bids:"
 msgstr ""
 
-#: auction/pages/auction_bidder.html:16
+#: auction/pages/auction_bidder.html:16 auction/pages/auction_intro.html:18
 msgid "You are the first bidder!"
 msgstr ""
 
@@ -89,7 +89,7 @@ msgstr ""
 msgid "Bid"
 msgstr ""
 
-#: auction/pages/auction_bidder.html:26 auction/pages/auction_intro.html:13
+#: auction/pages/auction_bidder.html:26 auction/pages/auction_intro.html:32
 msgid "Return to Divar"
 msgstr ""
 
@@ -97,18 +97,27 @@ msgstr ""
 msgid "Auction"
 msgstr ""
 
-#: auction/pages/auction_intro.html:7 auction/pages/auction_start.html:3
+#: auction/pages/auction_intro.html:8 auction/pages/auction_seller.html:8
+#: auction/pages/auction_start.html:8
+msgid "Title:"
+msgstr ""
+
+#: auction/pages/auction_intro.html:23
+msgid "Enter Auction"
+msgstr ""
+
+#: auction/pages/auction_intro.html:26 auction/pages/auction_start.html:3
 #: auction/pages/auction_start.html:7
 msgid "Start New Auction"
 msgstr ""
 
-#: auction/pages/auction_intro.html:8
+#: auction/pages/auction_intro.html:27
 msgid ""
 "There is no in progress auction for this post. do you want to start an "
 "Auction?"
 msgstr ""
 
-#: auction/pages/auction_intro.html:11
+#: auction/pages/auction_intro.html:30
 msgid "Start a new Auction"
 msgstr ""
 
@@ -118,10 +127,6 @@ msgstr ""
 
 #: auction/pages/auction_seller.html:7
 msgid "Manage Auction"
-msgstr ""
-
-#: auction/pages/auction_seller.html:8 auction/pages/auction_start.html:8
-msgid "Title:"
 msgstr ""
 
 #: auction/pages/auction_seller.html:9 auction/pages/auction_start.html:9
