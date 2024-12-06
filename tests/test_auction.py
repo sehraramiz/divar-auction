@@ -50,6 +50,7 @@ async def test_seller_start_auction(
     response = seller_client.post(
         "/auc/start",
         data=auction_start_input.model_dump(mode="json"),
+        params={"hl": "en"},
     )
     assert response.status_code == 200
     auction = await auc_repo.read_auction_by_post_token(post_token=post_token)
@@ -71,6 +72,7 @@ async def test_bidder_place_bid(
     response = bidder_client.post(
         "/auc/place-bid",
         data=bid_data.model_dump(mode="json"),
+        params={"hl": "en"},
         follow_redirects=True,
     )
     assert response.status_code == 200
@@ -82,7 +84,7 @@ async def test_bidder_sees_top_bids(
     bidder_client: TestClient, auc_repo: AuctionRepo
 ) -> None:
     await start_auction_with_bids(auc_repo)
-    params = {"post_token": "A", "return_url": "https://divar.ir"}
+    params = {"hl": "en", "post_token": "A", "return_url": "https://divar.ir"}
     response = bidder_client.get("/auc", params=params, follow_redirects=True)
 
     assert "14000" in response.text
@@ -104,6 +106,7 @@ async def test_seller_select_bid(
     response = seller_client.post(
         "/auc/select-bid",
         data=select_bid.model_dump(mode="json"),
+        params={"hl": "en"},
         follow_redirects=True,
     )
 
