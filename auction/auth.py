@@ -44,7 +44,9 @@ async def authorize_user_and_set_session(
     state: str | None = None,
     user_id: UserID | None = None,
 ) -> UserID:
-    if config.debug and user_id is not None:
+    if config.debug:
+        if user_id is None:
+            user_id = config.mock_user_id
         request.session["user_id"] = user_id
         return user_id
 

@@ -4,6 +4,8 @@ from typing import NewType
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from auction._types import UserID
+
 
 LanguageCode = NewType("LanguageCode", str)
 
@@ -26,6 +28,7 @@ class Config(BaseSettings):
     docs_url: str = "/docs"
     templates_dir_path: str = "auction/pages"
     supported_languages: list[LanguageCode] = [LanguageCode("fa"), LanguageCode("en")]
+    mock_user_id: UserID
 
     model_config = SettingsConfigDict(env_file=".env", extra="allow")
 
