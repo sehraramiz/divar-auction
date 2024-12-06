@@ -32,11 +32,7 @@ async def auction_detail(
 
     auction = await auction_repo.read_auction_by_post_token(post_token=post_token)
     if auction is None:
-        try:
-            # show auction create page if post is legit
-            return None
-        except exception.PostNotFound as e:
-            raise exception.AuctionNotFound() from e
+        return None
 
     if auction.seller_id == user_id:
         return AuctionSellerView.model_validate(auction, from_attributes=True)
