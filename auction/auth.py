@@ -1,3 +1,4 @@
+from functools import partial
 from typing import Annotated, cast
 from urllib.parse import urlencode
 
@@ -40,9 +41,10 @@ async def redirect_oauth(
 async def authorize_user_and_set_session(
     request: Request,
     auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
+    scopes: list[Scope] | None = None,
     code: str | None = None,
     state: str | None = None,
-    user_id: UserID | None = None,
+    user_id: UserID | None = None,  # TODO: hide this from docs or remove it altogether
 ) -> UserID:
     if config.debug:
         if user_id is None:
@@ -74,7 +76,7 @@ async def authorize_user_and_set_session(
         )
         return user_ids[0]
 
-    scope = Scope(resource_type=OauthResourceType.USER_PHONE.name)
+    scopes = [Scope(resource_type=OauthResourceType.USER_PHONE.name), *(scopes or [])]
 
     context = "home"
     route = request.scope["endpoint"]
@@ -83,15 +85,38 @@ async def authorize_user_and_set_session(
     data = {"context": context, "query_params": dict(request.query_params)}
     state = encrypt_data(data)
 
-    redirect_url = divar_client.oauth.get_oauth_redirect(scopes=[scope], state=state)
+    redirect_url = divar_client.oauth.get_oauth_redirect(scopes=scopes, state=state)
     # FIXME: return proper response isntead of raising exeption?
     raise exception.OAuthRedirect(redirect_url=redirect_url)
+
+
+user_auth_with_get_posts_scope = partial(
+    authorize_user_and_set_session,
+    scopes=[Scope(resource_type=OauthResourceType.USER_POSTS_GET.name)],
+)
+
+
+# TODO: remove this wrapper when fastapi fix dependencies with partial funcs
+async def user_auth_with_get_posts_scope_wrapper(
+    request: Request,
+    auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
+    code: str | None = None,
+    state: str | None = None,
+    user_id: UserID | None = None,  # TODO: hide this from docs or remove it altogether
+):
+    return await user_auth_with_get_posts_scope(
+        request=request,
+        auction_repo=auction_repo,
+        code=code,
+        state=state,
+        user_id=user_id,
+    )
 
 
 async def user_get_posts_permission(
     request: Request,
     auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
-    user_id: Annotated[UserID, Depends(authorize_user_and_set_session)],
+    user_id: Annotated[UserID, Depends(user_auth_with_get_posts_scope_wrapper)],
     code: str | None = None,
     state: str | None = None,
 ) -> str:

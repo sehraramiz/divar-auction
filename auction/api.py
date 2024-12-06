@@ -103,7 +103,6 @@ async def auctions(
 async def start_auction_view(
     request: Request,
     post_token: PostToken,
-    user_id: Annotated[UserID, Depends(auth.authorize_user_and_set_session)],
     user_access_token: Annotated[UserID, Depends(auth.user_get_posts_permission)],
     divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
 ) -> HTMLResponse:
