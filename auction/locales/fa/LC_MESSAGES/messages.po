@@ -135,7 +135,7 @@ msgstr "جزییات آگهی"
 
 #: auction/pages/auction_seller.html:10
 msgid "There are {bids_count} bids on your item"
-msgstr "در حال حاظر {bids_count} پیشنهاد برای این آگهی وجود دار"
+msgstr "در حال حاظر {bids_count} پیشنهاد برای این آگهی وجود دارد"
 
 #: auction/pages/auction_seller.html:21
 msgid "{bid_amount} from {bidder_id}"
