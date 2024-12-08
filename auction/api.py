@@ -98,7 +98,7 @@ async def auctions(
         return templates.TemplateResponse(
             request=request,
             name="auction_bidder.html",
-            context={"auction": result, "user_id": user_id},
+            context={"auction": result},
         )
     elif type(result) is AuctionSellerView:
         return templates.TemplateResponse(
