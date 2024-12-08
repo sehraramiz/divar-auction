@@ -20,13 +20,13 @@ class Bid(BaseModel):
 
 class Auction(BaseModel):
     post_token: PostToken
+    post_title: str | None = None
     seller_id: UserID
     starting_price: Rial
     bids: list[Bid]
     uid: AuctionID = Field(default_factory=uuid4)  # type: ignore
     bids_count: int = 0
     selected_bid: BidID | None = None
-    title: str | None = None
 
     @property
     def top_bids(self) -> list[Bid]:

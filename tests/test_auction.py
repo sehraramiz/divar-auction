@@ -20,7 +20,7 @@ async def start_auction(auc_repo: AuctionRepo) -> Auction:
         seller_id=user_id,
         starting_price=Rial(1000),
         bids=[],
-        title=_("Test Post"),
+        post_title=_("Test Post"),
     )
     await auc_repo.add_auction(auction)
     return auction

@@ -58,7 +58,7 @@ async def auction_detail(
         top_bids = sorted(auction.bids)[::-1][:TOP_BIDS_COUNT]
         return AuctionBidderView(
             post_token=post_token,
-            post_title=auction.title,
+            post_title=auction.post_title,
             starting_price=auction.starting_price,
             bids_count=auction.bids_count,
             uid=auction.uid,
@@ -173,7 +173,7 @@ async def start_auction(
         **auction_data.model_dump(),
         seller_id=seller_id,
         bids=[],
-        title=post.title,
+        post_title=post.title,
     )
     await auction_repo.add_auction(auction=auction)
 
