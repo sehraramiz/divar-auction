@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-08 10:08+0330\n"
+"POT-Creation-Date: 2024-12-08 13:32+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.16.0\n"
 
-#: auction/api.py:144
+#: auction/api.py:157
 msgid "Auction started successfully!"
 msgstr ""
 
-#: auction/api.py:171
+#: auction/api.py:184
 msgid "Bid placed successfully!"
 msgstr ""
 
@@ -55,6 +55,10 @@ msgstr ""
 
 #: auction/exception.py:47
 msgid "Forbidden"
+msgstr ""
+
+#: auction/exception.py:52
+msgid "Invalid State"
 msgstr ""
 
 #: auction/pages/auction_intro.html:23 auction/service.py:131
@@ -161,10 +165,6 @@ msgstr ""
 
 #: auction/pages/auction_start.html:14
 msgid "Start"
-msgstr ""
-
-#: auction/pages/auctions.html:7
-msgid "Auctions"
 msgstr ""
 
 #: auction/pages/error.html:3

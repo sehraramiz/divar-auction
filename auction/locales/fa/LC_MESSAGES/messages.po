@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-08 10:08+0330\n"
+"POT-Creation-Date: 2024-12-08 13:27+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: auction/api.py:144
+#: auction/api.py:157
 msgid "Auction started successfully!"
 msgstr "مزایده با موفقیت آغاز شد!"
 
-#: auction/api.py:171
+#: auction/api.py:184
 msgid "Bid placed successfully!"
 msgstr "پیشنهاد با موفقیت ثبت شد!"
 
@@ -57,6 +57,10 @@ msgstr "پیشنهاد قیمت نباید کمتر از مبلغ اولیه م�
 msgid "Forbidden"
 msgstr "دسترسی غیر مجاز"
 
+#: auction/exception.py:52
+msgid "Invalid State"
+msgstr "نشست نامعتبر"
+
 #: auction/pages/auction_intro.html:23 auction/service.py:131
 msgid "Enter Auction"
 msgstr "ورود به مزایده"
@@ -64,7 +68,9 @@ msgstr "ورود به مزایده"
 #: auction/service.py:134
 msgid ""
 "This post has an ongoing auction starting at {starting_price} you can bid on"
-msgstr "برای این آگهی مزایده‌ای با قیمت شروع {starting_price} در جریان است که شما میتوانید در آن شرکت کنید."
+msgstr ""
+"برای این آگهی مزایده‌ای با قیمت شروع {starting_price} در جریان است که شما "
+"میتوانید در آن شرکت کنید."
 
 #: auction/service.py:139
 msgid "Auction Available"
@@ -162,19 +168,11 @@ msgstr "مبلغ شروع مزایده"
 msgid "Start"
 msgstr "شروع"
 
-#: auction/pages/auctions.html:7
-msgid "Auctions"
-msgstr "مزایده‌ها"
-
 #: auction/pages/error.html:3
 msgid "App Error"
 msgstr "خطای برنامه"
 
 #: auction/pages/error.html:7
-msgid "Oops!"
-msgstr "ای وای!"
-
-#: auction/pages/error.html:8
 msgid "Something went wrong, and we couldn’t complete your request."
 msgstr "خطایی رخ داد، درخواست شما انجام نشد."
 
@@ -193,3 +191,9 @@ msgstr "در حال هدایت به صفحه‌ی جدید"
 #: auction/pages/redirect_with_message.html:16
 msgid "You will be redirected shortly..."
 msgstr "تا چند لحظه‌ی دیگر هدایت می‌شوید."
+
+#~ msgid "Auctions"
+#~ msgstr "مزایده‌ها"
+
+#~ msgid "Oops!"
+#~ msgstr "ای وای!"

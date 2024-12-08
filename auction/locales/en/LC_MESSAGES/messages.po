@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-05 21:41+0330\n"
+"POT-Creation-Date: 2024-12-08 13:32+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,15 +17,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: auction/api.py:127
+#: auction/api.py:157
 msgid "Auction started successfully!"
 msgstr ""
 
-#: auction/api.py:154
+#: auction/api.py:184
 msgid "Bid placed successfully!"
 msgstr ""
 
-#: auction/auth.py:21 auction/exception.py:42
+#: auction/auth.py:22 auction/exception.py:42
 msgid "Invalid Session"
 msgstr ""
 
@@ -57,7 +57,24 @@ msgstr ""
 msgid "Forbidden"
 msgstr ""
 
-#: auction/divar/client.py:35
+#: auction/exception.py:52
+msgid "Invalid State"
+msgstr ""
+
+#: auction/pages/auction_intro.html:23 auction/service.py:131
+msgid "Enter Auction"
+msgstr ""
+
+#: auction/service.py:134
+msgid ""
+"This post has an ongoing auction starting at {starting_price} you can bid on"
+msgstr ""
+
+#: auction/service.py:139
+msgid "Auction Available"
+msgstr ""
+
+#: auction/divar/client.py:37
 msgid "return url must be from divar.ir domain"
 msgstr ""
 
@@ -69,15 +86,15 @@ msgstr ""
 msgid "Place a bid"
 msgstr ""
 
-#: auction/pages/auction_bidder.html:8
+#: auction/pages/auction_bidder.html:8 auction/pages/auction_intro.html:10
 msgid "Top bids on this item:"
 msgstr ""
 
-#: auction/pages/auction_bidder.html:14
+#: auction/pages/auction_bidder.html:14 auction/pages/auction_intro.html:16
 msgid "Total bids:"
 msgstr ""
 
-#: auction/pages/auction_bidder.html:16
+#: auction/pages/auction_bidder.html:16 auction/pages/auction_intro.html:18
 msgid "You are the first bidder!"
 msgstr ""
 
@@ -89,7 +106,7 @@ msgstr ""
 msgid "Bid"
 msgstr ""
 
-#: auction/pages/auction_bidder.html:26 auction/pages/auction_intro.html:13
+#: auction/pages/auction_bidder.html:26 auction/pages/auction_intro.html:33
 msgid "Return to Divar"
 msgstr ""
 
@@ -97,18 +114,23 @@ msgstr ""
 msgid "Auction"
 msgstr ""
 
-#: auction/pages/auction_intro.html:7 auction/pages/auction_start.html:3
+#: auction/pages/auction_intro.html:8 auction/pages/auction_seller.html:8
+#: auction/pages/auction_start.html:8
+msgid "Title:"
+msgstr ""
+
+#: auction/pages/auction_intro.html:26 auction/pages/auction_start.html:3
 #: auction/pages/auction_start.html:7
 msgid "Start New Auction"
 msgstr ""
 
-#: auction/pages/auction_intro.html:8
+#: auction/pages/auction_intro.html:27
 msgid ""
 "There is no in progress auction for this post. do you want to start an "
 "Auction?"
 msgstr ""
 
-#: auction/pages/auction_intro.html:11
+#: auction/pages/auction_intro.html:31
 msgid "Start a new Auction"
 msgstr ""
 
@@ -120,12 +142,16 @@ msgstr ""
 msgid "Manage Auction"
 msgstr ""
 
-#: auction/pages/auction_seller.html:8 auction/pages/auction_start.html:8
-msgid "Title:"
-msgstr ""
-
 #: auction/pages/auction_seller.html:9 auction/pages/auction_start.html:9
 msgid "Item Details"
+msgstr ""
+
+#: auction/pages/auction_seller.html:10
+msgid "There are {bids_count} bids on your item"
+msgstr ""
+
+#: auction/pages/auction_seller.html:21
+msgid "{bid_amount} from {bidder_id}"
 msgstr ""
 
 #: auction/pages/auction_seller.html:26
@@ -140,19 +166,11 @@ msgstr ""
 msgid "Start"
 msgstr ""
 
-#: auction/pages/auctions.html:7
-msgid "Auctions"
-msgstr ""
-
 #: auction/pages/error.html:3
 msgid "App Error"
 msgstr ""
 
 #: auction/pages/error.html:7
-msgid "Oops!"
-msgstr ""
-
-#: auction/pages/error.html:8
 msgid "Something went wrong, and we couldn’t complete your request."
 msgstr ""
 
@@ -162,6 +180,10 @@ msgstr ""
 
 #: auction/pages/index.html:6
 msgid "Welcome to Auction Center"
+msgstr ""
+
+#: auction/pages/redirect_with_message.html:3
+msgid "Redirecting"
 msgstr ""
 
 #: auction/pages/redirect_with_message.html:16
