@@ -4,7 +4,6 @@ from auction import divar, exception
 from auction._types import BidID, Rial
 from auction.config import config
 from auction.i18n import gettext as _
-from auction.log import logger
 from auction.model import (
     Auction,
     AuctionBidderView,
@@ -68,14 +67,6 @@ async def auction_detail(
     return auction
 
 
-async def read_auction(auction_repo: AuctionRepo, post_token: PostToken) -> Auction:
-    """view auction detail"""
-    auction = await auction_repo.read_auction_by_post_token(post_token=post_token)
-    if auction is None:
-        raise exception.AuctionNotFound()
-    return auction
-
-
 async def place_bid(
     auction_repo: AuctionRepo,
     divar_client: divar.DivarClient,
@@ -83,13 +74,13 @@ async def place_bid(
     bidder_id: UserID,
 ) -> Bid:
     """place a bid on an auction"""
-    try:
-        auction = await read_auction(
-            auction_repo=auction_repo, post_token=bid_data.post_token
-        )
-        await divar_client.finder.validate_post(post_token=bid_data.post_token)
-    except (exception.AuctionNotFound, exception.PostNotFound) as e:
-        raise e
+    auction = await auction_repo.read_auction_by_post_token(
+        post_token=bid_data.post_token
+    )
+    if auction is None:
+        raise exception.AuctionNotFound()
+
+    await divar_client.finder.validate_post(post_token=bid_data.post_token)
 
     if auction.seller_id == bidder_id:
         raise exception.BidFromSellerNotAllowed()
@@ -105,7 +96,6 @@ async def place_bid(
         bid = Bid(bidder_id=bidder_id, auction_id=auction.uid, amount=bid_data.amount)
         await auction_repo.add_bid(bid=bid)
 
-    # redirect to Divar
     # send BID_PLACED event (send new bid in chat, etc)
     return bid
 
@@ -208,5 +198,5 @@ async def select_bid(
         raise exception.Forbidden()
 
     await auction_repo.select_bid(auction, bid_id=bid_id)
-    # send BID_SELECTED event (send msg to selected bidde in chat)
+    # send BID_SELECTED event
     return auction
