@@ -91,11 +91,9 @@ async def auctions(
             name="auction_seller.html",
             context={"auction": result},
         )
-
     return templates.TemplateResponse(
         request=request,
-        name="auctions.html",
-        context={"auctions": []},
+        name="index.html",
     )
 
 
