@@ -48,6 +48,11 @@ class Forbidden(HTTPException):
         super().__init__(status_code=status.HTTP_403_FORBIDDEN, detail=detail)
 
 
+class InvalidState(HTTPException):
+    def __init__(self, detail: str = _("Invalid State")):
+        super().__init__(status_code=status.HTTP_401_UNAUTHORIZED, detail=detail)
+
+
 class OAuthRedirect(HTTPException):
     """This class is used to redirect user in a dependency function"""
 

@@ -5,6 +5,7 @@ import json
 from cryptography.fernet import Fernet, InvalidToken
 
 from auction.config import config
+from auction.log import logger
 
 
 def get_fernet_obj():
@@ -25,5 +26,8 @@ def decrypt_data(encrypted_data: str) -> dict:
     try:
         data_str = fernet.decrypt(encrypted_data).decode("utf-8")
         return json.loads(data_str)
-    except InvalidToken:
+    except InvalidToken as e:
+        raise e
+    except Exception as e:
+        logger.error(f"Data descryption error: {e}")
         return {}

@@ -13,7 +13,7 @@ from auction.config import config
 from auction.divar import divar_client
 from auction.i18n import gettext as _
 from auction.repo import AuctionRepo
-from auction.security import decrypt_data, encrypt_data
+from auction.security import InvalidToken, decrypt_data, encrypt_data
 
 
 async def get_user_id_from_session(request: Request) -> UserID:
@@ -28,7 +28,10 @@ async def redirect_oauth(
     code: str,
     state: str,
 ) -> AnyHttpUrl:
-    state_data = decrypt_data(state)
+    try:
+        state_data = decrypt_data(state)
+    except InvalidToken as e:
+        raise exception.InvalidState from e
     query_params = state_data.get("query_params", {})
     query_params["state"] = state
     query_params["code"] = code
@@ -57,7 +60,10 @@ async def authorize_user_and_set_session(
         return UserID(user_id)
 
     if code and state:
-        state_data = decrypt_data(state)
+        try:
+            state_data = decrypt_data(state)
+        except InvalidToken as e:
+            raise exception.InvalidState from e
         context = state_data.get("context", "home")
         access_token_data = divar_client.oauth.get_access_token(
             authorization_token=code
@@ -141,7 +147,10 @@ async def auction_management_access(
         return access_token["access_token"]
 
     if code and state:
-        state_data = decrypt_data(state)
+        try:
+            state_data = decrypt_data(state)
+        except InvalidToken as e:
+            raise exception.InvalidState from e
         context = state_data.get("context", "home")
         access_token_data = divar_client.oauth.get_access_token(
             authorization_token=code
