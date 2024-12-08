@@ -3,6 +3,8 @@ from typing import Annotated
 from kenar import Client as DivarClient
 from kenar import (
     ClientConfig,
+    CreatePostAddonRequest,
+    CreatePostAddonResponse,
     GetPostRequest,
     GetPostResponse,
     GetUserPostsRequest,
@@ -10,7 +12,7 @@ from kenar import (
     GetUserRequest,
     GetUserResponse,
 )
-from kenar.app import ACCESS_TOKEN_HEADER_NAME, FinderService
+from kenar.app import ACCESS_TOKEN_HEADER_NAME, AddonService, FinderService
 from pydantic import AfterValidator, BaseModel, HttpUrl, UrlConstraints
 
 from auction._types import PostToken
@@ -64,6 +66,25 @@ class PostItemResponse(GetPostResponse):
 class Post(BaseModel):
     token: str
     title: str
+
+
+class AuctionAddonService(AddonService):
+    def create_post_addon(
+        self,
+        access_token: str,
+        data: CreatePostAddonRequest,
+    ) -> CreatePostAddonResponse:
+        def send_request():
+            return self._client.post(
+                url=f"/v2/open-platform/addons/post/{data.token}",
+                content=data.model_dump_json(exclude={"token"}),
+                headers={ACCESS_TOKEN_HEADER_NAME: access_token},
+            )
+
+        rsp = send_request()
+        if not rsp.is_success:
+            logger.error(f"create_post_addon error: {rsp.status_code} {rsp.text}")
+        return CreatePostAddonResponse()
 
 
 class AuctionFinderService(FinderService):
@@ -153,7 +174,9 @@ class AuctionFinderService(FinderService):
 
 
 auction_finder = AuctionFinderService(client=divar_client._client)
+auction_addon = AuctionAddonService(client=divar_client._client)
 divar_client.finder = auction_finder
+divar_client.addon = auction_addon
 
 
 async def get_divar_client() -> DivarClient:

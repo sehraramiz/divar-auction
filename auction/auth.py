@@ -90,21 +90,24 @@ async def authorize_user_and_set_session(
     raise exception.OAuthRedirect(redirect_url=redirect_url)
 
 
-user_auth_with_get_posts_scope = partial(
+user_auth_with_auction_management_access = partial(
     authorize_user_and_set_session,
-    scopes=[Scope(resource_type=OauthResourceType.USER_POSTS_GET.name)],
+    scopes=[
+        Scope(resource_type=OauthResourceType.USER_POSTS_GET.name),
+        Scope(resource_type=OauthResourceType.USER_ADDON_CREATE.name),
+    ],
 )
 
 
 # TODO: remove this wrapper when fastapi fix dependencies with partial funcs
-async def user_auth_with_get_posts_scope_wrapper(
+async def user_auth_with_auction_management_access_wrapper(
     request: Request,
     auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
     code: str | None = None,
     state: str | None = None,
     user_id: UserID | None = None,  # TODO: hide this from docs or remove it altogether
 ):
-    return await user_auth_with_get_posts_scope(
+    return await user_auth_with_auction_management_access(
         request=request,
         auction_repo=auction_repo,
         code=code,
@@ -113,13 +116,21 @@ async def user_auth_with_get_posts_scope_wrapper(
     )
 
 
-async def user_get_posts_permission(
+async def auction_management_access(
     request: Request,
     auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
-    user_id: Annotated[UserID, Depends(user_auth_with_get_posts_scope_wrapper)],
+    user_id: Annotated[
+        UserID, Depends(user_auth_with_auction_management_access_wrapper)
+    ],
     code: str | None = None,
     state: str | None = None,
 ) -> str:
+    """
+    get permission for scopes needed to manage an auction by a seller
+    required scopes for creating an auction:
+        - USER_POSTS_GET
+        - USER_ADDON_CREATE
+    """
     if config.debug:
         return ""
 

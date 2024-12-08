@@ -2,6 +2,8 @@
 
 from auction import divar, exception
 from auction._types import BidID, Rial
+from auction.config import config
+from auction.i18n import gettext as _
 from auction.log import logger
 from auction.model import (
     Auction,
@@ -109,30 +111,41 @@ async def place_bid(
     return bid
 
 
-async def select_bid(
-    auction_repo: AuctionRepo,
+async def create_auction_addon(
     divar_client: divar.DivarClient,
-    seller_id: UserID,
-    bid_id: BidID,
     user_access_token: str,
-) -> Auction:
-    bid = await auction_repo.read_bid_by_id(bid_id=bid_id)
-    if bid is None:
-        raise exception.BidNotFound()
+    auction_management_path: str,
+    post_token: PostToken,
+    auction: Auction,
+) -> None:
+    from kenar import CreatePostAddonRequest
+    from kenar.widgets import DescriptionRow, TitleRow, WideButtonBar  # type: ignore
 
-    auction = await auction_repo.read_auction_by_id(auction_id=bid.auction_id)
-    if auction is None:
-        raise exception.AuctionNotFound()
-
-    is_post_owner = await divar_client.finder.find_post_from_user_posts(
-        post_token=auction.post_token, user_access_token=user_access_token
+    # access token must have USER_ADDON_CREATE scope access
+    auction_button_link = (
+        str(config.project_url).strip("/")
+        + "/"
+        + auction_management_path.strip("/")
+        + f"?post_token={post_token}"
     )
-    if not is_post_owner:
-        raise exception.Forbidden()
-
-    await auction_repo.select_bid(auction, bid_id=bid_id)
-    # send BID_SELECTED event (send msg to selected bidde in chat)
-    return auction
+    button = WideButtonBar.Button(title=_("Enter Auction"), link=auction_button_link)
+    description = _(
+        "This post has an ongoing auction starting"
+        " at {starting_price} you can bid on".format(
+            starting_price=auction.starting_price
+        )
+    )
+    auction_widgets = [
+        TitleRow(text=_("Auction Available")),
+        DescriptionRow(text=description),
+        WideButtonBar(button=button),
+    ]
+    create_addon_data = CreatePostAddonRequest(
+        token=user_access_token, widgets=auction_widgets
+    )
+    divar_client.addon.create_post_addon(
+        access_token=user_access_token, data=create_addon_data
+    )
 
 
 async def start_auction(
@@ -163,5 +176,38 @@ async def start_auction(
         title=post.title,
     )
     await auction_repo.add_auction(auction=auction)
-    # redirect to Divar
+
+    await create_auction_addon(
+        divar_client=divar_client,
+        user_access_token=user_access_token,
+        auction_management_path="/auc",
+        post_token=auction_data.post_token,
+        auction=auction,
+    )
+    return auction
+
+
+async def select_bid(
+    auction_repo: AuctionRepo,
+    divar_client: divar.DivarClient,
+    seller_id: UserID,
+    bid_id: BidID,
+    user_access_token: str,
+) -> Auction:
+    bid = await auction_repo.read_bid_by_id(bid_id=bid_id)
+    if bid is None:
+        raise exception.BidNotFound()
+
+    auction = await auction_repo.read_auction_by_id(auction_id=bid.auction_id)
+    if auction is None:
+        raise exception.AuctionNotFound()
+
+    is_post_owner = await divar_client.finder.find_post_from_user_posts(
+        post_token=auction.post_token, user_access_token=user_access_token
+    )
+    if not is_post_owner:
+        raise exception.Forbidden()
+
+    await auction_repo.select_bid(auction, bid_id=bid_id)
+    # send BID_SELECTED event (send msg to selected bidde in chat)
     return auction

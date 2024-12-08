@@ -8,9 +8,9 @@ from auction._types import UserID
 from auction.api_deps import get_repo
 from auction.app import app
 from auction.auth import (
+    auction_management_access,
     authorize_user_and_set_session,
     get_user_id_from_session,
-    user_get_posts_permission,
 )
 from auction.divar import get_divar_client, get_divar_client_mock
 from auction.repo import AuctionRepo
@@ -37,7 +37,7 @@ def authorize_bidder_user() -> UserID:
     return UserID(BIDDER_PHONE_NUMBER)
 
 
-def user_get_posts_permission_test() -> str:
+def auction_management_access_test() -> str:
     return "dummy access token"
 
 
@@ -46,7 +46,7 @@ def seller_client(auc_repo: AuctionRepo):
     """Fixture to provide a test seller client with dependency overrides."""
     client = TestClient(app)
     app.dependency_overrides[get_divar_client] = get_divar_client_mock
-    app.dependency_overrides[user_get_posts_permission] = user_get_posts_permission_test
+    app.dependency_overrides[auction_management_access] = auction_management_access_test
     app.dependency_overrides[get_repo] = lambda: auc_repo
     app.dependency_overrides[authorize_user_and_set_session] = authorize_seller_user
     app.dependency_overrides[get_user_id_from_session] = authorize_seller_user
@@ -59,7 +59,7 @@ def bidder_client(auc_repo: AuctionRepo):
     """Fixture to provide a test seller client with dependency overrides."""
     client = TestClient(app)
     app.dependency_overrides[get_divar_client] = get_divar_client_mock
-    app.dependency_overrides[user_get_posts_permission] = user_get_posts_permission_test
+    app.dependency_overrides[auction_management_access] = auction_management_access_test
     app.dependency_overrides[get_repo] = lambda: auc_repo
     app.dependency_overrides[authorize_user_and_set_session] = authorize_bidder_user
     app.dependency_overrides[get_user_id_from_session] = authorize_bidder_user

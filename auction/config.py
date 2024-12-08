@@ -2,6 +2,7 @@ import secrets
 
 from typing import NewType
 
+from pydantic import AnyHttpUrl
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from auction._types import UserID
@@ -23,6 +24,7 @@ class DivarConfig(BaseSettings):
 
 class Config(BaseSettings):
     debug: bool = False
+    project_url: AnyHttpUrl
     secret_key: str = secrets.token_urlsafe(32)
     openapi_url: str = "/openapi.json"
     docs_url: str = "/docs"

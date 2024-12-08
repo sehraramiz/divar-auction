@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-06 11:26+0330\n"
+"POT-Creation-Date: 2024-12-08 10:08+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,15 +17,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.16.0\n"
 
-#: auction/api.py:149
+#: auction/api.py:144
 msgid "Auction started successfully!"
 msgstr ""
 
-#: auction/api.py:176
+#: auction/api.py:171
 msgid "Bid placed successfully!"
 msgstr ""
 
-#: auction/auth.py:21 auction/exception.py:42
+#: auction/auth.py:22 auction/exception.py:42
 msgid "Invalid Session"
 msgstr ""
 
@@ -57,7 +57,21 @@ msgstr ""
 msgid "Forbidden"
 msgstr ""
 
-#: auction/divar/client.py:35
+#: auction/pages/auction_intro.html:23 auction/service.py:131
+msgid "Enter Auction"
+msgstr ""
+
+#: auction/service.py:134
+msgid ""
+"This post has an ongoing auction starting at {starting_price} you can bid"
+" on"
+msgstr ""
+
+#: auction/service.py:139
+msgid "Auction Available"
+msgstr ""
+
+#: auction/divar/client.py:37
 msgid "return url must be from divar.ir domain"
 msgstr ""
 
@@ -89,7 +103,7 @@ msgstr ""
 msgid "Bid"
 msgstr ""
 
-#: auction/pages/auction_bidder.html:26 auction/pages/auction_intro.html:32
+#: auction/pages/auction_bidder.html:26 auction/pages/auction_intro.html:33
 msgid "Return to Divar"
 msgstr ""
 
@@ -100,10 +114,6 @@ msgstr ""
 #: auction/pages/auction_intro.html:8 auction/pages/auction_seller.html:8
 #: auction/pages/auction_start.html:8
 msgid "Title:"
-msgstr ""
-
-#: auction/pages/auction_intro.html:23
-msgid "Enter Auction"
 msgstr ""
 
 #: auction/pages/auction_intro.html:26 auction/pages/auction_start.html:3
@@ -117,7 +127,7 @@ msgid ""
 "Auction?"
 msgstr ""
 
-#: auction/pages/auction_intro.html:30
+#: auction/pages/auction_intro.html:31
 msgid "Start a new Auction"
 msgstr ""
 
@@ -175,6 +185,10 @@ msgstr ""
 
 #: auction/pages/index.html:6
 msgid "Welcome to Auction Center"
+msgstr ""
+
+#: auction/pages/redirect_with_message.html:3
+msgid "Redirecting"
 msgstr ""
 
 #: auction/pages/redirect_with_message.html:16

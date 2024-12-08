@@ -103,7 +103,7 @@ async def auctions(
 async def start_auction_view(
     request: Request,
     post_token: PostToken,
-    user_access_token: Annotated[UserID, Depends(auth.user_get_posts_permission)],
+    user_access_token: Annotated[UserID, Depends(auth.auction_management_access)],
     divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
 ) -> HTMLResponse:
     post = await divar_client.finder.find_post_from_user_posts(
@@ -124,7 +124,7 @@ async def start_auction(
     request: Request,
     auction_data: Annotated[AuctionStartInput, Form()],
     seller_id: Annotated[UserID, Depends(auth.get_user_id_from_session)],
-    user_access_token: Annotated[UserID, Depends(auth.user_get_posts_permission)],
+    user_access_token: Annotated[UserID, Depends(auth.auction_management_access)],
     auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
     divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
 ) -> HTMLResponse:
@@ -179,7 +179,7 @@ async def select_bid(
     request: Request,
     select_bid_data: Annotated[SelectBid, Form()],
     seller_id: Annotated[UserID, Depends(auth.get_user_id_from_session)],
-    user_access_token: Annotated[UserID, Depends(auth.user_get_posts_permission)],
+    user_access_token: Annotated[UserID, Depends(auth.auction_management_access)],
     auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
     divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
 ) -> RedirectResponse:

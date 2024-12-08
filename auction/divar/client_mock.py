@@ -1,6 +1,8 @@
 from kenar import Client as DivarClient
 from kenar import (
     ClientConfig,
+    CreatePostAddonRequest,
+    CreatePostAddonResponse,
     GetPostRequest,
     GetPostResponse,
     GetUserPostsRequest,
@@ -12,7 +14,7 @@ from kenar import (
 from auction._types import PostToken
 from auction.divar import mock_data
 
-from .client import AuctionFinderService, Post, PostItemResponse
+from .client import AuctionAddonService, AuctionFinderService, Post, PostItemResponse
 
 
 client_conf = ClientConfig(
@@ -29,6 +31,17 @@ class DivarClientMock(DivarClient):
 
 
 divar_client_mock = DivarClient(client_conf)
+
+
+class AuctionAddonServiceMock(AuctionAddonService):
+    """addon service mock"""
+
+    def create_post_addon(
+        self,
+        access_token: str,
+        data: CreatePostAddonRequest,
+    ) -> CreatePostAddonResponse:
+        return CreatePostAddonResponse()
 
 
 class AuctionFinderServiceMock(AuctionFinderService):
@@ -72,7 +85,9 @@ class AuctionFinderServiceMock(AuctionFinderService):
 
 
 auction_finder = AuctionFinderServiceMock(client=divar_client_mock._client)
+auction_addon = AuctionAddonServiceMock(client=divar_client_mock._client)
 divar_client_mock.finder = auction_finder
+divar_client_mock.addon = auction_addon
 
 
 async def get_divar_client_mock() -> DivarClientMock:

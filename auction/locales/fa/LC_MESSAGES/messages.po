@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-06 11:26+0330\n"
+"POT-Creation-Date: 2024-12-08 10:08+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,15 +17,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: auction/api.py:149
+#: auction/api.py:144
 msgid "Auction started successfully!"
 msgstr "مزایده با موفقیت آغاز شد!"
 
-#: auction/api.py:176
+#: auction/api.py:171
 msgid "Bid placed successfully!"
 msgstr "پیشنهاد با موفقیت ثبت شد!"
 
-#: auction/auth.py:21 auction/exception.py:42
+#: auction/auth.py:22 auction/exception.py:42
 msgid "Invalid Session"
 msgstr "نشست نامعتبر"
 
@@ -57,7 +57,20 @@ msgstr "پیشنهاد قیمت نباید کمتر از مبلغ اولیه م�
 msgid "Forbidden"
 msgstr "دسترسی غیر مجاز"
 
-#: auction/divar/client.py:35
+#: auction/pages/auction_intro.html:23 auction/service.py:131
+msgid "Enter Auction"
+msgstr "ورود به مزایده"
+
+#: auction/service.py:134
+msgid ""
+"This post has an ongoing auction starting at {starting_price} you can bid on"
+msgstr "برای این آگهی مزایده‌ای با قیمت شروع {starting_price} در جریان است که شما میتوانید در آن شرکت کنید."
+
+#: auction/service.py:139
+msgid "Auction Available"
+msgstr "مزایده در حال اجرا است"
+
+#: auction/divar/client.py:37
 msgid "return url must be from divar.ir domain"
 msgstr "آدرس بازگشت باید از دامنه divar.ir باشد."
 
@@ -89,7 +102,7 @@ msgstr "مبلغ پیشنهادی."
 msgid "Bid"
 msgstr "ثبت پیشنهاد"
 
-#: auction/pages/auction_bidder.html:26 auction/pages/auction_intro.html:32
+#: auction/pages/auction_bidder.html:26 auction/pages/auction_intro.html:33
 msgid "Return to Divar"
 msgstr "بازگشت به دیوار"
 
@@ -102,10 +115,6 @@ msgstr "مزایده"
 msgid "Title:"
 msgstr "تیتر:"
 
-#: auction/pages/auction_intro.html:23
-msgid "Enter Auction"
-msgstr "ورود به مزایده"
-
 #: auction/pages/auction_intro.html:26 auction/pages/auction_start.html:3
 #: auction/pages/auction_start.html:7
 msgid "Start New Auction"
@@ -117,7 +126,7 @@ msgid ""
 "Auction?"
 msgstr "برای این آگهی مزایده‌ای وجود ندارد. آیا می‌خواهید مزایده برگزار کنید؟"
 
-#: auction/pages/auction_intro.html:30
+#: auction/pages/auction_intro.html:31
 msgid "Start a new Auction"
 msgstr "آغاز مزایده جدید"
 
@@ -177,9 +186,10 @@ msgstr "مرکز مزایده"
 msgid "Welcome to Auction Center"
 msgstr "به مرکز مزایده خوش آمدید."
 
+#: auction/pages/redirect_with_message.html:3
+msgid "Redirecting"
+msgstr "در حال هدایت به صفحه‌ی جدید"
+
 #: auction/pages/redirect_with_message.html:16
 msgid "You will be redirected shortly..."
 msgstr "تا چند لحظه‌ی دیگر هدایت می‌شوید."
-
-#~ msgid "Redirecting"
-#~ msgstr "در حال هدایت به صفحه‌ی جدید"
