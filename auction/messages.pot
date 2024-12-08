@@ -172,10 +172,6 @@ msgid "App Error"
 msgstr ""
 
 #: auction/pages/error.html:7
-msgid "Oops!"
-msgstr ""
-
-#: auction/pages/error.html:8
 msgid "Something went wrong, and we couldn’t complete your request."
 msgstr ""
 
