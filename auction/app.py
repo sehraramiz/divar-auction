@@ -19,13 +19,10 @@ async def lifespan(app: FastAPI):
     yield
 
 
-session_middleware = Middleware(
-    SessionMiddleware, secret_key=config.secret_key, https_only=True
-)
+session_middleware_kwargs = {"secret_key": config.secret_key, "https_only": True}
 if config.debug:
-    session_middleware = Middleware(
-        SessionMiddleware, secret_key=config.secret_key, https_only=False
-    )
+    session_middleware_kwargs["https_only"] = False
+session_middleware = Middleware(SessionMiddleware, **session_middleware_kwargs)
 
 app = FastAPI(
     lifespan=lifespan,
