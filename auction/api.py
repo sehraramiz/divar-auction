@@ -36,6 +36,11 @@ def home(request: Request) -> HTMLResponse:
 async def auth_management(
     redirect_url: Annotated[AnyHttpUrl, Depends(auth.redirect_oauth)],
 ) -> RedirectResponse:
+    """
+    Oauth2 provider (divar) redirects user to this path
+    and we validate provided state and guide user back to their original path
+    with their original query parameters
+    """
     return RedirectResponse(str(redirect_url), status_code=status.HTTP_302_FOUND)
 
 
@@ -47,6 +52,12 @@ async def auction_intro(
     auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
     divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
 ) -> HTMLResponse:
+    """
+    Intro page to provide information about the auction service
+    and requested post auction (if existing) and give options to user
+    to start an auction or participate in an already started auction.
+    This is the first page we show every enduser (seller or bidder).
+    """
     auction = await service.auction_intro(
         auction_repo=auction_repo,
         divar_client=divar_client,
@@ -72,6 +83,10 @@ async def auctions(
     auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
     divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
 ) -> HTMLResponse:
+    """
+    Auction area page that shows auction management controls to sellers and
+    shows auction details and bidding controls to bidders
+    """
     result = await service.auction_detail(
         auction_repo=auction_repo,
         divar_client=divar_client,
@@ -104,6 +119,10 @@ async def start_auction_view(
     user_access_token: Annotated[UserID, Depends(auth.auction_management_access)],
     divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
 ) -> HTMLResponse:
+    """
+    Show auction start page for seller and prevent others from
+    starting an auction on someone else's post
+    """
     post = await divar_client.finder.find_post_from_user_posts(
         post_token=post_token, user_access_token=user_access_token
     )
@@ -126,6 +145,10 @@ async def start_auction(
     auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
     divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
 ) -> HTMLResponse:
+    """
+    Start a new auction by seller user and create auction widget for them
+    user must be the post owner
+    """
     result = await service.start_auction(
         auction_repo=auction_repo,
         divar_client=divar_client,

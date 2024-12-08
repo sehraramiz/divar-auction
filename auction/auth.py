@@ -28,6 +28,10 @@ async def redirect_oauth(
     code: str,
     state: str,
 ) -> AnyHttpUrl:
+    """
+    Guide users back to their original path before their oauth2 journey
+    with their original query parameters if provided state data is valid
+    """
     try:
         state_data = decrypt_data(state)
     except InvalidToken as e:
