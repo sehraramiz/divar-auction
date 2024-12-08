@@ -41,8 +41,7 @@ async def auction_detail(
     return_url: divar.DivarReturnUrl,
 ) -> Auction | AuctionBidderView | AuctionSellerView:
     """view auction detail"""
-    post = await divar_client.finder.validate_post(post_token=post_token)
-    logger.info(f"post is valid: {post}")
+    await divar_client.finder.validate_post(post_token=post_token)
 
     auction = await auction_repo.read_auction_by_post_token(post_token=post_token)
     if auction is None:
