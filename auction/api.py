@@ -21,7 +21,7 @@ from auction.pages.template import templates
 from auction.repo import AuctionRepo
 
 
-auction_router = APIRouter(prefix="/auc")
+auction_router = APIRouter(prefix="/auction")
 
 
 @auction_router.get("/home")

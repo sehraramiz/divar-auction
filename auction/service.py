@@ -180,7 +180,7 @@ async def start_auction(
     await create_auction_addon(
         divar_client=divar_client,
         user_access_token=user_access_token,
-        auction_management_path="/auc",
+        auction_management_path="/auction",
         post_token=auction_data.post_token,
         auction=auction,
     )
