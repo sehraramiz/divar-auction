@@ -21,3 +21,6 @@ makemessages:
 	msgmerge --update $(MSGFILE) $(MSGBASE)
 compilemessages:
 	msgfmt -o $(MSGDIR)/messages.mo $(MSGFILE)
+run-docker:
+	docker compose build auction
+	docker compose up -d auction

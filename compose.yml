@@ -1,0 +1,10 @@
+services:
+  auction:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - "./db.json:/app/db.json"
+      - "./logs:/logs"
