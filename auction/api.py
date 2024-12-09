@@ -8,7 +8,7 @@ from pydantic.networks import AnyHttpUrl
 
 from auction import auth, divar, exception, service
 from auction._types import PostToken, UserID
-from auction.api_deps import get_repo
+from auction.api_deps import get_repo, get_return_url
 from auction.i18n import gettext as _
 from auction.model import (
     AuctionBidderView,
@@ -104,7 +104,7 @@ async def auctions(
         return templates.TemplateResponse(
             request=request,
             name="auction_seller.html",
-            context={"auction": result},
+            context={"auction": result, "return_url": return_url},
         )
     return templates.TemplateResponse(
         request=request,
@@ -116,6 +116,7 @@ async def auctions(
 async def start_auction_view(
     request: Request,
     post_token: PostToken,
+    return_url: Annotated[divar.DivarReturnUrl, Depends(get_return_url)],
     user_access_token: Annotated[UserID, Depends(auth.auction_management_access)],
     divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
 ) -> HTMLResponse:
@@ -132,7 +133,7 @@ async def start_auction_view(
     return templates.TemplateResponse(
         request=request,
         name="auction_start.html",
-        context={"post": post},
+        context={"post": post, "return_url": return_url},
     )
 
 
