@@ -2,6 +2,7 @@
 
 from contextlib import asynccontextmanager
 
+from asgi_correlation_id import CorrelationIdMiddleware
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware import Middleware
@@ -23,10 +24,11 @@ session_middleware_kwargs = {"secret_key": config.secret_key, "https_only": True
 if config.debug:
     session_middleware_kwargs["https_only"] = False
 session_middleware = Middleware(SessionMiddleware, **session_middleware_kwargs)
+correlation_id_middleware = Middleware(CorrelationIdMiddleware)
 
 app = FastAPI(
     lifespan=lifespan,
-    middleware=[session_middleware],
+    middleware=[session_middleware, correlation_id_middleware],
     openapi_url=config.openapi_url,
     docs_url=config.docs_url,
     redoc_url=None,

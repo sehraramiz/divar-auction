@@ -1,5 +1,6 @@
 from urllib.parse import quote
 
+from asgi_correlation_id import correlation_id
 from fastapi import HTTPException, Request, status
 from fastapi.exceptions import RequestValidationError, ResponseValidationError
 from fastapi.responses import HTMLResponse, Response
@@ -92,6 +93,16 @@ async def handle_error(request: Request, exc: HTTPException) -> HTMLResponse:
     )
 
 
+async def handle_internal_error(request: Request, exc: Exception) -> HTMLResponse:
+    return templates.TemplateResponse(
+        request=request,
+        name="error.html",
+        context={"error_details": "Internal server error"},
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        headers={"X-Request-ID": correlation_id.get() or ""},
+    )
+
+
 async def ignore_oauth_redirect(request: Request, exc: OAuthRedirect) -> Response:
     return Response(headers=exc.headers, status_code=exc.status_code)
 
@@ -102,4 +113,5 @@ exception_handlers = {
     RequestValidationError: handle_validation_error,
     ResponseValidationError: handle_validation_error,
     HTTPException: handle_error,
+    Exception: handle_internal_error,
 }
