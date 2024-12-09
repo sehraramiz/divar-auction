@@ -9,7 +9,7 @@
     <a target="_blank" href="https://divar.ir/v/{{ auction.post_token }}">{{ _("Item Details") }}</a>
     <h4>{{ _("There are {bids_count} bids on your item").format(bids_count=auction.bids_count) }}</h4>
     <ul>
-      <form action="/auc/select-bid" method="post">
+        <form action="{{ url_for('select_bid') }}" method="post">
         {% for bid in auction.bids %}
             <label>
                 <input
