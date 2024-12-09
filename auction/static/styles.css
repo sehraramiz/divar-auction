@@ -72,6 +72,10 @@ input[type="number"], input[type="submit"] {
     font-size: 16px;
 }
 
+input[type="number"]{
+    direction: ltr;
+}
+
 .btn-primary {
     background-color: #a62626;
     color: white;
