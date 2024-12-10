@@ -5,7 +5,7 @@
 {% block body %}
 <div dir="{{ _dir() }}">
     {% if auction %}
-        <p style="font-size: larger"><b>{{ _("Title:") }}</b> {{ auction.title }}</p></p></br>
+        <p style="font-size: larger"><b>{{ _("Title:") }}</b> {{ auction.post_title }}</p></p></br>
         {% if auction.bids_count %}
         <p>{{ _("Top bids on this item:") }}</p>
             <ul>
