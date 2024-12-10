@@ -7,7 +7,7 @@ from kenar import OauthResourceType, Scope
 from pydantic.networks import AnyHttpUrl
 
 from auction import exception
-from auction._types import UserID
+from auction._types import PostToken, UserID
 from auction.api_deps import get_repo
 from auction.config import config
 from auction.divar import divar_client
@@ -37,11 +37,14 @@ async def redirect_oauth(
     except InvalidToken as e:
         raise exception.InvalidState from e
     query_params = state_data.get("query_params", {})
+    path_params = state_data.get("path_params", {})
     query_params["state"] = state
     query_params["code"] = code
     context = state_data.get("context", "home")
 
-    redirect_url = str(request.url_for(context)) + "?" + urlencode(query_params)
+    redirect_url = (
+        str(request.url_for(context, **path_params)) + "?" + urlencode(query_params)
+    )
     return AnyHttpUrl(redirect_url)
 
 
@@ -92,7 +95,11 @@ async def authorize_user_and_set_session(
     route = request.scope["endpoint"]
     if route:
         context = route.__name__
-    data = {"context": context, "query_params": dict(request.query_params)}
+    data = {
+        "context": context,
+        "query_params": dict(request.query_params),
+        "path_params": dict(request.path_params),
+    }
     state = encrypt_data(data)
 
     redirect_url = divar_client.oauth.get_oauth_redirect(scopes=scopes, state=state)
@@ -100,24 +107,28 @@ async def authorize_user_and_set_session(
     raise exception.OAuthRedirect(redirect_url=redirect_url)
 
 
-user_auth_with_auction_management_access = partial(
-    authorize_user_and_set_session,
-    scopes=[
-        Scope(resource_type=OauthResourceType.USER_POSTS_GET.name),
-        Scope(resource_type=OauthResourceType.USER_ADDON_CREATE.name),
-    ],
-)
-
-
 # TODO: remove this wrapper when fastapi fix dependencies with partial funcs
 async def user_auth_with_auction_management_access_wrapper(
     request: Request,
     auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
+    post_token: PostToken,
     code: str | None = None,
     state: str | None = None,
     user_id: UserID | None = None,  # TODO: hide this from docs or remove it altogether
 ):
-    return await user_auth_with_auction_management_access(
+    """use this dependency only for routes with post_token path param"""
+    func = partial(
+        authorize_user_and_set_session,
+        scopes=[
+            Scope(resource_type=OauthResourceType.USER_POSTS_GET.name),
+            Scope(
+                resource_type=OauthResourceType.POST_ADDON_CREATE.name,
+                resource_id=post_token,
+            ),
+        ],
+    )
+
+    return await func(
         request=request,
         auction_repo=auction_repo,
         code=code,
@@ -172,7 +183,11 @@ async def auction_management_access(
     route = request.scope["endpoint"]
     if route:
         context = route.__name__
-    data = {"context": context, "query_params": dict(request.query_params)}
+    data = {
+        "context": context,
+        "query_params": dict(request.query_params),
+        "path_params": dict(request.path_params),
+    }
     state = encrypt_data(data)
 
     redirect_url = divar_client.oauth.get_oauth_redirect(scopes=[scope], state=state)

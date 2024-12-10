@@ -103,7 +103,6 @@ async def place_bid(
 async def create_auction_addon(
     divar_client: divar.DivarClient,
     user_access_token: str,
-    auction_management_path: str,
     post_token: PostToken,
     auction: Auction,
 ) -> None:
@@ -111,26 +110,25 @@ async def create_auction_addon(
     from kenar.widgets import DescriptionRow, TitleRow, WideButtonBar  # type: ignore
 
     # access token must have USER_ADDON_CREATE scope access
+    return_url = f"https://divar.ir/v/{post_token}"
     auction_button_link = (
         str(config.project_url).strip("/")
-        + "/"
-        + auction_management_path.strip("/")
-        + f"?post_token={post_token}"
+        + "/intro"
+        + f"?post_token={post_token}&return_url={return_url}"
     )
     button = WideButtonBar.Button(title=_("Enter Auction"), link=auction_button_link)
     description = _(
         "This post has an ongoing auction starting"
-        " at {starting_price} you can bid on".format(
-            starting_price=auction.starting_price
-        )
-    )
+        " at {starting_price} you can bid on"
+    ).format(starting_price=auction.starting_price)
+
     auction_widgets = [
         TitleRow(text=_("Auction Available")),
         DescriptionRow(text=description),
         WideButtonBar(button=button),
     ]
     create_addon_data = CreatePostAddonRequest(
-        token=user_access_token, widgets=auction_widgets
+        token=post_token, widgets=auction_widgets
     )
     divar_client.addon.create_post_addon(
         access_token=user_access_token, data=create_addon_data
@@ -169,7 +167,6 @@ async def start_auction(
     await create_auction_addon(
         divar_client=divar_client,
         user_access_token=user_access_token,
-        auction_management_path="/auction",
         post_token=auction_data.post_token,
         auction=auction,
     )

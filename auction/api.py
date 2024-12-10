@@ -112,7 +112,7 @@ async def auctions(
     )
 
 
-@auction_router.get("/start")
+@auction_router.get("/start/{post_token}")
 async def start_auction_view(
     request: Request,
     post_token: PostToken,
@@ -137,9 +137,10 @@ async def start_auction_view(
     )
 
 
-@auction_router.post("/start")
+@auction_router.post("/start/{post_token}")
 async def start_auction(
     request: Request,
+    post_token: PostToken,
     auction_data: Annotated[AuctionStartInput, Form()],
     seller_id: Annotated[UserID, Depends(auth.get_user_id_from_session)],
     user_access_token: Annotated[UserID, Depends(auth.auction_management_access)],
@@ -196,9 +197,10 @@ async def place_bid(
     )
 
 
-@auction_router.post("/select-bid")
+@auction_router.post("/select-bid/{post_token}")
 async def select_bid(
     request: Request,
+    post_token: PostToken,
     select_bid_data: Annotated[SelectBid, Form()],
     seller_id: Annotated[UserID, Depends(auth.get_user_id_from_session)],
     user_access_token: Annotated[UserID, Depends(auth.auction_management_access)],
