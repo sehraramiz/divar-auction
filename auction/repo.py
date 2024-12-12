@@ -2,7 +2,6 @@ import json
 
 from pathlib import Path
 
-from kenar import OauthResourceType
 from pydantic import TypeAdapter
 
 from auction._types import AuctionID, BidID, PostToken, Rial, UserID
@@ -119,7 +118,7 @@ class AuctionRepo:
         self.access_tokens[user_id] = [access_token_data]
 
     async def get_user_access_token_by_scope(
-        self, user_id: UserID, scope: OauthResourceType
+        self, user_id: UserID, scope: str
     ) -> dict | None:
         user_access_tokens = self.access_tokens.get(user_id)
         if user_access_tokens is None:
@@ -127,6 +126,22 @@ class AuctionRepo:
         return next(
             (data for data in user_access_tokens if scope in data["scope"]), None
         )
+
+    async def get_user_access_token_by_scopes(
+        self, user_id: UserID, scopes: list[str]
+    ) -> dict | None:
+        user_access_tokens = self.access_tokens.get(user_id)
+        if user_access_tokens is None:
+            return None
+        for data in user_access_tokens:
+            found_all = True
+            for scope in scopes:
+                if scope not in data["scope"]:
+                    found_all = False
+                    break
+            if found_all:
+                return data
+        return None
 
 
 auction_repo = AuctionRepo()

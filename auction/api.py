@@ -3,20 +3,14 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Form, Request, status
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from pydantic.networks import AnyHttpUrl
 
 from auction import auth, divar, exception, service
 from auction._types import PostToken, UserID
 from auction.api_deps import get_repo, get_return_url
 from auction.i18n import gettext as _
-from auction.model import (
-    AuctionBidderView,
-    AuctionSellerView,
-    AuctionStartInput,
-    PlaceBid,
-    SelectBid,
-)
+from auction.model import AuctionStartInput, PlaceBid, SelectBid
 from auction.pages.template import templates
 from auction.repo import AuctionRepo
 
@@ -82,33 +76,71 @@ async def auctions(
     user_id: Annotated[UserID, Depends(auth.authorize_user_and_set_session)],
     auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
     divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
-) -> HTMLResponse:
+) -> RedirectResponse:
     """
-    Auction area page that shows auction management controls to sellers and
-    shows auction details and bidding controls to bidders
+    Validate Auction and Post and redirect seller users to auction management
+    and bidder users to bidding page
     """
-    result = await service.auction_detail(
+    is_auction_seller = await service.is_auction_seller(
         auction_repo=auction_repo,
         divar_client=divar_client,
         user_id=user_id,
         post_token=post_token,
         return_url=return_url,
     )
-    if type(result) is AuctionBidderView:
-        return templates.TemplateResponse(
-            request=request,
-            name="auction_bidder.html",
-            context={"auction": result},
+    if is_auction_seller:
+        redirect_url = (
+            str(request.url_for("auction_management", post_token=post_token))
+            + f"?return_url={return_url}"
         )
-    elif type(result) is AuctionSellerView:
-        return templates.TemplateResponse(
-            request=request,
-            name="auction_seller.html",
-            context={"auction": result, "return_url": return_url},
+        return RedirectResponse(redirect_url)
+    else:
+        redirect_url = (
+            str(request.url_for("auction_bidding"))
+            + f"?post_token={post_token}&return_url={return_url}"
         )
+        return RedirectResponse(redirect_url)
+
+
+@auction_router.get("/bidding")
+async def auction_bidding(
+    request: Request,
+    return_url: divar.DivarReturnUrl,
+    post_token: PostToken,
+    user_id: Annotated[UserID, Depends(auth.authorize_user_and_set_session)],
+    auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
+    divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
+) -> Response:
+    auction = await service.auction_bidding(
+        auction_repo=auction_repo,
+        divar_client=divar_client,
+        user_id=user_id,
+        post_token=post_token,
+        return_url=return_url,
+    )
     return templates.TemplateResponse(
         request=request,
-        name="index.html",
+        name="auction_bidder.html",
+        context={"auction": auction},
+    )
+
+
+@auction_router.get("/management/{post_token}")
+async def auction_management(
+    request: Request,
+    return_url: divar.DivarReturnUrl,
+    post_token: PostToken,
+    user_id: Annotated[UserID, Depends(auth.get_user_id_from_session)],
+    user_access_token: Annotated[UserID, Depends(auth.auction_management_access)],
+    auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
+) -> HTMLResponse:
+    auction = await service.auction_management(
+        auction_repo=auction_repo, user_id=user_id, post_token=post_token
+    )
+    return templates.TemplateResponse(
+        request=request,
+        name="auction_seller.html",
+        context={"auction": auction, "return_url": return_url},
     )
 
 

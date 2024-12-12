@@ -7,7 +7,6 @@ from auction.i18n import gettext as _
 from auction.model import (
     Auction,
     AuctionBidderView,
-    AuctionSellerView,
     AuctionStartInput,
     Bid,
     PlaceBid,
@@ -32,38 +31,60 @@ async def auction_intro(
     return await auction_repo.read_auction_by_post_token(post_token=post_token)
 
 
-async def auction_detail(
+async def is_auction_seller(
     auction_repo: AuctionRepo,
     divar_client: divar.DivarClient,
     user_id: UserID,
     post_token: PostToken,
     return_url: divar.DivarReturnUrl,
-) -> Auction | AuctionBidderView | AuctionSellerView:
-    """view auction detail"""
+) -> bool:
     await divar_client.finder.validate_post(post_token=post_token)
 
     auction = await auction_repo.read_auction_by_post_token(post_token=post_token)
     if auction is None:
         raise exception.AuctionNotFound()
 
+    return auction.seller_id == user_id
+
+
+async def auction_bidding(
+    auction_repo: AuctionRepo,
+    divar_client: divar.DivarClient,
+    user_id: UserID,
+    post_token: PostToken,
+    return_url: divar.DivarReturnUrl,
+) -> AuctionBidderView:
+    auction = await auction_repo.read_auction_by_post_token(post_token=post_token)
+    if auction is None:
+        raise exception.AuctionNotFound()
     if auction.seller_id == user_id:
-        return AuctionSellerView.model_validate(auction, from_attributes=True)
-    else:
-        last_bid = await auction_repo.find_bid(
-            auction_id=auction.uid, bidder_id=user_id
-        )
-        last_bid_amount = last_bid.amount if last_bid else Rial(0)
-        top_bids = sorted(auction.bids)[::-1][:TOP_BIDS_COUNT]
-        return AuctionBidderView(
-            post_token=post_token,
-            post_title=auction.post_title,
-            starting_price=auction.starting_price,
-            bids_count=auction.bids_count,
-            uid=auction.uid,
-            last_bid=last_bid_amount,
-            return_url=return_url,
-            top_bids=top_bids,
-        )
+        raise exception.BidFromSellerNotAllowed()
+
+    last_bid = await auction_repo.find_bid(auction_id=auction.uid, bidder_id=user_id)
+    last_bid_amount = last_bid.amount if last_bid else Rial(0)
+    top_bids = sorted(auction.bids)[::-1][:TOP_BIDS_COUNT]
+    return AuctionBidderView(
+        post_token=post_token,
+        post_title=auction.post_title,
+        starting_price=auction.starting_price,
+        bids_count=auction.bids_count,
+        uid=auction.uid,
+        last_bid=last_bid_amount,
+        return_url=return_url,
+        top_bids=top_bids,
+    )
+
+
+async def auction_management(
+    auction_repo: AuctionRepo,
+    user_id: UserID,
+    post_token: PostToken,
+) -> Auction:
+    auction = await auction_repo.read_auction_by_post_token(post_token=post_token)
+    if auction is None:
+        raise exception.AuctionNotFound()
+    if auction.seller_id != user_id:
+        raise exception.Forbidden()
     return auction
 
 

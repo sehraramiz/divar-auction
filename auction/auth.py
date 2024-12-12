@@ -117,15 +117,18 @@ async def user_auth_with_auction_management_access_wrapper(
     user_id: UserID | None = None,  # TODO: hide this from docs or remove it altogether
 ):
     """use this dependency only for routes with post_token path param"""
+
+    scopes = [
+        Scope(resource_type=OauthResourceType.USER_POSTS_GET.name),
+        Scope(
+            resource_type=OauthResourceType.POST_ADDON_CREATE.name,
+            resource_id=post_token,
+        ),
+    ]
+
     func = partial(
         authorize_user_and_set_session,
-        scopes=[
-            Scope(resource_type=OauthResourceType.USER_POSTS_GET.name),
-            Scope(
-                resource_type=OauthResourceType.POST_ADDON_CREATE.name,
-                resource_id=post_token,
-            ),
-        ],
+        scopes=scopes,
     )
 
     return await func(
@@ -140,6 +143,7 @@ async def user_auth_with_auction_management_access_wrapper(
 async def auction_management_access(
     request: Request,
     auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
+    post_token: PostToken,
     user_id: Annotated[
         UserID, Depends(user_auth_with_auction_management_access_wrapper)
     ],
@@ -155,8 +159,12 @@ async def auction_management_access(
     if config.debug:
         return ""
 
-    access_token = await auction_repo.get_user_access_token_by_scope(
-        user_id=user_id, scope=OauthResourceType.USER_POSTS_GET.value
+    access_token = await auction_repo.get_user_access_token_by_scopes(
+        user_id=user_id,
+        scopes=[
+            OauthResourceType.USER_POSTS_GET.value,
+            "{}.{}".format(OauthResourceType.POST_ADDON_CREATE.value, post_token),
+        ],
     )
     if access_token:
         return access_token["access_token"]
@@ -176,7 +184,13 @@ async def auction_management_access(
         )
         return access_token_data.access_token
 
-    scope = Scope(resource_type=OauthResourceType.USER_POSTS_GET.name)
+    scopes = [
+        Scope(resource_type=OauthResourceType.USER_POSTS_GET.name),
+        Scope(
+            resource_type=OauthResourceType.POST_ADDON_CREATE.name,
+            resource_id=post_token,
+        ),
+    ]
 
     # TODO: encrypt data into state
     context = "home"
@@ -190,6 +204,6 @@ async def auction_management_access(
     }
     state = encrypt_data(data)
 
-    redirect_url = divar_client.oauth.get_oauth_redirect(scopes=[scope], state=state)
+    redirect_url = divar_client.oauth.get_oauth_redirect(scopes=scopes, state=state)
     # FIXME: return proper response isntead of raising exeption?
     raise exception.OAuthRedirect(redirect_url=redirect_url)
