@@ -48,7 +48,7 @@ async def test_seller_start_auction(
         post_token=post_token, starting_price=Rial(1000)
     )
     response = seller_client.post(
-        f"/auction/start/{post_token}",
+        f"/auction/management/start/{post_token}",
         data=auction_start_input.model_dump(mode="json"),
         params={"hl": "en"},
     )
@@ -70,7 +70,7 @@ async def test_bidder_place_bid(
         auction_id=auction.uid, post_token=post_token, amount=Rial(11000)
     )
     response = bidder_client.post(
-        "/auction/place-bid",
+        "/auction/bidding/place-bid",
         data=bid_data.model_dump(mode="json"),
         params={"hl": "en"},
         follow_redirects=True,
@@ -104,7 +104,7 @@ async def test_seller_select_bid(
 
     select_bid = SelectBid(bid_id=bid.uid)
     response = seller_client.post(
-        f"/auction/select-bid/{auction.post_token}",
+        f"/auction/management/select-bid/{auction.post_token}",
         data=select_bid.model_dump(mode="json"),
         params={"hl": "en"},
         follow_redirects=True,

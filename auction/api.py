@@ -102,7 +102,7 @@ async def auctions(
         return RedirectResponse(redirect_url)
 
 
-@auction_router.get("/bidding")
+@auction_router.get("/bidding", tags=["Bidding"])
 async def auction_bidding(
     request: Request,
     return_url: divar.DivarReturnUrl,
@@ -125,7 +125,34 @@ async def auction_bidding(
     )
 
 
-@auction_router.get("/management/{post_token}")
+@auction_router.post("/bidding/place-bid", tags=["Bidding"])
+async def place_bid(
+    request: Request,
+    bid_data: Annotated[PlaceBid, Form()],
+    user_id: Annotated[UserID, Depends(auth.get_user_id_from_session)],
+    auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
+    divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
+) -> HTMLResponse:
+    # TODO: add csrf protection
+    await service.place_bid(
+        auction_repo=auction_repo,
+        divar_client=divar_client,
+        bid_data=bid_data,
+        bidder_id=user_id,
+    )
+    auction_repo._commit()
+    redirect_url = f"https://divar.ir/v/{bid_data.post_token}"
+    return templates.TemplateResponse(
+        request=request,
+        name="redirect_with_message.html",
+        context={
+            "message": _("Bid placed successfully!"),
+            "redirect_url": redirect_url,
+        },
+    )
+
+
+@auction_router.get("/management/{post_token}", tags=["Auction Management"])
 async def auction_management(
     request: Request,
     return_url: divar.DivarReturnUrl,
@@ -144,7 +171,7 @@ async def auction_management(
     )
 
 
-@auction_router.get("/start/{post_token}")
+@auction_router.get("/management/start/{post_token}", tags=["Auction Management"])
 async def start_auction_view(
     request: Request,
     post_token: PostToken,
@@ -169,7 +196,7 @@ async def start_auction_view(
     )
 
 
-@auction_router.post("/start/{post_token}")
+@auction_router.post("/management/start/{post_token}", tags=["Auction Management"])
 async def start_auction(
     request: Request,
     post_token: PostToken,
@@ -202,34 +229,7 @@ async def start_auction(
     )
 
 
-@auction_router.post("/place-bid")
-async def place_bid(
-    request: Request,
-    bid_data: Annotated[PlaceBid, Form()],
-    user_id: Annotated[UserID, Depends(auth.get_user_id_from_session)],
-    auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
-    divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
-) -> HTMLResponse:
-    # TODO: add csrf protection
-    await service.place_bid(
-        auction_repo=auction_repo,
-        divar_client=divar_client,
-        bid_data=bid_data,
-        bidder_id=user_id,
-    )
-    auction_repo._commit()
-    redirect_url = f"https://divar.ir/v/{bid_data.post_token}"
-    return templates.TemplateResponse(
-        request=request,
-        name="redirect_with_message.html",
-        context={
-            "message": _("Bid placed successfully!"),
-            "redirect_url": redirect_url,
-        },
-    )
-
-
-@auction_router.post("/select-bid/{post_token}")
+@auction_router.post("/management/select-bid/{post_token}", tags=["Auction Management"])
 async def select_bid(
     request: Request,
     post_token: PostToken,
