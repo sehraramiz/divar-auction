@@ -85,7 +85,6 @@ class AuctionRepo:
         for index, bid in enumerate(self.bids):
             if bid.uid == bid_id:
                 bid_index = index
-                print(1111, bid_index)
                 break
         if bid_index is not None:
             del self.bids[bid_index]
