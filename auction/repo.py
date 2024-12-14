@@ -80,6 +80,19 @@ class AuctionRepo:
         bid.amount = amount
         return bid
 
+    async def remove_bid(self, bid_id: BidID) -> None:
+        bid_index = None
+        for index, bid in enumerate(self.bids):
+            if bid.uid == bid_id:
+                bid_index = index
+                print(1111, bid_index)
+                break
+        if bid_index is not None:
+            del self.bids[bid_index]
+            self._commit()
+
+        return None
+
     async def remove_selected_bid(self, bid_id: BidID) -> None:
         for auction in self.auctions:
             if auction.selected_bid == bid_id:

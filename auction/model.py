@@ -58,5 +58,10 @@ class PlaceBid(BaseModel):
     amount: Rial
 
 
+class RemoveBid(BaseModel):
+    post_token: PostToken
+    auction_id: AuctionID
+
+
 class SelectBid(BaseModel):
     bid_id: BidID

@@ -152,6 +152,31 @@ async def place_bid(
     )
 
 
+@auction_router.delete("/bidding/remove-bid/{post_token}", tags=["Bidding"])
+async def remove_bid(
+    request: Request,
+    post_token: PostToken,
+    user_id: Annotated[UserID, Depends(auth.get_user_id_from_session)],
+    auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
+    divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
+) -> HTMLResponse:
+    await service.remove_bid(
+        auction_repo=auction_repo,
+        bidder_id=user_id,
+        post_token=post_token,
+    )
+    auction_repo._commit()
+    redirect_url = f"https://divar.ir/v/{post_token}"
+    return templates.TemplateResponse(
+        request=request,
+        name="redirect_with_message.html",
+        context={
+            "message": _("Bid removed successfully!"),
+            "redirect_url": redirect_url,
+        },
+    )
+
+
 @auction_router.get("/management/{post_token}", tags=["Auction Management"])
 async def auction_management(
     request: Request,

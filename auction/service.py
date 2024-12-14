@@ -122,6 +122,25 @@ async def place_bid(
     return bid
 
 
+async def remove_bid(
+    auction_repo: AuctionRepo,
+    bidder_id: UserID,
+    post_token: PostToken,
+) -> None:
+    auction = await auction_repo.read_auction_by_post_token(post_token=post_token)
+    if auction is None:
+        raise exception.AuctionNotFound()
+
+    bid = await auction_repo.find_bid(auction_id=auction.uid, bidder_id=bidder_id)
+
+    if bid is None:
+        raise exception.BidNotFound()
+
+    await auction_repo.remove_bid(bid_id=bid.uid)
+
+    return None
+
+
 async def create_auction_addon(
     divar_client: divar.DivarClient,
     user_access_token: str,

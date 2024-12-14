@@ -140,3 +140,23 @@ async def test_remove_selected_bid_after_bidder_changes_amount(
     updated_auction = await auc_repo.read_auction_by_id(auction_id=auction.uid)
     assert updated_auction is not None
     assert updated_auction.selected_bid is None
+
+
+@pytest.mark.asyncio
+async def test_bidder_remove_bid(
+    bidder_client: TestClient, auc_repo: AuctionRepo
+) -> None:
+    auction = await start_auction(auc_repo)
+    bidder_id = UserID(divar_mock_data.BIDDER_PHONE_NUMBER)
+    bid = Bid(bidder_id=bidder_id, auction_id=auction.uid, amount=Rial(1000000))
+    await auc_repo.add_bid(bid)
+    await auc_repo.select_bid(auction, bid_id=bid.uid)
+
+    response = bidder_client.delete(
+        f"/auction/bidding/remove-bid/{auction.post_token}",
+        params={"hl": "en"},
+    )
+    assert response.status_code == 200
+    assert "Bid removed" in response.text
+    remove_bid = await auc_repo.read_bid_by_id(bid_id=bid.uid)
+    assert remove_bid is None
