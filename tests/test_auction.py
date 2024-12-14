@@ -70,7 +70,7 @@ async def test_bidder_place_bid(
         auction_id=auction.uid, post_token=post_token, amount=Rial(11000)
     )
     response = bidder_client.post(
-        "/auction/bidding/place-bid",
+        "/auction/bidding/",
         data=bid_data.model_dump(mode="json"),
         params={"hl": "en"},
         follow_redirects=True,
@@ -130,7 +130,7 @@ async def test_remove_selected_bid_after_bidder_changes_amount(
         auction_id=auction.uid, post_token=auction.post_token, amount=Rial(2000000)
     )
     response = bidder_client.post(
-        "/auction/bidding/place-bid",
+        "/auction/bidding/",
         data=bid_data.model_dump(mode="json"),
         params={"hl": "en"},
         follow_redirects=True,
@@ -153,7 +153,7 @@ async def test_bidder_remove_bid(
     await auc_repo.select_bid(auction, bid_id=bid.uid)
 
     response = bidder_client.delete(
-        f"/auction/bidding/remove-bid/{auction.post_token}",
+        f"/auction/bidding/{auction.post_token}",
         params={"hl": "en"},
     )
     assert response.status_code == 200

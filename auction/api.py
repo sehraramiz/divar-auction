@@ -125,7 +125,7 @@ async def auction_bidding(
     )
 
 
-@auction_router.post("/bidding/place-bid", tags=["Bidding"])
+@auction_router.post("/bidding/", tags=["Bidding"])
 async def place_bid(
     request: Request,
     bid_data: Annotated[PlaceBid, Form()],
@@ -152,13 +152,12 @@ async def place_bid(
     )
 
 
-@auction_router.delete("/bidding/remove-bid/{post_token}", tags=["Bidding"])
+@auction_router.delete("/bidding/{post_token}", tags=["Bidding"])
 async def remove_bid(
     request: Request,
     post_token: PostToken,
     user_id: Annotated[UserID, Depends(auth.get_user_id_from_session)],
     auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
-    divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
 ) -> HTMLResponse:
     await service.remove_bid(
         auction_repo=auction_repo,
