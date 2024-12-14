@@ -81,15 +81,10 @@ class AuctionRepo:
         return bid
 
     async def remove_bid(self, bid_id: BidID) -> None:
-        bid_index = None
-        for index, bid in enumerate(self.bids):
+        for bid in self.bids:
             if bid.uid == bid_id:
-                bid_index = index
-                break
-        if bid_index is not None:
-            del self.bids[bid_index]
-            self._commit()
-
+                self.bids.remove(bid)
+                self._commit()
         return None
 
     async def remove_selected_bid(self, bid_id: BidID) -> None:
