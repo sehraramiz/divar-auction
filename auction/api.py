@@ -133,7 +133,6 @@ async def place_bid(
     auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
     divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
 ) -> HTMLResponse:
-    # TODO: add csrf protection
     await service.place_bid(
         auction_repo=auction_repo,
         divar_client=divar_client,
@@ -263,7 +262,6 @@ async def select_bid(
     auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
     divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
 ) -> RedirectResponse:
-    # TODO: add csrf protection
     auction = await service.select_bid(
         auction_repo=auction_repo,
         divar_client=divar_client,
