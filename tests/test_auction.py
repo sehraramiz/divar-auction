@@ -114,3 +114,29 @@ async def test_seller_select_bid(
     auction_updated = await auc_repo.read_auction_by_id(auction_id=auction.uid)
     assert auction_updated is not None
     assert auction_updated.selected_bid == bid.uid
+
+
+@pytest.mark.asyncio
+async def test_remove_selected_bid_after_bidder_changes_amount(
+    bidder_client: TestClient, auc_repo: AuctionRepo
+) -> None:
+    auction = await start_auction(auc_repo)
+    bidder_id = UserID(divar_mock_data.BIDDER_PHONE_NUMBER)
+    bid = Bid(bidder_id=bidder_id, auction_id=auction.uid, amount=Rial(1000000))
+    await auc_repo.add_bid(bid)
+    await auc_repo.select_bid(auction, bid_id=bid.uid)
+
+    bid_data = PlaceBid(
+        auction_id=auction.uid, post_token=auction.post_token, amount=Rial(2000000)
+    )
+    response = bidder_client.post(
+        "/auction/bidding/place-bid",
+        data=bid_data.model_dump(mode="json"),
+        params={"hl": "en"},
+        follow_redirects=True,
+    )
+    assert response.status_code == 200
+    assert "Bid placed" in response.text
+    updated_auction = await auc_repo.read_auction_by_id(auction_id=auction.uid)
+    assert updated_auction is not None
+    assert updated_auction.selected_bid is None

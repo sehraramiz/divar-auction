@@ -80,6 +80,14 @@ class AuctionRepo:
         bid.amount = amount
         return bid
 
+    async def remove_selected_bid(self, bid_id: BidID) -> None:
+        for auction in self.auctions:
+            if auction.selected_bid == bid_id:
+                auction.selected_bid = None
+                self._commit()
+                break
+        return None
+
     async def select_bid(self, auction: Auction, bid_id: BidID) -> Auction:
         auction.selected_bid = bid_id
         self._commit()

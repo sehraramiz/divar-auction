@@ -113,6 +113,7 @@ async def place_bid(
     last_bid = await auction_repo.find_bid(auction_id=auction.uid, bidder_id=bidder_id)
     if last_bid:
         bid = await auction_repo.change_bid_amount(bid=last_bid, amount=bid_data.amount)
+        await auction_repo.remove_selected_bid(last_bid.uid)
     else:
         bid = Bid(bidder_id=bidder_id, auction_id=auction.uid, amount=bid_data.amount)
         await auction_repo.add_bid(bid=bid)
