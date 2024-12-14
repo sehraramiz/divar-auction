@@ -238,3 +238,29 @@ async def select_bid(
     await auction_repo.select_bid(auction, bid_id=bid_id)
     # send BID_SELECTED event
     return auction
+
+
+async def remove_auction(
+    auction_repo: AuctionRepo,
+    divar_client: divar.DivarClient,
+    seller_id: UserID,
+    user_access_token: str,
+    post_token: PostToken,
+) -> Auction:
+    """remove an auction"""
+    auction = await auction_repo.read_auction_by_post_token(post_token=post_token)
+    if auction is None:
+        raise exception.AuctionNotFound()
+
+    if seller_id != auction.seller_id:
+        raise exception.Forbidden()
+
+    remove_addon_data = divar.client.DeletePostAddonRequest(token=post_token)
+    remove_addon_result = divar_client.addon.delete_post_addon(data=remove_addon_data)
+
+    if remove_addon_result is None:
+        raise exception.AuctionRemoveFailure()
+
+    await auction_repo.remove_auction(auction_id=auction.uid)
+
+    return auction

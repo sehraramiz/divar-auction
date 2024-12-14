@@ -1,9 +1,11 @@
+from unittest import mock
 from uuid import uuid4
 
 import pytest
 
 from fastapi.testclient import TestClient
 
+from auction import divar
 from auction._types import AuctionID, PostToken, Rial, UserID
 from auction.divar import mock_data as divar_mock_data
 from auction.i18n import gettext as _
@@ -55,6 +57,35 @@ async def test_seller_start_auction(
     assert response.status_code == 200
     auction = await auc_repo.read_auction_by_post_token(post_token=post_token)
     assert auction is not None
+
+
+@pytest.mark.asyncio
+async def test_seller_remove_auction(
+    seller_client: TestClient, auc_repo: AuctionRepo
+) -> None:
+    divar_mock = divar.DivarClientMock()
+    divar_mock.addon.delete_post_addon = mock.Mock()
+    seller_client.app.dependency_overrides[divar.get_divar_client] = lambda: divar_mock  # type: ignore
+
+    auction = await start_auction(auc_repo)
+
+    response = seller_client.delete(
+        f"/auction/management/{auction.post_token}",
+        params={"hl": "en"},
+    )
+
+    removed_auction = await auc_repo.read_auction_by_post_token(
+        post_token=auction.post_token
+    )
+    expected_addon_delete_input = divar.client.DeletePostAddonRequest(
+        token=auction.post_token
+    )
+
+    assert response.status_code == 200
+    assert removed_auction is None
+    divar_mock.addon.delete_post_addon.assert_called_with(
+        data=expected_addon_delete_input
+    )
 
 
 @pytest.mark.asyncio

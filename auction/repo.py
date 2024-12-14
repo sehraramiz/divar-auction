@@ -48,6 +48,13 @@ class AuctionRepo:
         self._commit()
         return auction
 
+    async def remove_auction(self, auction_id: AuctionID) -> None:
+        for auction in self.auctions:
+            if auction.uid == auction_id:
+                self.auctions.remove(auction)
+                self._commit()
+        return None
+
     async def set_bidders_count(self, auction: Auction) -> Auction:
         auction.bids_count = sum(
             [1 for bid in self.bids if bid.auction_id == auction.uid]

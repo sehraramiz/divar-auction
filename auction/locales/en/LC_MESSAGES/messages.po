@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-08 13:32+0330\n"
+"POT-Creation-Date: 2024-12-14 12:23+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,64 +17,72 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: auction/api.py:157
-msgid "Auction started successfully!"
-msgstr ""
-
-#: auction/api.py:184
+#: auction/api.py:148
 msgid "Bid placed successfully!"
 msgstr ""
 
-#: auction/auth.py:22 auction/exception.py:42
+#: auction/api.py:172
+msgid "Bid removed successfully!"
+msgstr ""
+
+#: auction/api.py:249
+msgid "Auction started successfully!"
+msgstr ""
+
+#: auction/api.py:303
+msgid "Auction removed successfully!"
+msgstr ""
+
+#: auction/auth.py:22 auction/exception.py:43
 msgid "Invalid Session"
 msgstr ""
 
-#: auction/exception.py:12
+#: auction/exception.py:13
 msgid "Auction Not Found"
 msgstr ""
 
-#: auction/exception.py:17
+#: auction/exception.py:18
 msgid "Bid Not Found"
 msgstr ""
 
-#: auction/exception.py:22
+#: auction/exception.py:23
 msgid "Post Not Found"
 msgstr ""
 
-#: auction/exception.py:27
+#: auction/exception.py:28
 msgid "Auction Already Started"
 msgstr ""
 
-#: auction/exception.py:32
+#: auction/exception.py:33
 msgid "Seller Can't Bid"
 msgstr ""
 
-#: auction/exception.py:37
+#: auction/exception.py:38
 msgid "Bid can't be lower than the starting price"
 msgstr ""
 
-#: auction/exception.py:47
+#: auction/exception.py:48
 msgid "Forbidden"
 msgstr ""
 
-#: auction/exception.py:52
+#: auction/exception.py:53
 msgid "Invalid State"
 msgstr ""
 
-#: auction/pages/auction_intro.html:23 auction/service.py:131
+#: auction/pages/auction_intro.html:23 auction/service.py:160
 msgid "Enter Auction"
 msgstr ""
 
-#: auction/service.py:134
+#: auction/service.py:161
 msgid ""
 "This post has an ongoing auction starting at {starting_price} you can bid on"
 msgstr ""
 
-#: auction/service.py:139
+#: auction/service.py:167
 msgid "Auction Available"
 msgstr ""
 
-#: auction/divar/client.py:37
+#: auction/divar/client.py:39
 msgid "return url must be from divar.ir domain"
 msgstr ""
 
@@ -106,7 +114,8 @@ msgstr ""
 msgid "Bid"
 msgstr ""
 
-#: auction/pages/auction_bidder.html:26 auction/pages/auction_intro.html:33
+#: auction/pages/auction_bidder.html:26 auction/pages/auction_intro.html:34
+#: auction/pages/auction_seller.html:37 auction/pages/auction_start.html:16
 msgid "Return to Divar"
 msgstr ""
 
@@ -156,6 +165,10 @@ msgstr ""
 
 #: auction/pages/auction_seller.html:26
 msgid "Select Bid"
+msgstr ""
+
+#: auction/pages/auction_seller.html:35
+msgid "Remove Auction"
 msgstr ""
 
 #: auction/pages/auction_start.html:12

@@ -27,6 +27,13 @@
         {% endif %}
       </form>
     </ul>
+    <button hx-delete="{{ url_for('remove_auction', post_token=auction.post_token) }}"
+        class="btn-primary"
+        hx-trigger="click"
+        hx-target="body"
+        hx-swap="outerHTML">
+        {{ _("Remove Auction") }}
+    </button><br>
     <button class="btn-secondary" onclick="window.location.href='{{ return_url }}';">{{ _("Return to Divar") }}</button>
 </div>
 {% endblock %}

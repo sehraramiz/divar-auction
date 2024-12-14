@@ -5,6 +5,8 @@ from kenar import (
     ClientConfig,
     CreatePostAddonRequest,
     CreatePostAddonResponse,
+    DeletePostAddonRequest,
+    DeletePostAddonResponse,
     GetPostRequest,
     GetPostResponse,
     GetUserPostsRequest,
@@ -85,6 +87,22 @@ class AuctionAddonService(AddonService):
         if not rsp.is_success:
             logger.error(f"create_post_addon error: {rsp.status_code} {rsp.text}")
         return CreatePostAddonResponse()
+
+    def delete_post_addon(
+        self,
+        data: DeletePostAddonRequest,
+    ) -> DeletePostAddonResponse | None:
+        def send_request():
+            return self._client.delete(
+                url=f"/v1/open-platform/addons/post/{data.token}",
+                params=data.json(),
+            )
+
+        rsp = send_request()
+        if not rsp.is_success:
+            logger.error(f"delete_post_addon error: {rsp.status_code} {rsp.text}")
+            return None
+        return DeletePostAddonResponse()
 
 
 class AuctionFinderService(FinderService):

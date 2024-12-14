@@ -273,3 +273,34 @@ async def select_bid(
         request.url_for("auctions")
     ) + "?post_token={}&return_url={}".format(auction.post_token, "https://divar.ir")
     return RedirectResponse(url=redirect_url, status_code=status.HTTP_302_FOUND)
+
+
+@auction_router.delete("/management/{post_token}", tags=["Auction Management"])
+async def remove_auction(
+    request: Request,
+    post_token: PostToken,
+    seller_id: Annotated[UserID, Depends(auth.get_user_id_from_session)],
+    user_access_token: Annotated[UserID, Depends(auth.auction_management_access)],
+    auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
+    divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
+) -> HTMLResponse:
+    """
+    Remove an Auction, remove addon widget
+    """
+    result = await service.remove_auction(
+        auction_repo=auction_repo,
+        divar_client=divar_client,
+        seller_id=seller_id,
+        user_access_token=user_access_token,
+        post_token=post_token,
+    )
+    auction_repo._commit()
+    redirect_url = f"https://divar.ir/v/{result.post_token}"
+    return templates.TemplateResponse(
+        request=request,
+        name="redirect_with_message.html",
+        context={
+            "message": _("Auction removed successfully!"),
+            "redirect_url": redirect_url,
+        },
+    )

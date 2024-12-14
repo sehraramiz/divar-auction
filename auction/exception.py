@@ -54,6 +54,11 @@ class InvalidState(HTTPException):
         super().__init__(status_code=status.HTTP_401_UNAUTHORIZED, detail=detail)
 
 
+class AuctionRemoveFailure(HTTPException):
+    def __init__(self, detail: str = _("Auction Removal Failed")):
+        super().__init__(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=detail)
+
+
 class OAuthRedirect(HTTPException):
     """This class is used to redirect user in a dependency function"""
 
