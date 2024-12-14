@@ -2,15 +2,12 @@
 
 {% block title %}{{ _("Redirecting") }}{% endblock %}
 
-{% block head %}
-    <script>
-        setTimeout(() => {
-            window.location.href = "{{ redirect_url }}";
-        }, 4000);
-    </script>
-{% endblock %}
-
 {% block body %}
+<script>
+    setTimeout(() => {
+        window.location.href = "{{ redirect_url }}";
+    }, 4000);
+</script>
 <div dir="{{ _dir() }}">
     <h1>{{ message }}</h1></br>
     <p>{{ _("You will be redirected shortly...") }}</p>
