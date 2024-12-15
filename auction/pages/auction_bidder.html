@@ -19,7 +19,7 @@
     <form action="{{ url_for('place_bid') }}" method="post">
         <input type="hidden" name="auction_id" value="{{ auction.uid }}">
         <input type="hidden" name="post_token" value="{{ auction.post_token }}">
-        <label for="amount">{{ _("Bid Amount:") }}</label><br>
+        <label for="amount">{{ _("Bid Amount (rials):") }}</label><br>
         <input type="number" id="amount" name="amount" value={{ auction.last_bid }} min={{ auction.starting_price }}><br>
         <input type="submit" value='{{ _("Bid") }}' class="btn-primary">
     </form>

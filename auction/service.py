@@ -160,7 +160,7 @@ async def create_auction_addon(
     button = WideButtonBar.Button(title=_("Enter Auction"), link=auction_button_link)
     description = _(
         "This post has an ongoing auction starting"
-        " at {starting_price} you can bid on"
+        " at {starting_price} rials you can bid on"
     ).format(starting_price=auction.starting_price)
 
     auction_widgets = [

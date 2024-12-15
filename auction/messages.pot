@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-14 12:31+0330\n"
+"POT-Creation-Date: 2024-12-15 09:08+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -69,14 +69,18 @@ msgstr ""
 msgid "Invalid State"
 msgstr ""
 
+#: auction/exception.py:58
+msgid "Auction Removal Failed"
+msgstr ""
+
 #: auction/pages/auction_intro.html:23 auction/service.py:160
 msgid "Enter Auction"
 msgstr ""
 
 #: auction/service.py:161
 msgid ""
-"This post has an ongoing auction starting at {starting_price} you can bid"
-" on"
+"This post has an ongoing auction starting at {starting_price} rials you "
+"can bid on"
 msgstr ""
 
 #: auction/service.py:167
@@ -108,7 +112,7 @@ msgid "You are the first bidder!"
 msgstr ""
 
 #: auction/pages/auction_bidder.html:22
-msgid "Bid Amount:"
+msgid "Bid Amount (rials):"
 msgstr ""
 
 #: auction/pages/auction_bidder.html:24
@@ -177,7 +181,7 @@ msgid "Remove Auction"
 msgstr ""
 
 #: auction/pages/auction_start.html:12
-msgid "Starting Price"
+msgid "Starting Price (rials)"
 msgstr ""
 
 #: auction/pages/auction_start.html:14

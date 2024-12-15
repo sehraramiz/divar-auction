@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-14 12:31+0330\n"
+"POT-Creation-Date: 2024-12-15 09:08+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -69,16 +69,21 @@ msgstr "دسترسی غیر مجاز"
 msgid "Invalid State"
 msgstr "نشست نامعتبر"
 
+#: auction/exception.py:58
+msgid "Auction Removal Failed"
+msgstr "حذف مزیاده با خطا مواجه شد"
+
 #: auction/pages/auction_intro.html:23 auction/service.py:160
 msgid "Enter Auction"
 msgstr "ورود به مزایده"
 
 #: auction/service.py:161
 msgid ""
-"This post has an ongoing auction starting at {starting_price} you can bid on"
+"This post has an ongoing auction starting at {starting_price} rials you can "
+"bid on"
 msgstr ""
-"برای این آگهی مزایده‌ای با قیمت شروع {starting_price} در جریان است که شما "
-"میتوانید در آن شرکت کنید."
+"برای این آگهی مزایده‌ای با قیمت شروع {starting_price} ریال در جریان است که "
+"شما میتوانید در آن شرکت کنید."
 
 #: auction/service.py:167
 msgid "Auction Available"
@@ -109,8 +114,8 @@ msgid "You are the first bidder!"
 msgstr "شما اولین پیشنهاددهنده هستید."
 
 #: auction/pages/auction_bidder.html:22
-msgid "Bid Amount:"
-msgstr "مبلغ پیشنهادی."
+msgid "Bid Amount (rials):"
+msgstr "مبلغ پیشنهادی (ریال)"
 
 #: auction/pages/auction_bidder.html:24
 msgid "Bid"
@@ -178,8 +183,8 @@ msgid "Remove Auction"
 msgstr "حذف مزایده"
 
 #: auction/pages/auction_start.html:12
-msgid "Starting Price"
-msgstr "مبلغ شروع مزایده"
+msgid "Starting Price (rials)"
+msgstr "مبلغ شروع مزایده (ریال)"
 
 #: auction/pages/auction_start.html:14
 msgid "Start"
