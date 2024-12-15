@@ -94,6 +94,13 @@ class AuctionRepo:
                 self._commit()
         return None
 
+    async def remove_bids_by_auction_id(self, auction_id: AuctionID) -> None:
+        for bid in self.bids:
+            if bid.auction_id == auction_id:
+                self.bids.remove(bid)
+        self._commit()
+        return None
+
     async def remove_selected_bid(self, bid_id: BidID) -> None:
         for auction in self.auctions:
             if auction.selected_bid == bid_id:

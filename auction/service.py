@@ -262,5 +262,6 @@ async def remove_auction(
         raise exception.AuctionRemoveFailure()
 
     await auction_repo.remove_auction(auction_id=auction.uid)
+    await auction_repo.remove_bids_by_auction_id(auction_id=auction.uid)
 
     return auction

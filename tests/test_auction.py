@@ -28,7 +28,7 @@ async def start_auction(auc_repo: AuctionRepo) -> Auction:
     return auction
 
 
-async def start_auction_with_bids(auc_repo: AuctionRepo) -> None:
+async def start_auction_with_bids(auc_repo: AuctionRepo) -> Auction:
     auction = await start_auction(auc_repo)
     bidder_id = UserID(divar_mock_data.BIDDER_PHONE_NUMBER)
     bids = [
@@ -39,6 +39,8 @@ async def start_auction_with_bids(auc_repo: AuctionRepo) -> None:
     ]
     for bid in bids:
         await auc_repo.add_bid(bid)
+    await auc_repo.set_bids_on_auction(auction)
+    return auction
 
 
 @pytest.mark.asyncio
@@ -67,7 +69,7 @@ async def test_seller_remove_auction(
     divar_mock.addon.delete_post_addon = mock.Mock()
     seller_client.app.dependency_overrides[divar.get_divar_client] = lambda: divar_mock  # type: ignore
 
-    auction = await start_auction(auc_repo)
+    auction = await start_auction_with_bids(auc_repo)
 
     response = seller_client.delete(
         f"/auction/management/{auction.post_token}",
@@ -80,12 +82,14 @@ async def test_seller_remove_auction(
     expected_addon_delete_input = divar.client.DeletePostAddonRequest(
         token=auction.post_token
     )
+    first_bid = await auc_repo.read_bid_by_id(auction.bids[0].uid)
 
     assert response.status_code == 200
     assert removed_auction is None
     divar_mock.addon.delete_post_addon.assert_called_with(
         data=expected_addon_delete_input
     )
+    assert first_bid is None
 
 
 @pytest.mark.asyncio
