@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-15 09:08+0330\n"
+"POT-Creation-Date: 2024-12-15 19:34+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -73,17 +73,17 @@ msgstr ""
 msgid "Auction Removal Failed"
 msgstr ""
 
-#: auction/pages/auction_intro.html:23 auction/service.py:160
+#: auction/pages/auction_intro.html:23 auction/service.py:161
 msgid "Enter Auction"
 msgstr ""
 
-#: auction/service.py:161
+#: auction/service.py:162
 msgid ""
 "This post has an ongoing auction starting at {starting_price} rials you "
 "can bid on"
 msgstr ""
 
-#: auction/service.py:167
+#: auction/service.py:168
 msgid "Auction Available"
 msgstr ""
 
@@ -111,19 +111,33 @@ msgstr ""
 msgid "You are the first bidder!"
 msgstr ""
 
-#: auction/pages/auction_bidder.html:22
+#: auction/pages/auction_bidder.html:19
+msgid ""
+"All bid amounts must be a multiple of the minimum raise amount plus the "
+"starting price."
+msgstr ""
+
+#: auction/pages/auction_bidder.html:20
+msgid "Minimum raise amount: {min_raise_amount}"
+msgstr ""
+
+#: auction/pages/auction_bidder.html:21
+msgid "Starting price: {starting_price}"
+msgstr ""
+
+#: auction/pages/auction_bidder.html:25
 msgid "Bid Amount (rials):"
 msgstr ""
 
-#: auction/pages/auction_bidder.html:24
+#: auction/pages/auction_bidder.html:27
 msgid "Bid"
 msgstr ""
 
-#: auction/pages/auction_bidder.html:31
+#: auction/pages/auction_bidder.html:35
 msgid "Remove Bid"
 msgstr ""
 
-#: auction/pages/auction_bidder.html:33 auction/pages/auction_intro.html:34
+#: auction/pages/auction_bidder.html:38 auction/pages/auction_intro.html:34
 #: auction/pages/auction_seller.html:37 auction/pages/auction_start.html:16
 msgid "Return to Divar"
 msgstr ""

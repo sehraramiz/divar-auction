@@ -32,6 +32,12 @@ class Auction(BaseModel):
     def top_bids(self) -> list[Bid]:
         return sorted(self.bids)[::-1][:3]
 
+    @property
+    def min_raise_amount(self) -> Rial:
+        raise_floor = Rial(500000)
+        raise_min = int(self.starting_price * 0.05)
+        return Rial(max(raise_floor, raise_min))
+
 
 class AuctionSellerView(Auction): ...
 
@@ -45,6 +51,7 @@ class AuctionBidderView(BaseModel):
     last_bid: Rial = Rial(0)
     return_url: DivarReturnUrl
     top_bids: list[Bid] = Field(default_factory=list)
+    min_raise_amount: Rial
 
 
 class AuctionStartInput(BaseModel):

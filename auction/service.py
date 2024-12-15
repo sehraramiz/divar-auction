@@ -72,6 +72,7 @@ async def auction_bidding(
         last_bid=last_bid_amount,
         return_url=return_url,
         top_bids=top_bids,
+        min_raise_amount=auction.min_raise_amount,
     )
 
 
