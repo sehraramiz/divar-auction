@@ -23,13 +23,15 @@
         <input type="number" id="amount" name="amount" value={{ auction.last_bid }} min={{ auction.starting_price }}><br>
         <input type="submit" value='{{ _("Bid") }}' class="btn-primary">
     </form>
-    <button hx-delete="{{ url_for('remove_bid', post_token=auction.post_token) }}"
-        class="btn-primary"
-        hx-trigger="click"
-        hx-target="body"
-        hx-swap="outerHTML">
-        {{ _("Remove Bid") }}
-    </button>
+    {% if auction.last_bid %}
+        <button hx-delete="{{ url_for('remove_bid', post_token=auction.post_token) }}"
+            class="btn-primary"
+            hx-trigger="click"
+            hx-target="body"
+            hx-swap="outerHTML">
+            {{ _("Remove Bid") }}
+        </button><br><br>
+    {% endif %}
     <button class="btn-secondary" onclick="window.location.href='{{ auction.return_url }}';">{{ _("Return to Divar") }}</button>
 </div>
 {% endblock %}
