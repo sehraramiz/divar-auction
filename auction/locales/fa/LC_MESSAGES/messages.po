@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-15 20:29+0330\n"
+"POT-Creation-Date: 2024-12-16 13:10+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,51 +33,60 @@ msgstr "مزایده با موفقیت آغاز شد!"
 msgid "Auction removed successfully!"
 msgstr "مزایده با موفقیت حذف شد!"
 
-#: auction/auth.py:22 auction/exception.py:43
+#: auction/auth.py:22 auction/exception.py:64
 msgid "Invalid Session"
 msgstr "نشست نامعتبر"
 
-#: auction/exception.py:13
+#: auction/exception.py:15
 msgid "Auction Not Found"
 msgstr "مزایده مورد نظر پیدا نشد."
 
-#: auction/exception.py:18
+#: auction/exception.py:22
 msgid "Bid Not Found"
 msgstr "پیشنهاد مورد نظر پیدا نشد."
 
-#: auction/exception.py:23
+#: auction/exception.py:29
 msgid "Post Not Found"
 msgstr "آگهی مورد نظر پیدا نشد."
 
-#: auction/exception.py:28
+#: auction/exception.py:36
 msgid "Auction Already Started"
 msgstr "مزایده هم‌اکنون در حال برگزاری است."
 
-#: auction/exception.py:33
+#: auction/exception.py:43
 msgid "Seller Can't Bid"
 msgstr "خریدار نمی‌تواند پیشنهاد قیمت دهد"
 
-#: auction/exception.py:38
+#: auction/exception.py:50
 msgid "Bid can't be lower than the starting price"
 msgstr "پیشنهاد قیمت نباید کمتر از مبلغ اولیه مزایده باشد"
 
-#: auction/exception.py:48
+#: auction/exception.py:57
+msgid "Invalid bid amount"
+msgstr "مبلغ پیشنهاد نامعتبر"
+
+#: auction/exception.py:71
 msgid "Forbidden"
 msgstr "دسترسی غیر مجاز"
 
-#: auction/exception.py:53
+#: auction/exception.py:78
 msgid "Invalid State"
 msgstr "نشست نامعتبر"
 
-#: auction/exception.py:58
+#: auction/exception.py:85
 msgid "Auction Removal Failed"
 msgstr "حذف مزیاده با خطا مواجه شد"
 
-#: auction/pages/auction_intro.html:23 auction/service.py:161
+#: auction/service.py:118
+msgid "Bid amount must starting price + multiple of min raise amount"
+msgstr ""
+"مبلغ هر پیشنهاد باید مضربی از حداقل میزان افزایش به علاوه مبلغ شروع باشد."
+
+#: auction/pages/auction_intro.html:23 auction/service.py:169
 msgid "Enter Auction"
 msgstr "ورود به مزایده"
 
-#: auction/service.py:162
+#: auction/service.py:170
 msgid ""
 "This post has an ongoing auction starting at {starting_price} rials you can "
 "bid on"
@@ -85,7 +94,7 @@ msgstr ""
 "برای این آگهی مزایده‌ای با قیمت شروع {starting_price} ریال در جریان است که "
 "شما میتوانید در آن شرکت کنید."
 
-#: auction/service.py:168
+#: auction/service.py:176
 msgid "Auction Available"
 msgstr "مزایده در حال اجرا است"
 
