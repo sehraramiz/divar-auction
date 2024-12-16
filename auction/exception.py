@@ -10,52 +10,72 @@ from auction.pages.template import templates
 
 
 class AuctionNotFound(HTTPException):
-    def __init__(self, detail: str = _("Auction Not Found")):
+    def __init__(self, detail: str | None = None):
+        if detail is None:
+            detail = _("Auction Not Found")
         super().__init__(status_code=status.HTTP_404_NOT_FOUND, detail=detail)
 
 
 class BidNotFound(HTTPException):
-    def __init__(self, detail: str = _("Bid Not Found")):
+    def __init__(self, detail: str | None = None):
+        if detail is None:
+            detail = _("Bid Not Found")
         super().__init__(status_code=status.HTTP_404_NOT_FOUND, detail=detail)
 
 
 class PostNotFound(HTTPException):
-    def __init__(self, detail: str = _("Post Not Found")):
+    def __init__(self, detail: str | None = None):
+        if detail is None:
+            detail = _("Post Not Found")
         super().__init__(status_code=status.HTTP_404_NOT_FOUND, detail=detail)
 
 
 class AuctionAlreadyStarted(HTTPException):
-    def __init__(self, detail: str = _("Auction Already Started")):
+    def __init__(self, detail: str | None = None):
+        if detail is None:
+            detail = _("Auction Already Started")
         super().__init__(status_code=status.HTTP_400_BAD_REQUEST, detail=detail)
 
 
 class BidFromSellerNotAllowed(HTTPException):
-    def __init__(self, detail: str = _("Seller Can't Bid")):
+    def __init__(self, detail: str | None = None):
+        if detail is None:
+            detail = _("Seller Can't Bid")
         super().__init__(status_code=status.HTTP_400_BAD_REQUEST, detail=detail)
 
 
 class BidTooLow(HTTPException):
-    def __init__(self, detail: str = _("Bid can't be lower than the starting price")):
+    def __init__(self, detail: str | None = None):
+        if detail is None:
+            detail = _("Bid can't be lower than the starting price")
         super().__init__(status_code=status.HTTP_400_BAD_REQUEST, detail=detail)
 
 
 class InvalidSession(HTTPException):
-    def __init__(self, detail: str = _("Invalid Session")):
+    def __init__(self, detail: str | None = None):
+        if detail is None:
+            detail = _("Invalid Session")
         super().__init__(status_code=status.HTTP_401_UNAUTHORIZED, detail=detail)
 
 
 class Forbidden(HTTPException):
-    def __init__(self, detail: str = _("Forbidden")):
+    def __init__(self, detail: str | None = None):
+        if detail is None:
+            detail = _("Forbidden")
         super().__init__(status_code=status.HTTP_403_FORBIDDEN, detail=detail)
 
 
 class InvalidState(HTTPException):
-    def __init__(self, detail: str = _("Invalid State")):
+    def __init__(self, detail: str | None = None):
+        if detail is None:
+            detail = _("Invalid State")
         super().__init__(status_code=status.HTTP_401_UNAUTHORIZED, detail=detail)
 
 
 class AuctionRemoveFailure(HTTPException):
-    def __init__(self, detail: str = _("Auction Removal Failed")):
+    def __init__(self, detail: str | None = None):
+        if detail is None:
+            detail = _("Auction Removal Failed")
         super().__init__(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=detail)
 
 
