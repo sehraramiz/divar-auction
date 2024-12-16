@@ -17,8 +17,8 @@
     {% endif %}
 
     <p>{{ _("All bid amounts must be a multiple of the minimum raise amount plus the starting price.") }}</p>
-    <p>{{ _("Minimum raise amount: {min_raise_amount}").format(min_raise_amount=auction.min_raise_amount) }} rials</p>
-    <p>{{ _("Starting price: {starting_price}").format(starting_price=auction.starting_price) }} rials</p>
+    <p>{{ _("Minimum raise amount: {min_raise_amount} rials").format(min_raise_amount=auction.min_raise_amount) }}</p>
+    <p>{{ _("Starting price: {starting_price} rials").format(starting_price=auction.starting_price) }}</p>
     <form action="{{ url_for('place_bid') }}" method="post">
         <input type="hidden" name="auction_id" value="{{ auction.uid }}">
         <input type="hidden" name="post_token" value="{{ auction.post_token }}">

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-15 19:34+0330\n"
+"POT-Creation-Date: 2024-12-15 20:29+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -117,15 +117,16 @@ msgstr "شما اولین پیشنهاددهنده هستید."
 msgid ""
 "All bid amounts must be a multiple of the minimum raise amount plus the "
 "starting price."
-msgstr "مبلغ هر پیشنهاد باید مضربی از حداقل میزان افزایش به علاوه مبلغ شروع باشد."
+msgstr ""
+"مبلغ هر پیشنهاد باید مضربی از حداقل میزان افزایش به علاوه مبلغ شروع باشد."
 
 #: auction/pages/auction_bidder.html:20
-msgid "Minimum raise amount: {min_raise_amount}"
-msgstr "حداقل میزان افزایش: {min_raise_amount}"
+msgid "Minimum raise amount: {min_raise_amount} rials"
+msgstr "حداقل میزان افزایش: {min_raise_amount} ریال"
 
 #: auction/pages/auction_bidder.html:21
-msgid "Starting price: {starting_price}"
-msgstr "مبلغ شروع: {starting_price}"
+msgid "Starting price: {starting_price} rials"
+msgstr "مبلغ شروع: {starting_price} ریال"
 
 #: auction/pages/auction_bidder.html:25
 msgid "Bid Amount (rials):"

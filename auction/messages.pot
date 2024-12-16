@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-15 19:34+0330\n"
+"POT-Creation-Date: 2024-12-15 20:29+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -118,11 +118,11 @@ msgid ""
 msgstr ""
 
 #: auction/pages/auction_bidder.html:20
-msgid "Minimum raise amount: {min_raise_amount}"
+msgid "Minimum raise amount: {min_raise_amount} rials"
 msgstr ""
 
 #: auction/pages/auction_bidder.html:21
-msgid "Starting price: {starting_price}"
+msgid "Starting price: {starting_price} rials"
 msgstr ""
 
 #: auction/pages/auction_bidder.html:25
