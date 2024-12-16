@@ -1,3 +1,5 @@
+import html
+
 from unittest import mock
 from uuid import uuid4
 
@@ -24,7 +26,7 @@ async def start_auction(auc_repo: AuctionRepo) -> Auction:
         bids=[],
         post_title=_("Test Post"),
     )
-    await auc_repo.add_auction(auction)
+    auction = await auc_repo.add_auction(auction)
     return auction
 
 
@@ -96,13 +98,12 @@ async def test_seller_remove_auction(
 async def test_bidder_place_bid(
     bidder_client: TestClient, auc_repo: AuctionRepo
 ) -> None:
-    await start_auction(auc_repo)
+    auction = await start_auction(auc_repo)
     post_token = PostToken("A")
-    auction = await auc_repo.read_auction_by_post_token(post_token=post_token)
-    assert auction is not None
+    bid_amount = Rial(auction.starting_price + auction.min_raise_amount)
 
     bid_data = PlaceBid(
-        auction_id=auction.uid, post_token=post_token, amount=Rial(11000)
+        auction_id=auction.uid, post_token=post_token, amount=bid_amount
     )
     response = bidder_client.post(
         "/auction/bidding/",
@@ -112,6 +113,50 @@ async def test_bidder_place_bid(
     )
     assert response.status_code == 200
     assert "Bid placed" in response.text
+
+
+@pytest.mark.asyncio
+async def test_bidder_place_bid_lower_than_starting_price(
+    bidder_client: TestClient, auc_repo: AuctionRepo
+) -> None:
+    auction = await start_auction(auc_repo)
+    post_token = PostToken("A")
+
+    bid_data = PlaceBid(auction_id=auction.uid, post_token=post_token, amount=Rial(10))
+    response = bidder_client.post(
+        "/auction/bidding/",
+        data=bid_data.model_dump(mode="json"),
+        params={"hl": "en"},
+        follow_redirects=True,
+    )
+    assert response.status_code == 400
+    assert "Bid can't be lower than the starting price" in html.unescape(response.text)
+
+
+@pytest.mark.asyncio
+async def test_bidder_place_invalid_bid_amount(
+    bidder_client: TestClient, auc_repo: AuctionRepo
+) -> None:
+    auction = await start_auction(auc_repo)
+    post_token = PostToken("A")
+
+    wrong_bid_amount = Rial(
+        auction.starting_price + (auction.min_raise_amount) + Rial(1000)
+    )
+    bid_data = PlaceBid(
+        auction_id=auction.uid, post_token=post_token, amount=wrong_bid_amount
+    )
+    response = bidder_client.post(
+        "/auction/bidding/",
+        data=bid_data.model_dump(mode="json"),
+        params={"hl": "en"},
+        follow_redirects=True,
+    )
+    assert response.status_code == 400
+    assert (
+        "Bid amount must starting price + multiple of min raise amount"
+        in html.unescape(response.text)
+    )
 
 
 @pytest.mark.asyncio
@@ -157,12 +202,14 @@ async def test_remove_selected_bid_after_bidder_changes_amount(
 ) -> None:
     auction = await start_auction(auc_repo)
     bidder_id = UserID(divar_mock_data.BIDDER_PHONE_NUMBER)
-    bid = Bid(bidder_id=bidder_id, auction_id=auction.uid, amount=Rial(1000000))
+    bid_amount = Rial(auction.starting_price + auction.min_raise_amount)
+    bid = Bid(bidder_id=bidder_id, auction_id=auction.uid, amount=bid_amount)
     await auc_repo.add_bid(bid)
     await auc_repo.select_bid(auction, bid_id=bid.uid)
 
+    new_bid_amount = Rial(auction.starting_price + (2 * auction.min_raise_amount))
     bid_data = PlaceBid(
-        auction_id=auction.uid, post_token=auction.post_token, amount=Rial(2000000)
+        auction_id=auction.uid, post_token=auction.post_token, amount=new_bid_amount
     )
     response = bidder_client.post(
         "/auction/bidding/",

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-15 20:29+0330\n"
+"POT-Creation-Date: 2024-12-16 12:25+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,7 +33,7 @@ msgstr ""
 msgid "Auction removed successfully!"
 msgstr ""
 
-#: auction/auth.py:22 auction/exception.py:43
+#: auction/auth.py:22 auction/exception.py:50
 msgid "Invalid Session"
 msgstr ""
 
@@ -61,29 +61,37 @@ msgstr ""
 msgid "Bid can't be lower than the starting price"
 msgstr ""
 
-#: auction/exception.py:48
+#: auction/exception.py:45
+msgid "Invalid bid amount"
+msgstr ""
+
+#: auction/exception.py:55
 msgid "Forbidden"
 msgstr ""
 
-#: auction/exception.py:53
+#: auction/exception.py:60
 msgid "Invalid State"
 msgstr ""
 
-#: auction/exception.py:58
+#: auction/exception.py:65
 msgid "Auction Removal Failed"
 msgstr ""
 
-#: auction/pages/auction_intro.html:23 auction/service.py:161
+#: auction/service.py:117
+msgid "Bid amount must starting price + multiple of min raise amount"
+msgstr ""
+
+#: auction/pages/auction_intro.html:23 auction/service.py:167
 msgid "Enter Auction"
 msgstr ""
 
-#: auction/service.py:162
+#: auction/service.py:168
 msgid ""
 "This post has an ongoing auction starting at {starting_price} rials you "
 "can bid on"
 msgstr ""
 
-#: auction/service.py:168
+#: auction/service.py:174
 msgid "Auction Available"
 msgstr ""
 

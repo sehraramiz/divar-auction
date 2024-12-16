@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-14 12:23+0330\n"
+"POT-Creation-Date: 2024-12-16 12:25+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,7 +33,7 @@ msgstr ""
 msgid "Auction removed successfully!"
 msgstr ""
 
-#: auction/auth.py:22 auction/exception.py:43
+#: auction/auth.py:22 auction/exception.py:50
 msgid "Invalid Session"
 msgstr ""
 
@@ -61,24 +61,37 @@ msgstr ""
 msgid "Bid can't be lower than the starting price"
 msgstr ""
 
-#: auction/exception.py:48
+#: auction/exception.py:45
+msgid "Invalid bid amount"
+msgstr ""
+
+#: auction/exception.py:55
 msgid "Forbidden"
 msgstr ""
 
-#: auction/exception.py:53
+#: auction/exception.py:60
 msgid "Invalid State"
 msgstr ""
 
-#: auction/pages/auction_intro.html:23 auction/service.py:160
+#: auction/exception.py:65
+msgid "Auction Removal Failed"
+msgstr ""
+
+#: auction/service.py:117
+msgid "Bid amount must starting price + multiple of min raise amount"
+msgstr ""
+
+#: auction/pages/auction_intro.html:23 auction/service.py:167
 msgid "Enter Auction"
 msgstr ""
 
-#: auction/service.py:161
+#: auction/service.py:168
 msgid ""
-"This post has an ongoing auction starting at {starting_price} you can bid on"
+"This post has an ongoing auction starting at {starting_price} rials you can "
+"bid on"
 msgstr ""
 
-#: auction/service.py:167
+#: auction/service.py:174
 msgid "Auction Available"
 msgstr ""
 
@@ -106,15 +119,33 @@ msgstr ""
 msgid "You are the first bidder!"
 msgstr ""
 
-#: auction/pages/auction_bidder.html:22
-msgid "Bid Amount:"
+#: auction/pages/auction_bidder.html:19
+msgid ""
+"All bid amounts must be a multiple of the minimum raise amount plus the "
+"starting price."
 msgstr ""
 
-#: auction/pages/auction_bidder.html:24
+#: auction/pages/auction_bidder.html:20
+msgid "Minimum raise amount: {min_raise_amount} rials"
+msgstr ""
+
+#: auction/pages/auction_bidder.html:21
+msgid "Starting price: {starting_price} rials"
+msgstr ""
+
+#: auction/pages/auction_bidder.html:25
+msgid "Bid Amount (rials):"
+msgstr ""
+
+#: auction/pages/auction_bidder.html:27
 msgid "Bid"
 msgstr ""
 
-#: auction/pages/auction_bidder.html:26 auction/pages/auction_intro.html:34
+#: auction/pages/auction_bidder.html:35
+msgid "Remove Bid"
+msgstr ""
+
+#: auction/pages/auction_bidder.html:38 auction/pages/auction_intro.html:34
 #: auction/pages/auction_seller.html:37 auction/pages/auction_start.html:16
 msgid "Return to Divar"
 msgstr ""
@@ -172,7 +203,7 @@ msgid "Remove Auction"
 msgstr ""
 
 #: auction/pages/auction_start.html:12
-msgid "Starting Price"
+msgid "Starting Price (rials)"
 msgstr ""
 
 #: auction/pages/auction_start.html:14
@@ -199,6 +230,6 @@ msgstr ""
 msgid "Redirecting"
 msgstr ""
 
-#: auction/pages/redirect_with_message.html:16
+#: auction/pages/redirect_with_message.html:13
 msgid "You will be redirected shortly..."
 msgstr ""

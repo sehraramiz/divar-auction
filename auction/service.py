@@ -110,6 +110,14 @@ async def place_bid(
     if bid_data.amount < auction.starting_price:
         raise exception.BidTooLow()
 
+    bid_is_valid = (
+        (bid_data.amount - auction.starting_price) / auction.min_raise_amount
+    ).is_integer()
+    if not bid_is_valid:
+        raise exception.InvalidBidAmount(
+            _("Bid amount must starting price + multiple of min raise amount")
+        )
+
     bid = None
     last_bid = await auction_repo.find_bid(auction_id=auction.uid, bidder_id=bidder_id)
     if last_bid:

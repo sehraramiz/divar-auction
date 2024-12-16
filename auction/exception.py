@@ -51,6 +51,13 @@ class BidTooLow(HTTPException):
         super().__init__(status_code=status.HTTP_400_BAD_REQUEST, detail=detail)
 
 
+class InvalidBidAmount(HTTPException):
+    def __init__(self, detail: str | None = None):
+        if detail is None:
+            detail = _("Invalid bid amount")
+        super().__init__(status_code=status.HTTP_400_BAD_REQUEST, detail=detail)
+
+
 class InvalidSession(HTTPException):
     def __init__(self, detail: str | None = None):
         if detail is None:
