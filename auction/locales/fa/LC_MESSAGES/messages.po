@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-16 13:10+0330\n"
+"POT-Creation-Date: 2024-12-17 14:24+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -142,14 +142,18 @@ msgid "Bid Amount (rials):"
 msgstr "مبلغ پیشنهادی (ریال)"
 
 #: auction/pages/auction_bidder.html:27
+msgid "Tomans"
+msgstr "تومان"
+
+#: auction/pages/auction_bidder.html:28
 msgid "Bid"
 msgstr "ثبت پیشنهاد"
 
-#: auction/pages/auction_bidder.html:35
+#: auction/pages/auction_bidder.html:36
 msgid "Remove Bid"
 msgstr "حذف پیشنهاد"
 
-#: auction/pages/auction_bidder.html:38 auction/pages/auction_intro.html:34
+#: auction/pages/auction_bidder.html:39 auction/pages/auction_intro.html:34
 #: auction/pages/auction_seller.html:37 auction/pages/auction_start.html:16
 msgid "Return to Divar"
 msgstr "بازگشت به دیوار"

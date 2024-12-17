@@ -23,7 +23,8 @@
         <input type="hidden" name="auction_id" value="{{ auction.uid }}">
         <input type="hidden" name="post_token" value="{{ auction.post_token }}">
         <label for="amount">{{ _("Bid Amount (rials):") }}</label><br>
-        <input type="number" id="amount" name="amount" value={{ auction.last_bid }} min={{ auction.starting_price }}><br>
+        <input class="price-input" type="number" id="amount" name="amount" value={{ auction.last_bid }} min={{ auction.starting_price }}><br>
+        <p><span id="tomanDisplay">{{ auction.last_bid }}</span> {{ _("Tomans") }}</p>
         <input type="submit" value='{{ _("Bid") }}' class="btn-primary">
     </form>
     {% if auction.last_bid %}
@@ -37,4 +38,5 @@
     {% endif %}
     <button class="btn-secondary" onclick="window.location.href='{{ auction.return_url }}';">{{ _("Return to Divar") }}</button>
 </div>
+{% include "scripts/toman_script.html" %}
 {% endblock %}

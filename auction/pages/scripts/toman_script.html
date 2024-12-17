@@ -1,0 +1,20 @@
+<script>
+    function formatNumber(n) {
+        if (n) {
+            const tomanValue = parseFloat(n) / 10;
+            return tomanValue
+                .toFixed(0)
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        } else return "0";
+    }
+
+    const tomanDisplay = document.getElementById("tomanDisplay");
+
+    document.querySelectorAll('.price-input').forEach(input => {
+        input.addEventListener("input", function () {
+            const inputValue = input.value;
+            const formattedToman = formatNumber(inputValue);
+            tomanDisplay.textContent = formattedToman;
+        });
+    });
+</script>
