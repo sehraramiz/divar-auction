@@ -7,7 +7,7 @@
     <h2>{{ _("Manage Auction") }}</h2>
     <p style="font-size: larger"><b>{{ _("Title:") }}</b> {{ auction.post_title }}</p></p></br>
     <a target="_blank" href="https://divar.ir/v/{{ auction.post_token }}">{{ _("Item Details") }}</a>
-    <h4>{{ _("There are {bids_count} bids on your item").format(bids_count=auction.bids_count) }}</h4>
+    <h4>{{ _("There are {bids_count} bids on your item").format(bids_count=auction.bids_count | localize_number) }}</h4>
     <ul>
         <form action="{{ url_for('select_bid', post_token=auction.post_token) }}" method="post">
         {% for bid in auction.bids %}
@@ -18,7 +18,7 @@
                     value="{{ bid.uid }}"
                     {% if bid.uid == auction.selected_bid %}checked{% endif %}
                     required>
-                {{ _("{bid_amount} from {bidder_id}").format(bid_amount=bid.amount, bidder_id=bid.bidder_id) }}
+                {{ _("{bid_amount} from {bidder_id}").format(bid_amount=bid.amount | localize_number, bidder_id=bid.bidder_id) }}
             </label>
             <br>
         {% endfor %}

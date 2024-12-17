@@ -4,6 +4,9 @@ import pathlib
 from contextvars import ContextVar
 from typing import Literal
 
+from babel import Locale
+from babel.numbers import format_number
+
 from auction.config import config
 
 
@@ -34,3 +37,16 @@ def gettext(msg: str) -> str:
         "messages", localedir, languages=[lang_code]
     )
     return translation.gettext(msg)
+
+
+def localize_number(value: str) -> str:
+    lang_code = get_lang_code()
+    locale = Locale(lang_code)
+    formated_number = format_number(value, locale=locale)
+
+    # TODO: check if babel can also convert to farsi numbers
+    if lang_code == "fa":
+        translation_table = str.maketrans("0123456789", "۰۱۲۳۴۵۶۷۸۹")
+        formated_number = formated_number.translate(translation_table)
+
+    return formated_number
