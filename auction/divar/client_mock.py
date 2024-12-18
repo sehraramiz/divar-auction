@@ -36,7 +36,7 @@ divar_client_mock = DivarClient(client_conf)
 class AuctionAddonServiceMock(AuctionAddonService):
     """addon service mock"""
 
-    def create_post_addon(
+    async def create_post_addon(
         self,
         access_token: str,
         data: CreatePostAddonRequest,
@@ -47,7 +47,7 @@ class AuctionAddonServiceMock(AuctionAddonService):
 class AuctionFinderServiceMock(AuctionFinderService):
     """finder service mock"""
 
-    def get_post(
+    async def get_post(
         self,
         data: GetPostRequest,
         max_retry: int = 3,
@@ -55,7 +55,7 @@ class AuctionFinderServiceMock(AuctionFinderService):
     ) -> GetPostResponse | None:
         return PostItemResponse()
 
-    def get_user(
+    async def get_user(
         self,
         access_token: str,
         data: GetUserRequest = None,
@@ -64,7 +64,7 @@ class AuctionFinderServiceMock(AuctionFinderService):
     ) -> GetUserResponse:
         return GetUserResponse(phone_numbers=[mock_data.SELLER_PHONE_NUMBER])
 
-    def get_user_posts(
+    async def get_user_posts(
         self,
         access_token: str,
         data: GetUserPostsRequest | None = None,
@@ -80,7 +80,7 @@ class AuctionFinderServiceMock(AuctionFinderService):
     async def find_post_from_user_posts(
         self, post_token: PostToken, user_access_token: str
     ) -> Post | None:
-        result = self.get_user_posts(access_token=user_access_token)
+        result = await self.get_user_posts(access_token=user_access_token)
         return next((post for post in result.posts), None)
 
 

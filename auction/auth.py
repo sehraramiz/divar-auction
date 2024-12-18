@@ -75,7 +75,7 @@ async def authorize_user_and_set_session(
         access_token_data = divar_client.oauth.get_access_token(
             authorization_token=code
         )
-        user_data = divar_client.finder.get_user(access_token_data.access_token)
+        user_data = await divar_client.finder.get_user(access_token_data.access_token)
 
         if not user_data.phone_numbers:
             raise exception.InvalidSession()

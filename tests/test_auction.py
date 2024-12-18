@@ -67,7 +67,7 @@ async def test_seller_remove_auction(
     seller_client: TestClient, auc_repo: AuctionRepo
 ) -> None:
     divar_mock = divar.DivarClientMock()
-    divar_mock.addon.delete_post_addon = mock.Mock()
+    divar_mock.addon.delete_post_addon = mock.AsyncMock()
     seller_client.app.dependency_overrides[divar.get_divar_client] = lambda: divar_mock  # type: ignore
 
     auction = await start_auction_with_bids(auc_repo)

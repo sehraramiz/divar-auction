@@ -1,5 +1,7 @@
 from typing import Annotated
 
+import httpx
+
 from kenar import Client as DivarClient
 from kenar import (
     ClientConfig,
@@ -71,34 +73,43 @@ class Post(BaseModel):
 
 
 class AuctionAddonService(AddonService):
-    def create_post_addon(
+    def __init__(self, client: httpx.Client):
+        self._client = client
+        self._aclient = httpx.AsyncClient(
+            timeout=1,
+            headers=client.headers,
+            base_url=client.base_url,
+        )
+        super().__init__(client=client)
+
+    async def create_post_addon(
         self,
         access_token: str,
         data: CreatePostAddonRequest,
     ) -> CreatePostAddonResponse:
-        def send_request():
-            return self._client.post(
+        async def send_request():
+            return await self._aclient.post(
                 url=f"/v2/open-platform/addons/post/{data.token}",
                 content=data.model_dump_json(exclude={"token"}),
                 headers={ACCESS_TOKEN_HEADER_NAME: access_token},
             )
 
-        rsp = send_request()
+        rsp = await send_request()
         if not rsp.is_success:
             logger.error(f"create_post_addon error: {rsp.status_code} {rsp.text}")
         return CreatePostAddonResponse()
 
-    def delete_post_addon(
+    async def delete_post_addon(
         self,
         data: DeletePostAddonRequest,
     ) -> DeletePostAddonResponse | None:
-        def send_request():
-            return self._client.delete(
+        async def send_request():
+            return await self._aclient.delete(
                 url=f"/v1/open-platform/addons/post/{data.token}",
                 params=data.json(),
             )
 
-        rsp = send_request()
+        rsp = await send_request()
         if not rsp.is_success:
             logger.error(f"delete_post_addon error: {rsp.status_code} {rsp.text}")
             return None
@@ -108,58 +119,67 @@ class AuctionAddonService(AddonService):
 class AuctionFinderService(FinderService):
     """finder service with some fixes"""
 
-    def get_post(
+    def __init__(self, client: httpx.Client):
+        self._client = client
+        self._aclient = httpx.AsyncClient(
+            timeout=1,
+            headers=client.headers,
+            base_url=client.base_url,
+        )
+        super().__init__(client=client)
+
+    async def get_post(
         self,
         data: GetPostRequest,
         max_retry: int = 3,
         retry_delay: int = 1,
     ) -> GetPostResponse | None:
-        def send_request():
-            return self._client.request(
+        async def send_request():
+            return await self._aclient.request(
                 method="GET",
                 url=f"/v1/open-platform/finder/post/{data.token}",
                 content=data.json(),
             )
 
-        rsp = send_request()
+        rsp = await send_request()
         if rsp.is_success:
             return PostItemResponse(**rsp.json())
         logger.error(f"get_post error: {rsp.status_code} {rsp.text}")
         return None
 
-    def get_user(
+    async def get_user(
         self,
         access_token: str,
         data: GetUserRequest = None,
         max_retry: int = 3,
         retry_delay: int = 1,
     ) -> GetUserResponse:
-        def send_request():
-            return self._client.post(
+        async def send_request():
+            return await self._aclient.post(
                 url="/v1/open-platform/users",
                 content=data.json() if data is not None else "",
                 headers={ACCESS_TOKEN_HEADER_NAME: access_token},
             )
 
-        rsp = send_request()
+        rsp = await send_request()
         if rsp.is_success:
             return GetUserResponse(**rsp.json())
         logger.error(f"get_user error: {rsp.status_code} {rsp.text}")
         return GetUserResponse(phone_numbers=[])
 
-    def get_user_posts(
+    async def get_user_posts(
         self,
         access_token: str,
         data: GetUserPostsRequest | None = None,
     ):
-        def send_request():
-            return self._client.get(
+        async def send_request():
+            return await self._aclient.get(
                 url="/v1/open-platform/finder/user-posts",
                 params=data.json() if data is not None else "",
                 headers={ACCESS_TOKEN_HEADER_NAME: access_token},
             )
 
-        rsp = send_request()
+        rsp = await send_request()
         if rsp.is_success:
             return GetUserPostsResponse(**rsp.json())
         # TODO: log response error
@@ -171,7 +191,7 @@ class AuctionFinderService(FinderService):
             raise PostNotFound()
         if config.debug:
             return PostItemResponse.dummy(post_token=post_token)
-        post = self.get_post(GetPostRequest(token=post_token))
+        post = await self.get_post(GetPostRequest(token=post_token))
         if post is None:
             raise PostNotFound()
         return post
@@ -185,7 +205,7 @@ class AuctionFinderService(FinderService):
             return None
         if config.debug:
             return Post(token=post_token, title="Dummy Post")
-        result = self.get_user_posts(access_token=user_access_token)
+        result = await self.get_user_posts(access_token=user_access_token)
         if not result.posts:
             return None
         return next((post for post in result.posts if post.token == post_token), None)
@@ -202,11 +222,12 @@ async def get_divar_client() -> DivarClient:
 
 
 if __name__ == "__main__":
+    import asyncio
     import sys
 
     post_token = ""
     if len(sys.argv) > 1:
         post_token = sys.argv[1]
-    resp = divar_client.finder.get_post(GetPostRequest(token=post_token))
+    resp = asyncio.run(divar_client.finder.get_post(GetPostRequest(token=post_token)))
     if resp:
         print(resp.model_dump())

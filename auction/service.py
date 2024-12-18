@@ -181,7 +181,7 @@ async def create_auction_addon(
     create_addon_data = CreatePostAddonRequest(
         token=post_token, widgets=auction_widgets
     )
-    divar_client.addon.create_post_addon(
+    await divar_client.addon.create_post_addon(
         access_token=user_access_token, data=create_addon_data
     )
 
@@ -266,7 +266,9 @@ async def remove_auction(
         raise exception.Forbidden()
 
     remove_addon_data = divar.client.DeletePostAddonRequest(token=post_token)
-    remove_addon_result = divar_client.addon.delete_post_addon(data=remove_addon_data)
+    remove_addon_result = await divar_client.addon.delete_post_addon(
+        data=remove_addon_data
+    )
 
     if remove_addon_result is None:
         raise exception.AuctionRemoveFailure()
