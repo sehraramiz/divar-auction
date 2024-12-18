@@ -139,7 +139,6 @@ async def place_bid(
         bid_data=bid_data,
         bidder_id=user_id,
     )
-    auction_repo._commit()
     redirect_url = f"https://divar.ir/v/{bid_data.post_token}"
     return templates.TemplateResponse(
         request=request,
@@ -163,7 +162,6 @@ async def remove_bid(
         bidder_id=user_id,
         post_token=post_token,
     )
-    auction_repo._commit()
     redirect_url = f"https://divar.ir/v/{post_token}"
     return templates.TemplateResponse(
         request=request,
@@ -240,7 +238,6 @@ async def start_auction(
         auction_data=auction_data,
         user_access_token=user_access_token,
     )
-    auction_repo._commit()
     redirect_url = f"https://divar.ir/v/{result.post_token}"
     return templates.TemplateResponse(
         request=request,
@@ -294,7 +291,6 @@ async def remove_auction(
         user_access_token=user_access_token,
         post_token=post_token,
     )
-    auction_repo._commit()
     redirect_url = f"https://divar.ir/v/{result.post_token}"
     return templates.TemplateResponse(
         request=request,

@@ -13,16 +13,16 @@ from auction.auth import (
     get_user_id_from_session,
 )
 from auction.divar import get_divar_client, get_divar_client_mock
-from auction.repo import AuctionRepo
+from auction.repo import AuctionRepo, JSONFileRepo
 
 
 def get_test_repo() -> AuctionRepo:
-    return AuctionRepo(db_file_name="db.test.json")
+    return JSONFileRepo(db_file_name="db.test.json")
 
 
 @pytest.fixture(scope="function")
 def auc_repo() -> AuctionRepo:
-    return AuctionRepo(db_file_name="db.test.json")
+    return JSONFileRepo(db_file_name="db.test.json")
 
 
 def authorize_seller_user() -> UserID:
