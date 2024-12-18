@@ -39,7 +39,7 @@ def gettext(msg: str) -> str:
     return translation.gettext(msg)
 
 
-def localize_number(value: str) -> str:
+def localize_number(value: str | int) -> str:
     lang_code = get_lang_code()
     locale = Locale(lang_code)
     formated_number = format_number(value, locale=locale)

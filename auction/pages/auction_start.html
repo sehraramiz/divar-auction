@@ -11,6 +11,7 @@
         <input type="hidden" name="post_token" value="{{ post.token }}">
         <label for="starting_price">{{ _("Starting Price (rials)") }}:</label><br>
         <input class="price-input" type="number" id="starting_price" name="starting_price" value=0><br>
+        <p><span id="tomanDisplay">0</span> {{ _("Tomans") }}</p>
         <input class="btn-primary" type="submit" value="{{ _('Start') }}">
     </form>
     <button class="btn-secondary" onclick="window.location.href='{{ return_url }}';">{{ _("Return to Divar") }}</button>

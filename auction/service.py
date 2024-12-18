@@ -4,6 +4,7 @@ from auction import divar, exception
 from auction._types import BidID, Rial
 from auction.config import config
 from auction.i18n import gettext as _
+from auction.i18n import localize_number
 from auction.model import (
     Auction,
     AuctionBidderView,
@@ -170,7 +171,7 @@ async def create_auction_addon(
     description = _(
         "This post has an ongoing auction starting"
         " at {starting_price} rials you can bid on"
-    ).format(starting_price=auction.starting_price)
+    ).format(starting_price=localize_number(auction.starting_price))
 
     auction_widgets = [
         TitleRow(text=_("Auction Available")),
