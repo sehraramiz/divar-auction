@@ -7,4 +7,5 @@ services:
       - .env
     volumes:
       - "./db.json:/app/db.json"
+      - "./storage.db:/app/storage.db"
       - "./logs:/logs"
