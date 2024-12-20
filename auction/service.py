@@ -187,6 +187,28 @@ async def create_auction_addon(
     )
 
 
+async def start_auction_view(
+    auction_repo: AuctionRepo,
+    divar_client: divar.DivarClient,
+    post_token: PostToken,
+    user_access_token: str,
+) -> Post:
+    """start a new auction view"""
+    auction_is_started = await auction_repo.read_auction_by_post_token(
+        post_token=post_token
+    )
+    if auction_is_started:
+        raise exception.AuctionAlreadyStarted()
+
+    post = await divar_client.finder.find_post_from_user_posts(
+        post_token=post_token, user_access_token=user_access_token
+    )
+    if post is None:
+        # FIXME: show proper auction start not allowed error page
+        raise exception.Forbidden()
+    return post
+
+
 async def start_auction(
     auction_repo: AuctionRepo,
     divar_client: divar.DivarClient,

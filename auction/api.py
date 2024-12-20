@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, Form, Request, status
 from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from pydantic.networks import AnyHttpUrl
 
-from auction import auth, divar, service
+from auction import auth, divar, exception, service
 from auction._types import DivarReturnUrl, PostToken, UserID
 from auction.api_deps import get_repo, get_return_url
 from auction.i18n import gettext as _
@@ -110,7 +110,7 @@ async def auction_bidding(
     user_id: Annotated[UserID, Depends(auth.authorize_user_and_set_session)],
     auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
     divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
-) -> Response:
+) -> HTMLResponse:
     auction = await service.auction_bidding(
         auction_repo=auction_repo,
         divar_client=divar_client,
@@ -196,25 +196,33 @@ async def auction_management(
 async def start_auction_view(
     request: Request,
     post_token: PostToken,
+    auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
     return_url: Annotated[DivarReturnUrl, Depends(get_return_url)],
     user_access_token: Annotated[UserID, Depends(auth.auction_management_access)],
     divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
-) -> HTMLResponse:
+) -> Response:
     """
     Show auction start page for seller and prevent others from
     starting an auction on someone else's post
     """
-    post = await divar_client.finder.find_post_from_user_posts(
-        post_token=post_token, user_access_token=user_access_token
-    )
-    if post is None:
-        # FIXME: show proper auction start not allowed error page
-        raise exception.Forbidden()
-    return templates.TemplateResponse(
-        request=request,
-        name="auction_start.html",
-        context={"post": post, "return_url": return_url},
-    )
+    try:
+        post = await service.start_auction_view(
+            auction_repo=auction_repo,
+            divar_client=divar_client,
+            post_token=post_token,
+            user_access_token=user_access_token,
+        )
+    except exception.AuctionAlreadyStarted:
+        redirect_url = str(
+            request.url_for("auctions")
+        ) + "?post_token={}&return_url={}".format(post_token, return_url)
+        return RedirectResponse(url=redirect_url, status_code=status.HTTP_302_FOUND)
+    else:
+        return templates.TemplateResponse(
+            request=request,
+            name="auction_start.html",
+            context={"post": post, "return_url": return_url},
+        )
 
 
 @auction_router.post("/management/start/{post_token}", tags=["Auction Management"])
