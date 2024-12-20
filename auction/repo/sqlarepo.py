@@ -4,10 +4,10 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 from auction import db
 from auction._types import AuctionID, BidID, PostToken, Rial, UserID
 from auction.model import Auction, Bid
-from auction.repo.base import AuctionRepo
+from auction.repo.base import AccessTokenRepo, AuctionRepo
 
 
-class SQLARepo(AuctionRepo):
+class SQLARepo(AuctionRepo, AccessTokenRepo):
     """repository for sqlalchemy"""
 
     access_tokens: dict[UserID, list[dict]]

@@ -51,6 +51,8 @@ class AuctionRepo(ABC):
     @abstractmethod
     async def read_bid_by_id(self, bid_id: BidID) -> Bid | None: ...
 
+
+class AccessTokenRepo(ABC):
     @abstractmethod
     async def add_user_access_token(
         self, user_id: UserID, access_token_data: dict

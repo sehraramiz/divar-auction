@@ -6,10 +6,10 @@ from pydantic import TypeAdapter
 
 from auction._types import AuctionID, BidID, PostToken, Rial, UserID
 from auction.model import Auction, Bid
-from auction.repo.base import AuctionRepo
+from auction.repo.base import AccessTokenRepo, AuctionRepo
 
 
-class JSONFileRepo(AuctionRepo):
+class JSONFileRepo(AuctionRepo, AccessTokenRepo):
     auctions: list[Auction]
     bids: list[Bid]
     access_tokens: dict[UserID, list[dict]]

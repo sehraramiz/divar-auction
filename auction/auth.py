@@ -12,7 +12,7 @@ from auction.api_deps import get_repo
 from auction.config import config
 from auction.divar import divar_client
 from auction.i18n import gettext as _
-from auction.repo import AuctionRepo
+from auction.repo import AccessTokenRepo
 from auction.security import InvalidToken, decrypt_data, encrypt_data
 
 
@@ -50,7 +50,7 @@ async def redirect_oauth(
 
 async def authorize_user_and_set_session(
     request: Request,
-    auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
+    auction_repo: Annotated[AccessTokenRepo, Depends(get_repo)],
     scopes: list[Scope] | None = None,
     code: str | None = None,
     state: str | None = None,
@@ -110,7 +110,7 @@ async def authorize_user_and_set_session(
 # TODO: remove this wrapper when fastapi fix dependencies with partial funcs
 async def user_auth_with_auction_management_access_wrapper(
     request: Request,
-    auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
+    auction_repo: Annotated[AccessTokenRepo, Depends(get_repo)],
     post_token: PostToken,
     code: str | None = None,
     state: str | None = None,
@@ -142,7 +142,7 @@ async def user_auth_with_auction_management_access_wrapper(
 
 async def auction_management_access(
     request: Request,
-    auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
+    auction_repo: Annotated[AccessTokenRepo, Depends(get_repo)],
     post_token: PostToken,
     user_id: Annotated[
         UserID, Depends(user_auth_with_auction_management_access_wrapper)
