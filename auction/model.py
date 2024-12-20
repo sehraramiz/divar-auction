@@ -1,3 +1,4 @@
+from dataclasses import dataclass, field
 from uuid import uuid4
 
 from pydantic import BaseModel, Field
@@ -6,11 +7,12 @@ from auction._types import AuctionID, BidID, PostToken, Rial, UserID
 from auction.divar import DivarReturnUrl
 
 
-class Bid(BaseModel):
+@dataclass
+class Bid:
     bidder_id: UserID
     auction_id: AuctionID
     amount: Rial
-    uid: BidID = Field(default_factory=uuid4)  # type: ignore
+    uid: BidID = field(default_factory=uuid4)  # type: ignore
 
     def __lt__(self, other):
         if not isinstance(other, Bid):
@@ -18,15 +20,16 @@ class Bid(BaseModel):
         return self.amount < other.amount
 
 
-class Auction(BaseModel):
+@dataclass
+class Auction:
     post_token: PostToken
-    post_title: str | None = None
     seller_id: UserID
     starting_price: Rial
-    bids: list[Bid]
-    uid: AuctionID = Field(default_factory=uuid4)  # type: ignore
     bids_count: int = 0
+    uid: AuctionID = field(default_factory=uuid4)  # type: ignore
+    bids: list[Bid] = field(default_factory=list)
     selected_bid: BidID | None = None
+    post_title: str | None = None
 
     @property
     def top_bids(self) -> list[Bid]:

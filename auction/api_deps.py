@@ -1,10 +1,17 @@
 from auction._types import PostToken
+from auction.db import get_session
 from auction.divar import DivarReturnUrl
-from auction.repo import AuctionRepo, auction_repo
+from auction.repo import AuctionRepo, SQLARepo, auction_repo
+
+
+async def get_file_repo() -> AuctionRepo:
+    return auction_repo
 
 
 async def get_repo() -> AuctionRepo:
-    return auction_repo
+    sessionmaker = get_session()
+    repo = SQLARepo(session=sessionmaker)
+    return repo
 
 
 async def get_return_url(

@@ -1,9 +1,14 @@
 import os
 
+from typing import AsyncGenerator
+
 import pytest
+import pytest_asyncio
 
 from fastapi.testclient import TestClient
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
+from auction import db
 from auction._types import UserID
 from auction.api_deps import get_repo
 from auction.app import app
@@ -23,6 +28,19 @@ def get_test_repo() -> AuctionRepo:
 @pytest.fixture(scope="function")
 def auc_repo() -> AuctionRepo:
     return JSONFileRepo(db_file_name="db.test.json")
+
+
+@pytest_asyncio.fixture(scope="function")
+async def sqla_session() -> AsyncGenerator[async_sessionmaker[AsyncSession], None]:
+    database_url = "sqlite+aiosqlite:///./test.db"
+    engine = db.get_engine(database_url=database_url)
+
+    async with engine.begin() as conn:
+        await conn.run_sync(db.Base.metadata.drop_all)
+        await conn.run_sync(db.Base.metadata.create_all)
+
+    sessionmaker = db.get_session(engine=engine)
+    yield sessionmaker
 
 
 def authorize_seller_user() -> UserID:

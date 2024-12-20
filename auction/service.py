@@ -210,7 +210,6 @@ async def start_auction(
     auction = Auction(
         **auction_data.model_dump(),
         seller_id=seller_id,
-        bids=[],
         post_title=post.title,
     )
     await auction_repo.add_auction(auction=auction)

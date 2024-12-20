@@ -7,7 +7,7 @@ MSGBASE = auction/messages.pot
 BASEDIR = auction
 
 test:
-	uv run pytest -v .
+	uv run pytest -s .
 format:
 	uv run ruff format auction tests
 check:
