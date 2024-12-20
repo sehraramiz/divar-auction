@@ -18,14 +18,6 @@ from auction.repo import AuctionRepo
 auction_router = APIRouter(prefix="/auction")
 
 
-@auction_router.get("/home")
-def home(request: Request) -> HTMLResponse:
-    return templates.TemplateResponse(
-        request=request,
-        name="index.html",
-    )
-
-
 @auction_router.get("/auth")
 async def auth_management(
     redirect_url: Annotated[AnyHttpUrl, Depends(auth.redirect_oauth)],

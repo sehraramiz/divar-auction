@@ -1,7 +1,25 @@
 {% extends "base.html" %}
 
-{% block title %}{{ _("Auction Home") }}{% endblock %}
+{% block title %}{{ _("Auction Hall") }}{% endblock %}
+
+{% block head %}
+<style>
+    #container {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 20px;
+        padding: 20px;
+    }
+</style>
+{% endblock %}
 
 {% block body %}
-<h2 dir={{ _dir() }}>{{ _("Welcome to Auction Center") }}</h2>
+<div dir={{ _dir() }}>
+    <h2>{{ _("Welcome to Auction Hall") }}</h2>
+    <div id="container" dir={{ _dir() }}>
+        <p>{{ _("Who can put a price on an Asil rooster, except the one who seeks it?") }}</p>
+        <img width=150px height=auto src="{{ url_for('static', path='/images/rooster.png') }}"/>
+    </div>
+</div>
 {% endblock %}

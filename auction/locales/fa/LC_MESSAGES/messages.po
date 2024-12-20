@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-17 14:24+0330\n"
+"POT-Creation-Date: 2024-12-20 15:57+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,19 +17,23 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: auction/api.py:148
+#: auction/_types.py:19
+msgid "return url must be from divar.ir domain"
+msgstr "آدرس بازگشت باید از دامنه divar.ir باشد."
+
+#: auction/api.py:139
 msgid "Bid placed successfully!"
 msgstr "پیشنهاد با موفقیت ثبت شد!"
 
-#: auction/api.py:172
+#: auction/api.py:162
 msgid "Bid removed successfully!"
 msgstr "پیشنهاد با موفقیت حذف شد!"
 
-#: auction/api.py:249
+#: auction/api.py:246
 msgid "Auction started successfully!"
 msgstr "مزایده با موفقیت آغاز شد!"
 
-#: auction/api.py:303
+#: auction/api.py:299
 msgid "Auction removed successfully!"
 msgstr "مزایده با موفقیت حذف شد!"
 
@@ -77,16 +81,16 @@ msgstr "نشست نامعتبر"
 msgid "Auction Removal Failed"
 msgstr "حذف مزیاده با خطا مواجه شد"
 
-#: auction/service.py:118
+#: auction/service.py:120
 msgid "Bid amount must starting price + multiple of min raise amount"
 msgstr ""
 "مبلغ هر پیشنهاد باید مضربی از حداقل میزان افزایش به علاوه مبلغ شروع باشد."
 
-#: auction/pages/auction_intro.html:23 auction/service.py:169
+#: auction/pages/auction_intro.html:23 auction/service.py:171
 msgid "Enter Auction"
 msgstr "ورود به مزایده"
 
-#: auction/service.py:170
+#: auction/service.py:172
 msgid ""
 "This post has an ongoing auction starting at {starting_price} rials you can "
 "bid on"
@@ -94,13 +98,9 @@ msgstr ""
 "برای این آگهی مزایده‌ای با قیمت شروع {starting_price} ریال در جریان است که "
 "شما میتوانید در آن شرکت کنید."
 
-#: auction/service.py:176
+#: auction/service.py:178
 msgid "Auction Available"
 msgstr "مزایده در حال اجرا است"
-
-#: auction/divar/client.py:39
-msgid "return url must be from divar.ir domain"
-msgstr "آدرس بازگشت باید از دامنه divar.ir باشد."
 
 #: auction/pages/404.html:3 auction/pages/404.html:6
 msgid "Page Not Found"
@@ -141,7 +141,7 @@ msgstr "مبلغ شروع: {starting_price} ریال"
 msgid "Bid Amount (rials):"
 msgstr "مبلغ پیشنهادی (ریال)"
 
-#: auction/pages/auction_bidder.html:27
+#: auction/pages/auction_bidder.html:27 auction/pages/auction_start.html:14
 msgid "Tomans"
 msgstr "تومان"
 
@@ -154,7 +154,7 @@ msgid "Remove Bid"
 msgstr "حذف پیشنهاد"
 
 #: auction/pages/auction_bidder.html:39 auction/pages/auction_intro.html:34
-#: auction/pages/auction_seller.html:37 auction/pages/auction_start.html:16
+#: auction/pages/auction_seller.html:37 auction/pages/auction_start.html:17
 msgid "Return to Divar"
 msgstr "بازگشت به دیوار"
 
@@ -214,7 +214,7 @@ msgstr "حذف مزایده"
 msgid "Starting Price (rials)"
 msgstr "مبلغ شروع مزایده (ریال)"
 
-#: auction/pages/auction_start.html:14
+#: auction/pages/auction_start.html:15
 msgid "Start"
 msgstr "شروع"
 
@@ -227,12 +227,18 @@ msgid "Something went wrong, and we couldn’t complete your request."
 msgstr "خطایی رخ داد، درخواست شما انجام نشد."
 
 #: auction/pages/index.html:3
-msgid "Auction Home"
-msgstr "مرکز مزایده"
+msgid "Auction Hall"
+msgstr "تالار مزایده"
 
-#: auction/pages/index.html:6
-msgid "Welcome to Auction Center"
-msgstr "به مرکز مزایده خوش آمدید."
+#: auction/pages/index.html:19
+msgid "Welcome to Auction Hall"
+msgstr "به تالار مزایده خوش آمدید."
+
+#: auction/pages/index.html:21
+msgid "Who can put a price on an Asil rooster, except the one who seeks it?"
+msgstr ""
+"چه کسی میتواند یک خروس لاری را ارزش گذاری کند، به جز از آن کس که در پی خریدش "
+"است؟"
 
 #: auction/pages/redirect_with_message.html:3
 msgid "Redirecting"
