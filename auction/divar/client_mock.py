@@ -13,8 +13,10 @@ from kenar import (
 
 from auction._types import PostToken
 from auction.divar import mock_data
+from auction.model import Post
 
-from .client import AuctionAddonService, AuctionFinderService, Post, PostItemResponse
+from .client import AuctionAddonService, AuctionFinderService
+from .schemas import PostItemResponse
 
 
 client_conf = ClientConfig(

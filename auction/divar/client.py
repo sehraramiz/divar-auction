@@ -1,5 +1,3 @@
-from typing import Annotated
-
 import httpx
 
 from kenar import Client as DivarClient
@@ -17,13 +15,14 @@ from kenar import (
     GetUserResponse,
 )
 from kenar.app import ACCESS_TOKEN_HEADER_NAME, AddonService, FinderService
-from pydantic import AfterValidator, BaseModel, HttpUrl, UrlConstraints
 
+from auction import model
 from auction._types import PostToken
 from auction.config import config, divar_config
 from auction.exception import PostNotFound
-from auction.i18n import gettext as _
 from auction.log import logger
+
+from .schemas import PostItemResponse
 
 
 client_conf = ClientConfig(
@@ -34,42 +33,6 @@ client_conf = ClientConfig(
 )
 
 divar_client = DivarClient(client_conf)
-
-
-def _only_divar_domain(url: HttpUrl) -> HttpUrl:
-    if url.host != "divar.ir":
-        raise ValueError(_("return url must be from divar.ir domain"))
-    return url
-
-
-DivarReturnUrl = Annotated[
-    HttpUrl,
-    UrlConstraints(allowed_schemes=["https"]),
-    AfterValidator(_only_divar_domain),
-]
-
-
-class PostItemResponse(GetPostResponse):
-    first_published_at: str | None = None
-
-    @classmethod
-    def dummy(cls, post_token: str) -> "PostItemResponse":
-        from kenar import PostExtState
-
-        return cls(
-            state=PostExtState.PUBLISHED.value,
-            first_published_at=None,
-            token=post_token,
-            category="",
-            city="",
-            district="",
-            data={},
-        )
-
-
-class Post(BaseModel):
-    token: str
-    title: str
 
 
 class AuctionAddonService(AddonService):
@@ -198,13 +161,13 @@ class AuctionFinderService(FinderService):
 
     async def find_post_from_user_posts(
         self, post_token: PostToken, user_access_token: str
-    ) -> Post | None:
+    ) -> model.Post | None:
         """access_token must have GET_USER_POSTS scope access"""
 
         if not post_token:
             return None
         if config.debug:
-            return Post(token=post_token, title="Dummy Post")
+            return model.Post(token=post_token, title="Dummy Post")
         result = await self.get_user_posts(access_token=user_access_token)
         if not result.posts:
             return None

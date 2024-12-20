@@ -1,7 +1,7 @@
 """Auction services"""
 
 from auction import divar, exception
-from auction._types import BidID, Rial
+from auction._types import BidID, DivarReturnUrl, Rial
 from auction.config import config
 from auction.i18n import gettext as _
 from auction.i18n import localize_number
@@ -11,6 +11,7 @@ from auction.model import (
     AuctionStartInput,
     Bid,
     PlaceBid,
+    Post,
     PostToken,
     UserID,
 )
@@ -37,7 +38,7 @@ async def is_auction_seller(
     divar_client: divar.DivarClient,
     user_id: UserID,
     post_token: PostToken,
-    return_url: divar.DivarReturnUrl,
+    return_url: DivarReturnUrl,
 ) -> bool:
     await divar_client.finder.validate_post(post_token=post_token)
 
@@ -53,7 +54,7 @@ async def auction_bidding(
     divar_client: divar.DivarClient,
     user_id: UserID,
     post_token: PostToken,
-    return_url: divar.DivarReturnUrl,
+    return_url: DivarReturnUrl,
 ) -> AuctionBidderView:
     auction = await auction_repo.read_auction_by_post_token(post_token=post_token)
     if auction is None:

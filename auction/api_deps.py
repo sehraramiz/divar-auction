@@ -1,6 +1,5 @@
-from auction._types import PostToken
+from auction._types import DivarReturnUrl, PostToken
 from auction.db import get_session
-from auction.divar import DivarReturnUrl
 from auction.repo import AuctionRepo, SQLARepo, auction_repo
 
 

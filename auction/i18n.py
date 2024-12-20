@@ -7,13 +7,20 @@ from typing import Literal
 from babel import Locale
 from babel.numbers import format_number
 
-from auction.config import config
-
 
 BASE_DIR = pathlib.PurePath(__file__).parent
-localedir = BASE_DIR / "locales"
+localedir = pathlib.Path(BASE_DIR / "locales")
+domain = "messages"
 _lang_ctx_var: ContextVar[str] = ContextVar("lang_code", default="fa")
 Direction = Literal["ltr", "rtl"]
+
+
+available_languages = []
+for lang_path in localedir.iterdir():
+    lc_messages_path = lang_path / "LC_MESSAGES"
+    mo_file = lc_messages_path / f"{domain}.mo"
+    if mo_file.is_file():
+        available_languages.append(lang_path.name)
 
 
 def set_lang_code(lang_code: str) -> None:
@@ -22,7 +29,7 @@ def set_lang_code(lang_code: str) -> None:
 
 def get_lang_code() -> str:
     lang = _lang_ctx_var.get()
-    return lang if lang in config.supported_languages else "fa"
+    return lang if lang in available_languages else "fa"
 
 
 def get_layout_direction() -> Direction:
@@ -33,9 +40,7 @@ def get_layout_direction() -> Direction:
 
 def gettext(msg: str) -> str:
     lang_code = get_lang_code()
-    translation = gettext_module.translation(
-        "messages", localedir, languages=[lang_code]
-    )
+    translation = gettext_module.translation(domain, localedir, languages=[lang_code])
     return translation.gettext(msg)
 
 

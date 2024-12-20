@@ -3,8 +3,7 @@ from uuid import uuid4
 
 from pydantic import BaseModel, Field
 
-from auction._types import AuctionID, BidID, PostToken, Rial, UserID
-from auction.divar import DivarReturnUrl
+from auction._types import AuctionID, BidID, DivarReturnUrl, PostToken, Rial, UserID
 
 
 @dataclass
@@ -75,3 +74,8 @@ class RemoveBid(BaseModel):
 
 class SelectBid(BaseModel):
     bid_id: BidID
+
+
+class Post(BaseModel):
+    token: str
+    title: str

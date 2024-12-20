@@ -6,8 +6,8 @@ from fastapi import APIRouter, Depends, Form, Request, status
 from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from pydantic.networks import AnyHttpUrl
 
-from auction import auth, divar, exception, service
-from auction._types import PostToken, UserID
+from auction import auth, divar, service
+from auction._types import DivarReturnUrl, PostToken, UserID
 from auction.api_deps import get_repo, get_return_url
 from auction.i18n import gettext as _
 from auction.model import AuctionStartInput, PlaceBid, SelectBid
@@ -41,7 +41,7 @@ async def auth_management(
 @auction_router.get("/intro")
 async def auction_intro(
     request: Request,
-    return_url: divar.DivarReturnUrl,
+    return_url: DivarReturnUrl,
     post_token: PostToken,
     auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
     divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
@@ -71,7 +71,7 @@ async def auction_intro(
 @auction_router.get("/")
 async def auctions(
     request: Request,
-    return_url: divar.DivarReturnUrl,
+    return_url: DivarReturnUrl,
     post_token: PostToken,
     user_id: Annotated[UserID, Depends(auth.authorize_user_and_set_session)],
     auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
@@ -105,7 +105,7 @@ async def auctions(
 @auction_router.get("/bidding", tags=["Bidding"])
 async def auction_bidding(
     request: Request,
-    return_url: divar.DivarReturnUrl,
+    return_url: DivarReturnUrl,
     post_token: PostToken,
     user_id: Annotated[UserID, Depends(auth.authorize_user_and_set_session)],
     auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
@@ -176,7 +176,7 @@ async def remove_bid(
 @auction_router.get("/management/{post_token}", tags=["Auction Management"])
 async def auction_management(
     request: Request,
-    return_url: divar.DivarReturnUrl,
+    return_url: DivarReturnUrl,
     post_token: PostToken,
     user_id: Annotated[UserID, Depends(auth.get_user_id_from_session)],
     user_access_token: Annotated[UserID, Depends(auth.auction_management_access)],
@@ -196,7 +196,7 @@ async def auction_management(
 async def start_auction_view(
     request: Request,
     post_token: PostToken,
-    return_url: Annotated[divar.DivarReturnUrl, Depends(get_return_url)],
+    return_url: Annotated[DivarReturnUrl, Depends(get_return_url)],
     user_access_token: Annotated[UserID, Depends(auth.auction_management_access)],
     divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
 ) -> HTMLResponse:
