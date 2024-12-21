@@ -4,10 +4,10 @@ from contextlib import asynccontextmanager
 
 from asgi_correlation_id import CorrelationIdMiddleware
 from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware import Middleware
 from starlette.middleware.sessions import SessionMiddleware
-from fastapi.responses import HTMLResponse
 
 from auction import exception, i18n
 from auction.api import auction_router

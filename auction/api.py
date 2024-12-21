@@ -30,36 +30,6 @@ async def auth_management(
     return RedirectResponse(str(redirect_url), status_code=status.HTTP_302_FOUND)
 
 
-@auction_router.get("/intro")
-async def auction_intro(
-    request: Request,
-    return_url: DivarReturnUrl,
-    post_token: PostToken,
-    auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
-    divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
-) -> HTMLResponse:
-    """
-    Intro page to provide information about the auction service
-    and requested post auction (if existing) and give options to user
-    to start an auction or participate in an already started auction.
-    This is the first page we show every enduser (seller or bidder).
-    """
-    auction = await service.auction_intro(
-        auction_repo=auction_repo,
-        divar_client=divar_client,
-        post_token=post_token,
-    )
-    return templates.TemplateResponse(
-        request=request,
-        name="auction_intro.html",
-        context={
-            "auction": auction,
-            "post_token": post_token,
-            "return_url": return_url,
-        },
-    )
-
-
 @auction_router.get("/")
 async def auctions(
     request: Request,
@@ -94,7 +64,7 @@ async def auctions(
         return RedirectResponse(redirect_url)
 
 
-@auction_router.get("/bidding", tags=["Bidding"])
+@auction_router.get("/bidding/", tags=["Bidding"])
 async def auction_bidding(
     request: Request,
     return_url: DivarReturnUrl,
@@ -142,7 +112,7 @@ async def place_bid(
     )
 
 
-@auction_router.delete("/bidding/{post_token}", tags=["Bidding"])
+@auction_router.delete("/bidding/{post_token}/", tags=["Bidding"])
 async def remove_bid(
     request: Request,
     post_token: PostToken,
@@ -165,7 +135,37 @@ async def remove_bid(
     )
 
 
-@auction_router.get("/management/{post_token}", tags=["Auction Management"])
+@auction_router.get("/intro")
+async def auction_intro(
+    request: Request,
+    return_url: DivarReturnUrl,
+    post_token: PostToken,
+    auction_repo: Annotated[AuctionRepo, Depends(get_repo)],
+    divar_client: Annotated[divar.DivarClient, Depends(divar.get_divar_client)],
+) -> HTMLResponse:
+    """
+    Intro page to provide information about the auction service
+    and requested post auction (if existing) and give options to user
+    to start an auction or participate in an already started auction.
+    This is the first page we show every enduser (seller or bidder).
+    """
+    auction = await service.auction_intro(
+        auction_repo=auction_repo,
+        divar_client=divar_client,
+        post_token=post_token,
+    )
+    return templates.TemplateResponse(
+        request=request,
+        name="auction_intro.html",
+        context={
+            "auction": auction,
+            "post_token": post_token,
+            "return_url": return_url,
+        },
+    )
+
+
+@auction_router.get("/{post_token}", tags=["Auction Management"])
 async def auction_management(
     request: Request,
     return_url: DivarReturnUrl,
@@ -184,7 +184,7 @@ async def auction_management(
     )
 
 
-@auction_router.get("/management/start/{post_token}", tags=["Auction Management"])
+@auction_router.get("/{post_token}/start", tags=["Auction Management"])
 async def start_auction_view(
     request: Request,
     post_token: PostToken,
@@ -217,7 +217,7 @@ async def start_auction_view(
         )
 
 
-@auction_router.post("/management/start/{post_token}", tags=["Auction Management"])
+@auction_router.post("/{post_token}/start", tags=["Auction Management"])
 async def start_auction(
     request: Request,
     post_token: PostToken,
@@ -249,7 +249,7 @@ async def start_auction(
     )
 
 
-@auction_router.post("/management/select-bid/{post_token}", tags=["Auction Management"])
+@auction_router.post("/{post_token}/bids/select", tags=["Auction Management"])
 async def select_bid(
     request: Request,
     post_token: PostToken,
@@ -272,7 +272,7 @@ async def select_bid(
     return RedirectResponse(url=redirect_url, status_code=status.HTTP_302_FOUND)
 
 
-@auction_router.delete("/management/{post_token}", tags=["Auction Management"])
+@auction_router.delete("/{post_token}", tags=["Auction Management"])
 async def remove_auction(
     request: Request,
     post_token: PostToken,

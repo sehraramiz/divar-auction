@@ -52,7 +52,7 @@ async def test_seller_start_auction(
         post_token=post_token, starting_price=Rial(1000)
     )
     response = seller_client.post(
-        f"/auction/management/start/{post_token}",
+        f"/auction/{post_token}/start",
         data=auction_start_input.model_dump(mode="json"),
         params={"hl": "en"},
     )
@@ -72,7 +72,7 @@ async def test_seller_remove_auction(
     auction = await start_auction_with_bids(auc_repo)
 
     response = seller_client.delete(
-        f"/auction/management/{auction.post_token}",
+        f"/auction/{auction.post_token}",
         params={"hl": "en"},
     )
 
@@ -163,7 +163,7 @@ async def test_bidder_sees_top_bids(
 ) -> None:
     await start_auction_with_bids(auc_repo)
     params = {"hl": "en", "post_token": "A", "return_url": "https://divar.ir"}
-    response = bidder_client.get("/auction", params=params, follow_redirects=True)
+    response = bidder_client.get("/auction/", params=params, follow_redirects=True)
 
     assert "14000" in response.text
     assert "13000" in response.text
@@ -182,7 +182,7 @@ async def test_seller_select_bid(
 
     select_bid = SelectBid(bid_id=bid.uid)
     response = seller_client.post(
-        f"/auction/management/select-bid/{auction.post_token}",
+        f"/auction/{auction.post_token}/bids/select",
         data=select_bid.model_dump(mode="json"),
         params={"hl": "en"},
         follow_redirects=True,
