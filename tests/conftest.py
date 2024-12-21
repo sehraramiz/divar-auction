@@ -18,16 +18,16 @@ from auction.auth import (
     get_user_id_from_session,
 )
 from auction.divar import get_divar_client, get_divar_client_mock
-from auction.repo import AuctionRepo, JSONFileRepo
+from auction.repo import AuctionRepo, SQLARepo
 
 
 def get_test_repo() -> AuctionRepo:
-    return JSONFileRepo(db_file_name="db.test.json")
+    return SQLARepo(session=sqla_session)
 
 
 @pytest.fixture(scope="function")
-def auc_repo() -> AuctionRepo:
-    return JSONFileRepo(db_file_name="db.test.json")
+def auc_repo(sqla_session: async_sessionmaker[AsyncSession]) -> AuctionRepo:
+    return SQLARepo(session=sqla_session)
 
 
 @pytest_asyncio.fixture(scope="function")
@@ -87,11 +87,9 @@ def bidder_client(auc_repo: AuctionRepo):
 
 @pytest.fixture(autouse=True)
 def remove_db_file():
-    db_file = "db.test.json"
+    db_file = "test.db"
     if os.path.exists(db_file):
         os.remove(db_file)
-        print(f"Database file '{db_file}' removed before test.")
     yield
     if os.path.exists(db_file):
         os.remove(db_file)
-        print(f"Database file '{db_file}' removed after test.")
