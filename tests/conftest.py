@@ -11,12 +11,12 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 from auction import db
 from auction._types import UserID
 from auction.api.api_deps import get_repo
+from auction.api.app import app
 from auction.api.auth import (
     auction_management_access,
     authorize_user_and_set_session,
     get_user_id_from_session,
 )
-from auction.app import app
 from auction.divar import get_divar_client, get_divar_client_mock
 from auction.repo import AuctionRepo, SQLARepo
 
