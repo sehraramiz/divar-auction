@@ -9,10 +9,10 @@ from fastapi.staticfiles import StaticFiles
 from starlette.middleware import Middleware
 from starlette.middleware.sessions import SessionMiddleware
 
-from auction import exception, i18n
 from auction.api import auction_router
-from auction.config import config
-from auction.log import setup_logging
+from auction.core import exception, i18n
+from auction.core.config import config
+from auction.core.log import setup_logging
 from auction.pages.template import templates
 
 

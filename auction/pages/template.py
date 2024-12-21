@@ -1,7 +1,7 @@
 from fastapi.templating import Jinja2Templates
 
-from auction.config import config
-from auction.i18n import get_layout_direction, gettext, localize_number
+from auction.core.config import config
+from auction.core.i18n import get_layout_direction, gettext, localize_number
 
 
 templates = Jinja2Templates(directory=config.templates_dir_path)

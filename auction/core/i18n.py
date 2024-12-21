@@ -7,8 +7,10 @@ from typing import Literal
 from babel import Locale
 from babel.numbers import format_number
 
+import auction
 
-BASE_DIR = pathlib.PurePath(__file__).parent
+
+BASE_DIR = pathlib.PurePath(auction.__file__).parent
 localedir = pathlib.Path(BASE_DIR / "locales")
 domain = "messages"
 _lang_ctx_var: ContextVar[str] = ContextVar("lang_code", default="fa")

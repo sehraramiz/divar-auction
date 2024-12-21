@@ -4,8 +4,8 @@ import json
 
 from cryptography.fernet import Fernet, InvalidToken
 
-from auction.config import config
-from auction.log import logger
+from auction.core.config import config
+from auction.core.log import logger
 
 
 def get_fernet_obj():

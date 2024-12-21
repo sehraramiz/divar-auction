@@ -5,7 +5,7 @@ from fastapi import HTTPException, Request, status
 from fastapi.exceptions import RequestValidationError, ResponseValidationError
 from fastapi.responses import HTMLResponse, Response
 
-from auction.i18n import gettext as _
+from auction.core.i18n import gettext as _
 from auction.pages.template import templates
 
 

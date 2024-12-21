@@ -6,10 +6,11 @@ from fastapi import APIRouter, Depends, Form, Request, status
 from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from pydantic.networks import AnyHttpUrl
 
-from auction import auth, divar, exception, service
+from auction import auth, divar, service
 from auction._types import DivarReturnUrl, PostToken, UserID
 from auction.api_deps import get_repo, get_return_url
-from auction.i18n import gettext as _
+from auction.core import exception
+from auction.core.i18n import gettext as _
 from auction.model import AuctionStartInput, PlaceBid, SelectBid
 from auction.pages.template import templates
 from auction.repo import AuctionRepo

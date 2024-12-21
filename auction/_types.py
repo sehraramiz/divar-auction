@@ -3,7 +3,7 @@ from uuid import UUID
 
 from pydantic import AfterValidator, HttpUrl, NonNegativeInt, UrlConstraints
 
-from auction.i18n import gettext as _
+from auction.core.i18n import gettext as _
 
 
 Rial = NewType("Rial", NonNegativeInt)

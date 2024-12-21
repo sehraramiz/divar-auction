@@ -18,9 +18,9 @@ from kenar.app import ACCESS_TOKEN_HEADER_NAME, AddonService, FinderService
 
 from auction import model
 from auction._types import PostToken
-from auction.config import config, divar_config
-from auction.exception import PostNotFound
-from auction.log import logger
+from auction.core.config import config, divar_config
+from auction.core.exception import PostNotFound
+from auction.core.log import logger
 
 from .schemas import PostItemResponse
 
