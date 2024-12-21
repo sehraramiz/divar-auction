@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from sqlalchemy import UUID, BigInteger, String
+from sqlalchemy import BigInteger, String, Uuid
 from sqlalchemy.orm import DeclarativeBase, Mapped, MappedAsDataclass, mapped_column
 from sqlalchemy.schema import PrimaryKeyConstraint
 
@@ -12,11 +12,11 @@ __all__ = ["Base", "Auction"]
 
 class Base(DeclarativeBase, MappedAsDataclass):
     type_annotation_map = {
-        _types.AuctionID: UUID,
+        _types.AuctionID: Uuid,
         _types.PostToken: String(20),
         _types.UserID: String(16),
         _types.Rial: BigInteger,
-        _types.BidID: UUID,
+        _types.BidID: Uuid,
     }
 
 
@@ -29,7 +29,6 @@ class Auction(Base):
     selected_bid: Mapped[_types.BidID | None]
     starting_price: Mapped[_types.Rial] = mapped_column(default=0)
     post_title: Mapped[str] = mapped_column(String(100), default="")
-
     uid: Mapped[_types.AuctionID] = mapped_column(default_factory=uuid4)
 
 
@@ -40,7 +39,6 @@ class Bid(Base):
     auction_id: Mapped[_types.AuctionID]
     bidder_id: Mapped[_types.UserID]
     amount: Mapped[_types.Rial]
-
     uid: Mapped[_types.BidID] = mapped_column(default_factory=uuid4)
 
 
