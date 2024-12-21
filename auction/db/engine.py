@@ -8,13 +8,14 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
+from auction.core.config import config
 from auction.db.base import Base
 
 
 @lru_cache
 def get_engine(database_url: str | None = None) -> AsyncEngine:
     if database_url is None:
-        database_url = "sqlite+aiosqlite:///./storage.db"
+        database_url = str(config.database_url)
     engine = create_async_engine(database_url, echo=False)
     return engine
 

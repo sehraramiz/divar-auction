@@ -13,6 +13,10 @@ format:
 check:
 	uv run ruff check auction tests --fix
 	uv run mypy .
+makemigrations:
+	uv run alembic revision --autogenerate
+migrate:
+	uv run alembic upgrade head
 makemessages:
 	uv run pybabel extract -F babel.cfg -o $(MSGBASE) $(BASEDIR)
 	sed -i -e 's/CHARSET/UTF-8/g' $(MSGBASE)
