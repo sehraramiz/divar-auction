@@ -41,9 +41,6 @@ class Auction:
         return Rial(max(raise_floor, raise_min))
 
 
-class AuctionSellerView(Auction): ...
-
-
 class AuctionBidderView(BaseModel):
     post_token: PostToken
     post_title: str | None = None
