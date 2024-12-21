@@ -7,7 +7,7 @@ from kenar import OauthResourceType, Scope
 from pydantic.networks import AnyHttpUrl
 
 from auction._types import PostToken, UserID
-from auction.api_deps import get_repo
+from auction.api.api_deps import get_repo
 from auction.core import exception
 from auction.core.config import config
 from auction.core.i18n import gettext as _

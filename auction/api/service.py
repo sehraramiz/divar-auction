@@ -288,6 +288,7 @@ async def remove_auction(
     if seller_id != auction.seller_id:
         raise exception.Forbidden()
 
+    # TODO: remove widget on auction removed event
     remove_addon_data = divar.client.DeletePostAddonRequest(token=post_token)
     remove_addon_result = await divar_client.addon.delete_post_addon(
         data=remove_addon_data
