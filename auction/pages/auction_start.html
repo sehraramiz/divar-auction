@@ -4,9 +4,7 @@
 
 {% block body %}
 <div dir="{{ _dir() }}">
-    <h3>{{ _("Start New Auction") }}</h3>
-    <p style="font-size: larger"><b>{{ _("Title:") }}</b> {{ post.title }}</p></p></br>
-    <a target="_blank" href="https://divar.ir/v/{{ post.token }}">{{ _("Item Details") }}</a>
+    <p style="font-size: larger"><b>{{ _("Auction for ") }}</b> {{ post.title }}</p></p></br>
     <form action="{{ url_for('start_auction', post_token=post.token) }}" method="post">
         <input type="hidden" name="post_token" value="{{ post.token }}">
         <label for="starting_price">{{ _("Starting Price (rials)") }}:</label><br>

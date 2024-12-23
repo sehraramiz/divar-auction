@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-20 15:57+0330\n"
+"POT-Creation-Date: 2024-12-23 19:03+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,82 +21,82 @@ msgstr ""
 msgid "return url must be from divar.ir domain"
 msgstr ""
 
-#: auction/api.py:139
-msgid "Bid placed successfully!"
-msgstr ""
-
-#: auction/api.py:162
-msgid "Bid removed successfully!"
-msgstr ""
-
-#: auction/api.py:246
-msgid "Auction started successfully!"
-msgstr ""
-
-#: auction/api.py:299
-msgid "Auction removed successfully!"
-msgstr ""
-
-#: auction/auth.py:22 auction/exception.py:64
+#: auction/api/auth.py:22 auction/core/exception.py:64
 msgid "Invalid Session"
 msgstr ""
 
-#: auction/exception.py:15
-msgid "Auction Not Found"
+#: auction/api/http.py:111
+msgid "Bid placed successfully!"
 msgstr ""
 
-#: auction/exception.py:22
-msgid "Bid Not Found"
+#: auction/api/http.py:134
+msgid "Bid removed successfully!"
 msgstr ""
 
-#: auction/exception.py:29
-msgid "Post Not Found"
+#: auction/api/http.py:248
+msgid "Auction started successfully!"
 msgstr ""
 
-#: auction/exception.py:36
-msgid "Auction Already Started"
+#: auction/api/http.py:301
+msgid "Auction removed successfully!"
 msgstr ""
 
-#: auction/exception.py:43
-msgid "Seller Can't Bid"
-msgstr ""
-
-#: auction/exception.py:50
-msgid "Bid can't be lower than the starting price"
-msgstr ""
-
-#: auction/exception.py:57
-msgid "Invalid bid amount"
-msgstr ""
-
-#: auction/exception.py:71
-msgid "Forbidden"
-msgstr ""
-
-#: auction/exception.py:78
-msgid "Invalid State"
-msgstr ""
-
-#: auction/exception.py:85
-msgid "Auction Removal Failed"
-msgstr ""
-
-#: auction/service.py:120
+#: auction/api/service.py:121
 msgid "Bid amount must starting price + multiple of min raise amount"
 msgstr ""
 
-#: auction/pages/auction_intro.html:23 auction/service.py:171
+#: auction/api/service.py:172 auction/pages/auction_intro.html:27
 msgid "Enter Auction"
 msgstr ""
 
-#: auction/service.py:172
+#: auction/api/service.py:173
 msgid ""
 "This post has an ongoing auction starting at {starting_price} rials you "
 "can bid on"
 msgstr ""
 
-#: auction/service.py:178
+#: auction/api/service.py:179
 msgid "Auction Available"
+msgstr ""
+
+#: auction/core/exception.py:15
+msgid "Auction Not Found"
+msgstr ""
+
+#: auction/core/exception.py:22
+msgid "Bid Not Found"
+msgstr ""
+
+#: auction/core/exception.py:29
+msgid "Post Not Found"
+msgstr ""
+
+#: auction/core/exception.py:36
+msgid "Auction Already Started"
+msgstr ""
+
+#: auction/core/exception.py:43
+msgid "Seller Can't Bid"
+msgstr ""
+
+#: auction/core/exception.py:50
+msgid "Bid can't be lower than the starting price"
+msgstr ""
+
+#: auction/core/exception.py:57
+msgid "Invalid bid amount"
+msgstr ""
+
+#: auction/core/exception.py:71
+msgid "Forbidden"
+msgstr ""
+
+#: auction/core/exception.py:78
+msgid "Invalid State"
+msgstr ""
+
+#: auction/core/exception.py:85
+msgid "Auction Removal Failed"
 msgstr ""
 
 #: auction/pages/404.html:3 auction/pages/404.html:6
@@ -107,15 +107,15 @@ msgstr ""
 msgid "Place a bid"
 msgstr ""
 
-#: auction/pages/auction_bidder.html:8 auction/pages/auction_intro.html:10
+#: auction/pages/auction_bidder.html:8 auction/pages/auction_intro.html:16
 msgid "Top bids on this item:"
 msgstr ""
 
-#: auction/pages/auction_bidder.html:14 auction/pages/auction_intro.html:16
+#: auction/pages/auction_bidder.html:14 auction/pages/auction_intro.html:22
 msgid "Total bids:"
 msgstr ""
 
-#: auction/pages/auction_bidder.html:16 auction/pages/auction_intro.html:18
+#: auction/pages/auction_bidder.html:16
 msgid "You are the first bidder!"
 msgstr ""
 
@@ -149,7 +149,7 @@ msgstr ""
 msgid "Remove Bid"
 msgstr ""
 
-#: auction/pages/auction_bidder.html:39 auction/pages/auction_intro.html:34
+#: auction/pages/auction_bidder.html:39 auction/pages/auction_intro.html:37
 #: auction/pages/auction_seller.html:37 auction/pages/auction_start.html:17
 msgid "Return to Divar"
 msgstr ""
@@ -158,23 +158,34 @@ msgstr ""
 msgid "Auction"
 msgstr ""
 
-#: auction/pages/auction_intro.html:8 auction/pages/auction_seller.html:8
+#: auction/pages/auction_intro.html:8
+msgid "What can auction hall do for you?"
+msgstr ""
+
+#: auction/pages/auction_intro.html:9
+msgid "You can start an auction on your advertised item on divar.ir."
+msgstr ""
+
+#: auction/pages/auction_intro.html:10
+msgid "You can place a bid on an item on divar.ir."
+msgstr ""
+
+#: auction/pages/auction_intro.html:11
+msgid "You will get the results of auctions you participate in."
+msgstr ""
+
+#: auction/pages/auction_intro.html:14 auction/pages/auction_seller.html:8
 #: auction/pages/auction_start.html:8
-msgid "Title:"
+msgid "Auction for "
 msgstr ""
 
-#: auction/pages/auction_intro.html:26 auction/pages/auction_start.html:3
-#: auction/pages/auction_start.html:7
-msgid "Start New Auction"
-msgstr ""
-
-#: auction/pages/auction_intro.html:27
+#: auction/pages/auction_intro.html:30
 msgid ""
 "There is no in progress auction for this post. do you want to start an "
 "Auction?"
 msgstr ""
 
-#: auction/pages/auction_intro.html:31
+#: auction/pages/auction_intro.html:34
 msgid "Start a new Auction"
 msgstr ""
 
@@ -206,6 +217,10 @@ msgstr ""
 msgid "Remove Auction"
 msgstr ""
 
+#: auction/pages/auction_start.html:3 auction/pages/auction_start.html:7
+msgid "Start New Auction"
+msgstr ""
+
 #: auction/pages/auction_start.html:12
 msgid "Starting Price (rials)"
 msgstr ""
@@ -223,7 +238,7 @@ msgid "Something went wrong, and we couldn’t complete your request."
 msgstr ""
 
 #: auction/pages/index.html:3
-msgid "Auction Home"
+msgid "Auction Hall"
 msgstr ""
 
 #: auction/pages/index.html:19

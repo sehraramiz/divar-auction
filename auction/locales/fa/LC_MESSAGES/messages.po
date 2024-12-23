@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-20 15:57+0330\n"
+"POT-Creation-Date: 2024-12-23 19:03+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,76 +21,36 @@ msgstr ""
 msgid "return url must be from divar.ir domain"
 msgstr "آدرس بازگشت باید از دامنه divar.ir باشد."
 
-#: auction/api.py:139
-msgid "Bid placed successfully!"
-msgstr "پیشنهاد با موفقیت ثبت شد!"
-
-#: auction/api.py:162
-msgid "Bid removed successfully!"
-msgstr "پیشنهاد با موفقیت حذف شد!"
-
-#: auction/api.py:246
-msgid "Auction started successfully!"
-msgstr "مزایده با موفقیت آغاز شد!"
-
-#: auction/api.py:299
-msgid "Auction removed successfully!"
-msgstr "مزایده با موفقیت حذف شد!"
-
-#: auction/auth.py:22 auction/exception.py:64
+#: auction/api/auth.py:22 auction/core/exception.py:64
 msgid "Invalid Session"
 msgstr "نشست نامعتبر"
 
-#: auction/exception.py:15
-msgid "Auction Not Found"
-msgstr "مزایده مورد نظر پیدا نشد."
+#: auction/api/http.py:111
+msgid "Bid placed successfully!"
+msgstr "پیشنهاد با موفقیت ثبت شد!"
 
-#: auction/exception.py:22
-msgid "Bid Not Found"
-msgstr "پیشنهاد مورد نظر پیدا نشد."
+#: auction/api/http.py:134
+msgid "Bid removed successfully!"
+msgstr "پیشنهاد با موفقیت حذف شد!"
 
-#: auction/exception.py:29
-msgid "Post Not Found"
-msgstr "آگهی مورد نظر پیدا نشد."
+#: auction/api/http.py:248
+msgid "Auction started successfully!"
+msgstr "مزایده با موفقیت آغاز شد!"
 
-#: auction/exception.py:36
-msgid "Auction Already Started"
-msgstr "مزایده هم‌اکنون در حال برگزاری است."
+#: auction/api/http.py:301
+msgid "Auction removed successfully!"
+msgstr "مزایده با موفقیت حذف شد!"
 
-#: auction/exception.py:43
-msgid "Seller Can't Bid"
-msgstr "خریدار نمی‌تواند پیشنهاد قیمت دهد"
-
-#: auction/exception.py:50
-msgid "Bid can't be lower than the starting price"
-msgstr "پیشنهاد قیمت نباید کمتر از مبلغ اولیه مزایده باشد"
-
-#: auction/exception.py:57
-msgid "Invalid bid amount"
-msgstr "مبلغ پیشنهاد نامعتبر"
-
-#: auction/exception.py:71
-msgid "Forbidden"
-msgstr "دسترسی غیر مجاز"
-
-#: auction/exception.py:78
-msgid "Invalid State"
-msgstr "نشست نامعتبر"
-
-#: auction/exception.py:85
-msgid "Auction Removal Failed"
-msgstr "حذف مزیاده با خطا مواجه شد"
-
-#: auction/service.py:120
+#: auction/api/service.py:121
 msgid "Bid amount must starting price + multiple of min raise amount"
 msgstr ""
 "مبلغ هر پیشنهاد باید مضربی از حداقل میزان افزایش به علاوه مبلغ شروع باشد."
 
-#: auction/pages/auction_intro.html:23 auction/service.py:171
+#: auction/api/service.py:172 auction/pages/auction_intro.html:27
 msgid "Enter Auction"
 msgstr "ورود به مزایده"
 
-#: auction/service.py:172
+#: auction/api/service.py:173
 msgid ""
 "This post has an ongoing auction starting at {starting_price} rials you can "
 "bid on"
@@ -98,9 +58,49 @@ msgstr ""
 "برای این آگهی مزایده‌ای با قیمت شروع {starting_price} ریال در جریان است که "
 "شما میتوانید در آن شرکت کنید."
 
-#: auction/service.py:178
+#: auction/api/service.py:179
 msgid "Auction Available"
 msgstr "مزایده در حال اجرا است"
+
+#: auction/core/exception.py:15
+msgid "Auction Not Found"
+msgstr "مزایده مورد نظر پیدا نشد."
+
+#: auction/core/exception.py:22
+msgid "Bid Not Found"
+msgstr "پیشنهاد مورد نظر پیدا نشد."
+
+#: auction/core/exception.py:29
+msgid "Post Not Found"
+msgstr "آگهی مورد نظر پیدا نشد."
+
+#: auction/core/exception.py:36
+msgid "Auction Already Started"
+msgstr "مزایده هم‌اکنون در حال برگزاری است."
+
+#: auction/core/exception.py:43
+msgid "Seller Can't Bid"
+msgstr "خریدار نمی‌تواند پیشنهاد قیمت دهد"
+
+#: auction/core/exception.py:50
+msgid "Bid can't be lower than the starting price"
+msgstr "پیشنهاد قیمت نباید کمتر از مبلغ اولیه مزایده باشد"
+
+#: auction/core/exception.py:57
+msgid "Invalid bid amount"
+msgstr "مبلغ پیشنهاد نامعتبر"
+
+#: auction/core/exception.py:71
+msgid "Forbidden"
+msgstr "دسترسی غیر مجاز"
+
+#: auction/core/exception.py:78
+msgid "Invalid State"
+msgstr "نشست نامعتبر"
+
+#: auction/core/exception.py:85
+msgid "Auction Removal Failed"
+msgstr "حذف مزیاده با خطا مواجه شد"
 
 #: auction/pages/404.html:3 auction/pages/404.html:6
 msgid "Page Not Found"
@@ -110,15 +110,15 @@ msgstr "صفحه مورد نظر پیدا نشد."
 msgid "Place a bid"
 msgstr "پیشنهادی بگذارید"
 
-#: auction/pages/auction_bidder.html:8 auction/pages/auction_intro.html:10
+#: auction/pages/auction_bidder.html:8 auction/pages/auction_intro.html:16
 msgid "Top bids on this item:"
 msgstr "بالاترین پیشنهاد‌های روی این آگهی"
 
-#: auction/pages/auction_bidder.html:14 auction/pages/auction_intro.html:16
+#: auction/pages/auction_bidder.html:14 auction/pages/auction_intro.html:22
 msgid "Total bids:"
 msgstr "تعداد کل پیشنهاد‌ها:"
 
-#: auction/pages/auction_bidder.html:16 auction/pages/auction_intro.html:18
+#: auction/pages/auction_bidder.html:16
 msgid "You are the first bidder!"
 msgstr "شما اولین پیشنهاددهنده هستید."
 
@@ -153,7 +153,7 @@ msgstr "ثبت پیشنهاد"
 msgid "Remove Bid"
 msgstr "حذف پیشنهاد"
 
-#: auction/pages/auction_bidder.html:39 auction/pages/auction_intro.html:34
+#: auction/pages/auction_bidder.html:39 auction/pages/auction_intro.html:37
 #: auction/pages/auction_seller.html:37 auction/pages/auction_start.html:17
 msgid "Return to Divar"
 msgstr "بازگشت به دیوار"
@@ -162,23 +162,36 @@ msgstr "بازگشت به دیوار"
 msgid "Auction"
 msgstr "مزایده"
 
-#: auction/pages/auction_intro.html:8 auction/pages/auction_seller.html:8
+#: auction/pages/auction_intro.html:8
+msgid "What can auction hall do for you?"
+msgstr "تالار مزایده چه کاری برای شما انجام می‌دهد؟"
+
+#: auction/pages/auction_intro.html:9
+msgid "You can start an auction on your advertised item on divar.ir."
+msgstr ""
+"شما می‌توانید برای آیتم آگهی شده‌ی خود در سایت دیوار یک مزایده برگزار کنید."
+
+#: auction/pages/auction_intro.html:10
+msgid "You can place a bid on an item on divar.ir."
+msgstr ""
+"شما می‌توانید بر روی یک آیتم مزایده شده در  سایت دیوار پیشنهاد قیمت بگذارید."
+
+#: auction/pages/auction_intro.html:11
+msgid "You will get the results of auctions you participate in."
+msgstr "نتایج مزایده را دریافت خواهید کرد."
+
+#: auction/pages/auction_intro.html:14 auction/pages/auction_seller.html:8
 #: auction/pages/auction_start.html:8
-msgid "Title:"
-msgstr "تیتر:"
+msgid "Auction for "
+msgstr "مزایده برای آگهی "
 
-#: auction/pages/auction_intro.html:26 auction/pages/auction_start.html:3
-#: auction/pages/auction_start.html:7
-msgid "Start New Auction"
-msgstr "آغاز مزایده جدید"
-
-#: auction/pages/auction_intro.html:27
+#: auction/pages/auction_intro.html:30
 msgid ""
 "There is no in progress auction for this post. do you want to start an "
 "Auction?"
 msgstr "برای این آگهی مزایده‌ای وجود ندارد. آیا می‌خواهید مزایده برگزار کنید؟"
 
-#: auction/pages/auction_intro.html:31
+#: auction/pages/auction_intro.html:34
 msgid "Start a new Auction"
 msgstr "آغاز مزایده جدید"
 
@@ -209,6 +222,10 @@ msgstr "انتخاب قیمت پیشنهادی"
 #: auction/pages/auction_seller.html:35
 msgid "Remove Auction"
 msgstr "حذف مزایده"
+
+#: auction/pages/auction_start.html:3 auction/pages/auction_start.html:7
+msgid "Start New Auction"
+msgstr "آغاز مزایده جدید"
 
 #: auction/pages/auction_start.html:12
 msgid "Starting Price (rials)"
@@ -247,6 +264,9 @@ msgstr "در حال هدایت به صفحه‌ی جدید"
 #: auction/pages/redirect_with_message.html:13
 msgid "You will be redirected shortly..."
 msgstr "تا چند لحظه‌ی دیگر از تالار مزایده خارج می‌شوید."
+
+#~ msgid "Title:"
+#~ msgstr "تیتر:"
 
 #~ msgid "Auctions"
 #~ msgstr "مزایده‌ها"

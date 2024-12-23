@@ -5,15 +5,15 @@
 {% block body %}
 <div dir="{{ _dir() }}">
     {% if auction.bids_count %}
-    <p>{{ _("Top bids on this item:") }}</p>
-        <ul>
-          {% for bid in auction.top_bids %}
-            <li>{{ bid.amount }}</li>
-          {% endfor %}
-        </ul>
+        <p>{{ _("Top bids on this item:") }}</p>
+            <ul>
+              {% for bid in auction.top_bids %}
+                <li>{{ bid.amount }}</li>
+              {% endfor %}
+            </ul>
         <p>{{ _("Total bids:") }} {{ auction.bids_count }}</p>
     {% else %}
-    <h4>{{ _("You are the first bidder!") }}</h4>
+        <p>{{ _("You are the first bidder!") }}</p>
     {% endif %}
 
     <p>{{ _("All bid amounts must be a multiple of the minimum raise amount plus the starting price.") }}</p>

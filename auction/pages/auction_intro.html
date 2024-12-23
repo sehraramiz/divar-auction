@@ -4,8 +4,14 @@
 
 {% block body %}
 <div dir="{{ _dir() }}">
+    <p style="font-size: larger"><b>{{ _("Auction for ") }}</b> {{ auction.post_title }}</p></p></br>
+    <p>
+        {{ _("What can auction hall do for you?") }}</br>
+        - {{ _("You can start an auction on your advertised item on divar.ir.") }}</br>
+        - {{ _("You can place a bid on an item on divar.ir.") }}</br>
+        - {{ _("You will get the results of auctions you participate in.") }}</br>
+    </p>
     {% if auction %}
-        <p style="font-size: larger"><b>{{ _("Title:") }}</b> {{ auction.post_title }}</p></p></br>
         {% if auction.bids_count %}
         <p>{{ _("Top bids on this item:") }}</p>
             <ul>
@@ -14,8 +20,6 @@
               {% endfor %}
             </ul>
             <p>{{ _("Total bids:") }} {{ auction.bids_count }}</p>
-        {% else %}
-        <h4>{{ _("You are the first bidder!") }}</h4>
         {% endif %}
         <form action="{{ url_for('auctions') }}" method="get">
             <input type="hidden" name="post_token" value="{{ auction.post_token }}">
@@ -23,7 +27,6 @@
             <input class="btn-primary" type="submit" value='{{ _("Enter Auction") }}'>
         </form>
     {% else %}
-        <h3>{{ _("Start New Auction") }}</h3>
         <p>{{ _("There is no in progress auction for this post. do you want to start an Auction?") }}</p></br>
         <form action="{{ url_for('start_auction_view', post_token=post_token) }}" method="get">
             <input type="hidden" name="post_token" value="{{ post_token }}">

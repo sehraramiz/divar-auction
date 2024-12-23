@@ -4,9 +4,7 @@
 
 {% block body %}
 <div dir="{{ _dir() }}">
-    <h2>{{ _("Manage Auction") }}</h2>
-    <p style="font-size: larger"><b>{{ _("Title:") }}</b> {{ auction.post_title }}</p></p></br>
-    <a target="_blank" href="https://divar.ir/v/{{ auction.post_token }}">{{ _("Item Details") }}</a>
+    <p style="font-size: larger"><b>{{ _("Auction for ") }}</b> {{ auction.post_title }}</p></p></br>
     <h4>{{ _("There are {bids_count} bids on your item").format(bids_count=auction.bids_count | localize_number) }}</h4>
     <ul>
         <form action="{{ url_for('select_bid', post_token=auction.post_token) }}" method="post">
