@@ -27,6 +27,7 @@ jobs:
     - name: Compile translations
       run: |
         make LANG=fa compilemessages
+        make LANG=en compilemessages
     - name: Create dummy .env
       run: |
         cp .template.env .env
