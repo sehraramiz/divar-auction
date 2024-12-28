@@ -24,7 +24,7 @@ makemessages:
 	- cp -n $(MSGBASE) $(MSGFILE)
 	msgmerge --update $(MSGFILE) $(MSGBASE)
 compilemessages:
-	msgfmt -o $(MSGDIR)/messages.mo $(MSGFILE)
+	uv run pybabel compile -f -o $(MSGDIR)/messages.mo -i $(MSGFILE)
 run-docker:
 	docker compose build auction
 	docker compose up -d auction
