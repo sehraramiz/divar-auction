@@ -25,6 +25,7 @@ makemessages:
 	msgmerge --update $(MSGFILE) $(MSGBASE)
 compilemessages:
 	uv run pybabel compile -f -o $(MSGDIR)/messages.mo -i $(MSGFILE)
-run-docker:
+build-docker:
 	docker compose build auction
+run-docker: build-docker
 	docker compose up -d auction

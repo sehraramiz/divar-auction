@@ -37,3 +37,14 @@ jobs:
     - name: Test with pytest
       run: |
         make test
+
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: |
+          make build-docker
