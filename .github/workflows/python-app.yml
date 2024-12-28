@@ -31,7 +31,7 @@ jobs:
     - name: Create dummy .env
       run: |
         cp .template.env .env
-    - name: Lint with ruff
+    - name: ruff, mypy checks
       run: |
         make check
     - name: Test with pytest
