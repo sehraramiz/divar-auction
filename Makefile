@@ -26,6 +26,6 @@ makemessages:
 compilemessages:
 	uv run pybabel compile -f -o $(MSGDIR)/messages.mo -i $(MSGFILE)
 build-docker:
-	docker compose build auction
+	docker build -t auction .
 run-docker: build-docker
 	docker compose up -d auction
