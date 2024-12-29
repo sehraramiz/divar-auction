@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-23 19:03+0330\n"
+"POT-Creation-Date: 2024-12-29 09:32+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -137,7 +137,7 @@ msgstr ""
 msgid "Bid Amount (rials):"
 msgstr ""
 
-#: auction/pages/auction_bidder.html:27 auction/pages/auction_start.html:14
+#: auction/pages/auction_bidder.html:27 auction/pages/auction_start.html:12
 msgid "Tomans"
 msgstr ""
 
@@ -150,7 +150,7 @@ msgid "Remove Bid"
 msgstr ""
 
 #: auction/pages/auction_bidder.html:39 auction/pages/auction_intro.html:37
-#: auction/pages/auction_seller.html:37 auction/pages/auction_start.html:17
+#: auction/pages/auction_seller.html:35 auction/pages/auction_start.html:15
 msgid "Return to Divar"
 msgstr ""
 
@@ -158,25 +158,25 @@ msgstr ""
 msgid "Auction"
 msgstr ""
 
-#: auction/pages/auction_intro.html:8
-msgid "What can auction hall do for you?"
+#: auction/pages/auction_intro.html:7 auction/pages/auction_seller.html:7
+#: auction/pages/auction_start.html:7
+msgid "Auction for "
 msgstr ""
 
 #: auction/pages/auction_intro.html:9
-msgid "You can start an auction on your advertised item on divar.ir."
+msgid "What can auction hall do for you?"
 msgstr ""
 
 #: auction/pages/auction_intro.html:10
-msgid "You can place a bid on an item on divar.ir."
+msgid "You can start an auction on your advertised item on divar.ir."
 msgstr ""
 
 #: auction/pages/auction_intro.html:11
-msgid "You will get the results of auctions you participate in."
+msgid "You can place a bid on an item on divar.ir."
 msgstr ""
 
-#: auction/pages/auction_intro.html:14 auction/pages/auction_seller.html:8
-#: auction/pages/auction_start.html:8
-msgid "Auction for "
+#: auction/pages/auction_intro.html:12
+msgid "You will get the results of auctions you participate in."
 msgstr ""
 
 #: auction/pages/auction_intro.html:30
@@ -193,39 +193,31 @@ msgstr ""
 msgid "Auction Management"
 msgstr ""
 
-#: auction/pages/auction_seller.html:7
-msgid "Manage Auction"
-msgstr ""
-
-#: auction/pages/auction_seller.html:9 auction/pages/auction_start.html:9
-msgid "Item Details"
-msgstr ""
-
-#: auction/pages/auction_seller.html:10
+#: auction/pages/auction_seller.html:8
 msgid "There are {bids_count} bids on your item"
 msgstr ""
 
-#: auction/pages/auction_seller.html:21
+#: auction/pages/auction_seller.html:19
 msgid "{bid_amount} from {bidder_id}"
 msgstr ""
 
-#: auction/pages/auction_seller.html:26
+#: auction/pages/auction_seller.html:24
 msgid "Select Bid"
 msgstr ""
 
-#: auction/pages/auction_seller.html:35
+#: auction/pages/auction_seller.html:33
 msgid "Remove Auction"
 msgstr ""
 
-#: auction/pages/auction_start.html:3 auction/pages/auction_start.html:7
+#: auction/pages/auction_start.html:3
 msgid "Start New Auction"
 msgstr ""
 
-#: auction/pages/auction_start.html:12
+#: auction/pages/auction_start.html:10
 msgid "Starting Price (rials)"
 msgstr ""
 
-#: auction/pages/auction_start.html:15
+#: auction/pages/auction_start.html:13
 msgid "Start"
 msgstr ""
 

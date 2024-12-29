@@ -22,7 +22,7 @@ makemessages:
 	sed -i -e 's/CHARSET/UTF-8/g' $(MSGBASE)
 	mkdir -p $(MSGDIR)
 	- cp -n $(MSGBASE) $(MSGFILE)
-	msgmerge --update $(MSGFILE) $(MSGBASE)
+	uv run pybabel update -i $(MSGBASE) -o $(MSGFILE) -l $(LANG)
 compilemessages:
 	uv run pybabel compile -f -o $(MSGDIR)/messages.mo -i $(MSGFILE)
 build-docker:

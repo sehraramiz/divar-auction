@@ -1,21 +1,23 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Copyright (C) 2024 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-23 19:03+0330\n"
+"POT-Creation-Date: 2024-12-29 09:32+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: fa\n"
+"Language-Team: fa <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
 
 #: auction/_types.py:19
 msgid "return url must be from divar.ir domain"
@@ -43,8 +45,7 @@ msgstr "مزایده با موفقیت حذف شد!"
 
 #: auction/api/service.py:121
 msgid "Bid amount must starting price + multiple of min raise amount"
-msgstr ""
-"مبلغ هر پیشنهاد باید مضربی از حداقل میزان افزایش به علاوه مبلغ شروع باشد."
+msgstr "مبلغ هر پیشنهاد باید مضربی از حداقل میزان افزایش به علاوه مبلغ شروع باشد."
 
 #: auction/api/service.py:172 auction/pages/auction_intro.html:27
 msgid "Enter Auction"
@@ -52,11 +53,11 @@ msgstr "ورود به مزایده"
 
 #: auction/api/service.py:173
 msgid ""
-"This post has an ongoing auction starting at {starting_price} rials you can "
-"bid on"
+"This post has an ongoing auction starting at {starting_price} rials you "
+"can bid on"
 msgstr ""
-"برای این آگهی مزایده‌ای با قیمت شروع {starting_price} ریال در جریان است که "
-"شما میتوانید در آن شرکت کنید."
+"برای این آگهی مزایده‌ای با قیمت شروع {starting_price} ریال در جریان است "
+"که شما میتوانید در آن شرکت کنید."
 
 #: auction/api/service.py:179
 msgid "Auction Available"
@@ -126,8 +127,7 @@ msgstr "شما اولین پیشنهاددهنده هستید."
 msgid ""
 "All bid amounts must be a multiple of the minimum raise amount plus the "
 "starting price."
-msgstr ""
-"مبلغ هر پیشنهاد باید مضربی از حداقل میزان افزایش به علاوه مبلغ شروع باشد."
+msgstr "مبلغ هر پیشنهاد باید مضربی از حداقل میزان افزایش به علاوه مبلغ شروع باشد."
 
 #: auction/pages/auction_bidder.html:20
 msgid "Minimum raise amount: {min_raise_amount} rials"
@@ -141,7 +141,7 @@ msgstr "مبلغ شروع: {starting_price} ریال"
 msgid "Bid Amount (rials):"
 msgstr "مبلغ پیشنهادی (ریال)"
 
-#: auction/pages/auction_bidder.html:27 auction/pages/auction_start.html:14
+#: auction/pages/auction_bidder.html:27 auction/pages/auction_start.html:12
 msgid "Tomans"
 msgstr "تومان"
 
@@ -154,7 +154,7 @@ msgid "Remove Bid"
 msgstr "حذف پیشنهاد"
 
 #: auction/pages/auction_bidder.html:39 auction/pages/auction_intro.html:37
-#: auction/pages/auction_seller.html:37 auction/pages/auction_start.html:17
+#: auction/pages/auction_seller.html:35 auction/pages/auction_start.html:15
 msgid "Return to Divar"
 msgstr "بازگشت به دیوار"
 
@@ -162,28 +162,30 @@ msgstr "بازگشت به دیوار"
 msgid "Auction"
 msgstr "مزایده"
 
-#: auction/pages/auction_intro.html:8
+#: auction/pages/auction_intro.html:7 auction/pages/auction_seller.html:7
+#: auction/pages/auction_start.html:7
+msgid "Auction for "
+msgstr "مزایده برای آگهی "
+
+#: auction/pages/auction_intro.html:9
 msgid "What can auction hall do for you?"
 msgstr "تالار مزایده چه کاری برای شما انجام می‌دهد؟"
 
-#: auction/pages/auction_intro.html:9
+#: auction/pages/auction_intro.html:10
 msgid "You can start an auction on your advertised item on divar.ir."
 msgstr ""
-"شما می‌توانید برای آیتم آگهی شده‌ی خود در سایت دیوار یک مزایده برگزار کنید."
-
-#: auction/pages/auction_intro.html:10
-msgid "You can place a bid on an item on divar.ir."
-msgstr ""
-"شما می‌توانید بر روی یک آیتم مزایده شده در  سایت دیوار پیشنهاد قیمت بگذارید."
+"شما می‌توانید برای آیتم آگهی شده‌ی خود در سایت دیوار یک مزایده برگزار "
+"کنید."
 
 #: auction/pages/auction_intro.html:11
+msgid "You can place a bid on an item on divar.ir."
+msgstr ""
+"شما می‌توانید بر روی یک آیتم مزایده شده در  سایت دیوار پیشنهاد قیمت "
+"بگذارید."
+
+#: auction/pages/auction_intro.html:12
 msgid "You will get the results of auctions you participate in."
 msgstr "نتایج مزایده را دریافت خواهید کرد."
-
-#: auction/pages/auction_intro.html:14 auction/pages/auction_seller.html:8
-#: auction/pages/auction_start.html:8
-msgid "Auction for "
-msgstr "مزایده برای آگهی "
 
 #: auction/pages/auction_intro.html:30
 msgid ""
@@ -199,39 +201,31 @@ msgstr "آغاز مزایده جدید"
 msgid "Auction Management"
 msgstr "مدیریت مزایده"
 
-#: auction/pages/auction_seller.html:7
-msgid "Manage Auction"
-msgstr "مدیریت مزایده"
-
-#: auction/pages/auction_seller.html:9 auction/pages/auction_start.html:9
-msgid "Item Details"
-msgstr "جزییات آگهی"
-
-#: auction/pages/auction_seller.html:10
+#: auction/pages/auction_seller.html:8
 msgid "There are {bids_count} bids on your item"
 msgstr "در حال حاظر {bids_count} پیشنهاد برای این آگهی وجود دارد"
 
-#: auction/pages/auction_seller.html:21
+#: auction/pages/auction_seller.html:19
 msgid "{bid_amount} from {bidder_id}"
 msgstr "{bid_amount} از کاربر {bidder_id}"
 
-#: auction/pages/auction_seller.html:26
+#: auction/pages/auction_seller.html:24
 msgid "Select Bid"
 msgstr "انتخاب قیمت پیشنهادی"
 
-#: auction/pages/auction_seller.html:35
+#: auction/pages/auction_seller.html:33
 msgid "Remove Auction"
 msgstr "حذف مزایده"
 
-#: auction/pages/auction_start.html:3 auction/pages/auction_start.html:7
+#: auction/pages/auction_start.html:3
 msgid "Start New Auction"
 msgstr "آغاز مزایده جدید"
 
-#: auction/pages/auction_start.html:12
+#: auction/pages/auction_start.html:10
 msgid "Starting Price (rials)"
 msgstr "مبلغ شروع مزایده (ریال)"
 
-#: auction/pages/auction_start.html:15
+#: auction/pages/auction_start.html:13
 msgid "Start"
 msgstr "شروع"
 
@@ -254,8 +248,8 @@ msgstr "به تالار مزایده خوش آمدید."
 #: auction/pages/index.html:21
 msgid "Who can put a price on an Asil rooster, except the one who seeks it?"
 msgstr ""
-"چه کسی میتواند یک خروس لاری را ارزش گذاری کند، به جز از آن کس که در پی خریدش "
-"است؟"
+"چه کسی میتواند یک خروس لاری را ارزش گذاری کند، به جز از آن کس که در پی "
+"خریدش است؟"
 
 #: auction/pages/redirect_with_message.html:3
 msgid "Redirecting"
@@ -273,3 +267,9 @@ msgstr "تا چند لحظه‌ی دیگر از تالار مزایده خارج
 
 #~ msgid "Oops!"
 #~ msgstr "ای وای!"
+
+#~ msgid "Manage Auction"
+#~ msgstr "مدیریت مزایده"
+
+#~ msgid "Item Details"
+#~ msgstr "جزییات آگهی"
